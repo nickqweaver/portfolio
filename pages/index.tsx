@@ -12,7 +12,6 @@ type Props = {
   contacts?: GetContactsQuery["contacts"]
 }
 const Home: NextPage = (props: Props) => {
-  console.log(props.contacts?.map((c) => c.email))
   return (
     <div className={styles.container}>
       {props.contacts?.map((c) => (
