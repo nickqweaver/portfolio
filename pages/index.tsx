@@ -34,7 +34,7 @@ export async function getStaticProps() {
   if (validateResponseType<GetContactsQueryResult>(res)) {
     return {
       props: {
-        contacts: res.data,
+        contacts: res.data?.contacts,
       },
     }
   }
