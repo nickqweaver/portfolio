@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client"
 
 export const PagePreviewFragment = gql`
-  fragment PagePreviewFragment on Page {
+  fragment PagePreviewFragment on IndexPage {
     title
     slug
     showPreview

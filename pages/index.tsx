@@ -1,14 +1,12 @@
 import type { NextPage } from "next"
 import client from "../apollo/client"
 import { Layout } from "../components/Layout"
-import { GET_PAGE_PREVIEWS } from "../graphql/queries/GetPagePreviews"
+import { GET_INDEX_PAGE_PREVIEWS } from "../graphql/queries/GetIndexPagePreviews"
 import {
-  GetPagePreviewsQuery,
+  GetIndexPagePreviewsQuery,
   PagePreviewFragmentFragment,
 } from "../graphql/generated/schema-types"
 import styles from "../styles/Home.module.css"
-import { title } from "process"
-import { NavigationLink } from "../components/Navigation"
 
 type Props = {
   pagePreviews?: PagePreviewFragmentFragment[]
@@ -32,10 +30,11 @@ const Home: NextPage = (props: Props) => {
 }
 
 export async function getStaticProps() {
-  const res = await client.query<GetPagePreviewsQuery>({
-    query: GET_PAGE_PREVIEWS,
+  const res = await client.query<GetIndexPagePreviewsQuery>({
+    query: GET_INDEX_PAGE_PREVIEWS,
   })
 
-  return { props: { pagePreviews: res.data.pages } }
+  return { props: { pagePreviews: res.data.indexPages } }
 }
+
 export default Home
