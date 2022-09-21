@@ -1945,6 +1945,7 @@ export type Page = Node & {
   icon: Icon;
   /** The unique identifier */
   id: Scalars['ID'];
+  isNavLink: Scalars['Boolean'];
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
@@ -2044,6 +2045,7 @@ export type PageCreateInput = {
   description?: InputMaybe<Scalars['RichTextAST']>;
   hero?: InputMaybe<HeroCreateOneInlineInput>;
   icon: IconCreateOneInlineInput;
+  isNavLink: Scalars['Boolean'];
   showPreview: Scalars['Boolean'];
   slug: Scalars['String'];
   title: Scalars['String'];
@@ -2135,6 +2137,9 @@ export type PageManyWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  isNavLink?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  isNavLink_not?: InputMaybe<Scalars['Boolean']>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -2218,6 +2223,8 @@ export enum PageOrderByInput {
   CreatedAtDesc = 'createdAt_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
+  IsNavLinkAsc = 'isNavLink_ASC',
+  IsNavLinkDesc = 'isNavLink_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
   ShowPreviewAsc = 'showPreview_ASC',
@@ -2234,6 +2241,7 @@ export type PageUpdateInput = {
   description?: InputMaybe<Scalars['RichTextAST']>;
   hero?: InputMaybe<HeroUpdateOneInlineInput>;
   icon?: InputMaybe<IconUpdateOneInlineInput>;
+  isNavLink?: InputMaybe<Scalars['Boolean']>;
   showPreview?: InputMaybe<Scalars['Boolean']>;
   slug?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
@@ -2258,6 +2266,7 @@ export type PageUpdateManyInlineInput = {
 
 export type PageUpdateManyInput = {
   description?: InputMaybe<Scalars['RichTextAST']>;
+  isNavLink?: InputMaybe<Scalars['Boolean']>;
   showPreview?: InputMaybe<Scalars['Boolean']>;
   title?: InputMaybe<Scalars['String']>;
 };
@@ -2352,6 +2361,9 @@ export type PageWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  isNavLink?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  isNavLink_not?: InputMaybe<Scalars['Boolean']>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -4170,18 +4182,19 @@ export enum _SystemDateTimeFieldVariation {
   Localization = 'localization'
 }
 
-export type PagePreviewFragmentFragment = { __typename?: 'Page', title: string, slug: string, showPreview: boolean, icon: { __typename?: 'Icon', name: IconNames, size?: Size | null } };
+export type PagePreviewFragmentFragment = { __typename?: 'Page', title: string, slug: string, showPreview: boolean, isNavLink: boolean, icon: { __typename?: 'Icon', name: IconNames, size?: Size | null } };
 
 export type GetPagePreviewsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPagePreviewsQuery = { __typename?: 'Query', pages: Array<{ __typename?: 'Page', title: string, slug: string, showPreview: boolean, icon: { __typename?: 'Icon', name: IconNames, size?: Size | null } }> };
+export type GetPagePreviewsQuery = { __typename?: 'Query', pages: Array<{ __typename?: 'Page', title: string, slug: string, showPreview: boolean, isNavLink: boolean, icon: { __typename?: 'Icon', name: IconNames, size?: Size | null } }> };
 
 export const PagePreviewFragmentFragmentDoc = gql`
     fragment PagePreviewFragment on Page {
   title
   slug
   showPreview
+  isNavLink
   icon {
     name
     size

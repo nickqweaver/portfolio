@@ -5,6 +5,7 @@ export const PagePreviewFragment = gql`
     title
     slug
     showPreview
+    isNavLink
     icon {
       name
       size

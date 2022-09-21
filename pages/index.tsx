@@ -7,23 +7,26 @@ import {
   PagePreviewFragmentFragment,
 } from "../graphql/generated/schema-types"
 import styles from "../styles/Home.module.css"
+import { title } from "process"
+import { NavigationLink } from "../components/Navigation"
 
 type Props = {
   pagePreviews?: PagePreviewFragmentFragment[]
 }
 
 const Home: NextPage = (props: Props) => {
+  const { pagePreviews } = props
+
+  const navLinks = props.pagePreviews
+    ?.filter((preview) => preview.isNavLink)
+    .map((preview) => ({
+      title: preview.title,
+      slug: preview.slug,
+    }))
+
   return (
-    <Layout>
-      <div>
-        {props.pagePreviews?.map((preview) => {
-          return (
-            <ul key={preview.slug}>
-              <li>{preview.title}</li>
-            </ul>
-          )
-        })}
-      </div>
+    <Layout navigation={{ links: navLinks }}>
+      <div></div>
     </Layout>
   )
 }
