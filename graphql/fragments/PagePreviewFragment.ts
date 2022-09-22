@@ -1,14 +1,16 @@
 import { gql } from "@apollo/client"
+import { IconFragment } from "./IconFragment"
 
 export const PagePreviewFragment = gql`
-  fragment PagePreviewFragment on IndexPage {
+  fragment PagePreviewFragment on PagePreview {
     title
     slug
-    showPreview
-    isNavLink
+    description {
+      html
+    }
     icon {
-      name
-      size
+      ...IconFragment
     }
   }
+  ${IconFragment}
 `

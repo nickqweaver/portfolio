@@ -1,14 +1,13 @@
-import { Navigation, NavigationProps } from "./Navigation"
+import { Navigation } from "./Navigation"
 
 type LayoutProps = {
   children: React.ReactNode
-  navigation?: NavigationProps
 }
 
 export const Layout = (props: LayoutProps) => {
   return (
     <main>
-      <Navigation {...props.navigation} />
+      <Navigation />
       {props.children}
     </main>
   )
