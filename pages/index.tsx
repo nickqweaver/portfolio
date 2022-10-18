@@ -10,7 +10,8 @@ import {
 import { GET_LAYOUT_BY_ROUTE } from "../graphql/queries/GetLayoutByRoute"
 import { NestedLayout } from "../components/NestedLayout"
 import React from "react"
-import { PagePreviewCard } from "../components/PagePreviewCard/PagePreviewCard"
+import { PagePreviewCard } from "../components/PagePreview/PagePreviewCard"
+import { PagePreviews } from "../components/PagePreview/PagePreviews"
 
 type Props = {
   pagePreviews?: PagePreviewFragmentFragment[]
@@ -28,13 +29,7 @@ const Home: NextPage = (props: Props) => {
     )
 
   return (
-    <Layout>
-      <div>
-        {pagePreviews?.map((preview) => {
-          return <PagePreviewCard key={preview.slug} {...preview} />
-        })}
-      </div>
-    </Layout>
+    <Layout>{pagePreviews && <PagePreviews previews={pagePreviews} />}</Layout>
   )
 }
 
