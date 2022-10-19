@@ -2,9 +2,10 @@ import Link from "next/link"
 import { routes } from "../constants/routes"
 
 export const Navigation = () => {
-  const gridColumns = `grid-cols-${routes.length ?? 1}`
+  const gridColumns = `grid-cols-4`
+  // const gridColumns = `grid-cols-${routes.length ?? 1}`
   return (
-    <nav className="w-screen h-16 grid grid-cols-2">
+    <nav className="w-screen h-16 grid grid-cols-2 absolute">
       <div>
         <Link href="/">Logo</Link>
       </div>

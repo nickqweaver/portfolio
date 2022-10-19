@@ -6654,7 +6654,7 @@ export enum _SystemDateTimeFieldVariation {
 
 export type IconFragmentFragment = { __typename?: 'Icon', name: IconNames, size?: Size | null };
 
-export type LayoutFragmentFragment = { __typename?: 'Layout', route: string, hero?: { __typename?: 'Hero', heading: string, subHeading?: string | null, backgroundColor?: { __typename?: 'Color', css: string } | null, icon?: { __typename?: 'Icon', name: IconNames, size?: Size | null } | null } | null };
+export type LayoutFragmentFragment = { __typename?: 'Layout', route: string, hero?: { __typename?: 'Hero', heading: string, subHeading?: string | null, backgroundColor?: { __typename?: 'Color', css: string } | null, backgroundImage?: { __typename?: 'Asset', id: string, url: string } | null, icon?: { __typename?: 'Icon', name: IconNames, size?: Size | null } | null } | null };
 
 export type PagePreviewFragmentFragment = { __typename?: 'PagePreview', title: string, slug: string, description?: { __typename?: 'RichText', html: string } | null, icon: { __typename?: 'Icon', name: IconNames, size?: Size | null } };
 
@@ -6668,7 +6668,7 @@ export type GetLayoutByRouteQueryVariables = Exact<{
 }>;
 
 
-export type GetLayoutByRouteQuery = { __typename?: 'Query', layout?: { __typename?: 'Layout', route: string, hero?: { __typename?: 'Hero', heading: string, subHeading?: string | null, backgroundColor?: { __typename?: 'Color', css: string } | null, icon?: { __typename?: 'Icon', name: IconNames, size?: Size | null } | null } | null } | null };
+export type GetLayoutByRouteQuery = { __typename?: 'Query', layout?: { __typename?: 'Layout', route: string, hero?: { __typename?: 'Hero', heading: string, subHeading?: string | null, backgroundColor?: { __typename?: 'Color', css: string } | null, backgroundImage?: { __typename?: 'Asset', id: string, url: string } | null, icon?: { __typename?: 'Icon', name: IconNames, size?: Size | null } | null } | null } | null };
 
 export const IconFragmentFragmentDoc = gql`
     fragment IconFragment on Icon {
@@ -6682,6 +6682,10 @@ export const LayoutFragmentFragmentDoc = gql`
   hero {
     backgroundColor {
       css
+    }
+    backgroundImage {
+      id
+      url
     }
     heading
     subHeading

@@ -12,18 +12,15 @@ export const NestedLayout = ({
     <main>
       {layout.hero && (
         <div
+          className={`w-screen h-[800px] flex justify-center flex-col items-center bg-no-repeat bg-cover bg-center bg-fixed`}
           style={{
-            backgroundColor: layout.hero.backgroundColor?.css,
-            width: "100vw",
-            height: "300px",
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            alignItems: "center",
+            backgroundImage: `url(${layout.hero.backgroundImage?.url})`,
           }}
         >
-          <h1>{layout.hero.heading}</h1>
-          <h1>{layout.hero.subHeading}</h1>
+          <h1 className="text-8xl font-extrabold mb-[32px]">
+            {layout.hero.heading}
+          </h1>
+          <h2 className="font-semibold text-4xl">{layout.hero.subHeading}</h2>
         </div>
       )}
       {children}

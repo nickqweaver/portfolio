@@ -8,6 +8,10 @@ export const LayoutFragment = gql`
       backgroundColor {
         css
       }
+      backgroundImage {
+        id
+        url
+      }
       heading
       subHeading
       icon {
