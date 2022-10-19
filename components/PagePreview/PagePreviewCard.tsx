@@ -1,4 +1,3 @@
-import Link from "next/link"
 import { PagePreviewFragmentFragment } from "../../graphql/generated/schema-types"
 import { Button } from "../Button/Button"
 import { Icon } from "../Icon"
@@ -17,7 +16,9 @@ export const PagePreviewCard = (props: PagePreviewFragmentFragment) => {
           }}
         ></p>
       )}
-      <Button title={props.title} href={props.slug} />
+      <div>
+        <Button title={props.title} href={props.slug} />
+      </div>
     </main>
   )
 }
