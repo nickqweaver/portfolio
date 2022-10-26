@@ -5,7 +5,10 @@ export const Navigation = () => {
   const gridColumns = `grid-cols-4`
   // const gridColumns = `grid-cols-${routes.length ?? 1}`
   return (
-    <nav className="w-screen h-16 grid grid-cols-2 absolute">
+    <nav
+      className="w-screen h-16 grid grid-cols-2 absolute"
+      style={{ zIndex: 2 }}
+    >
       <div>
         <Link href="/">Logo</Link>
       </div>
