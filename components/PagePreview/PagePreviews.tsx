@@ -7,7 +7,10 @@ export const PagePreviews = ({
   previews: PagePreviewFragmentFragment[]
 }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+    <div
+      className="grid pt-20 px-12 bg-white"
+      style={{ gridTemplateColumns: "repeat(auto-fill, minmax(334px, 1fr))" }}
+    >
       {previews.map((preview) => (
         <PagePreviewCard key={preview.slug} {...preview} />
       ))}
