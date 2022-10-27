@@ -9,8 +9,7 @@ import {
 } from "../graphql/generated/schema-types"
 import { GET_LAYOUT_BY_ROUTE } from "../graphql/queries/GetLayoutByRoute"
 import { NestedLayout } from "../components/NestedLayout"
-import React from "react"
-import { PagePreviewCard } from "../components/PagePreview/PagePreviewCard"
+import React, { useEffect } from "react"
 import { PagePreviews } from "../components/PagePreview/PagePreviews"
 
 type Props = {
