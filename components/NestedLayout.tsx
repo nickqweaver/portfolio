@@ -1,6 +1,7 @@
 import React from "react"
 import Image from "next/image"
 import { LayoutFragmentFragment } from "../graphql/generated/schema-types"
+import { Icon } from "./Icon"
 
 export const NestedLayout = ({
   children,
@@ -18,6 +19,13 @@ export const NestedLayout = ({
               src={layout.hero.backgroundImage?.url}
               alt="Background Image"
               layout="fill"
+            />
+          )}
+          {layout.hero.icon && (
+            <Icon
+              size={84}
+              style={{ zIndex: 1 }}
+              name={layout.hero.icon.name}
             />
           )}
           <h1

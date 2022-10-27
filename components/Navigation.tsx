@@ -5,7 +5,6 @@ import { Icon } from "../components/Icon"
 import { IconNames } from "../graphql/generated/schema-types"
 
 export const Navigation = (props: { variation?: "transparent" | "filled" }) => {
-  const gridColumns = `grid-cols-${routes.length ?? 1}`
   return (
     <nav
       className="w-screen h-16 grid grid-cols-2 fixed"
@@ -28,7 +27,10 @@ export const Navigation = (props: { variation?: "transparent" | "filled" }) => {
         </Link>
       </div>
       <div
-        className={`grid ${gridColumns} justify-items-center items-center font-semibold whitespace-nowrap`}
+        className={`grid justify-items-center items-center font-semibold whitespace-nowrap`}
+        style={{
+          gridTemplateColumns: `repeat(auto-fit, 150px)`,
+        }}
       >
         {routes.map((route) =>
           route.hasButtonUi ? (

@@ -9,13 +9,15 @@ import {
 } from "../graphql/generated/schema-types"
 import { GET_LAYOUT_BY_ROUTE } from "../graphql/queries/GetLayoutByRoute"
 import { NestedLayout } from "../components/NestedLayout"
-import React, { useEffect } from "react"
+import React from "react"
 import { PagePreviews } from "../components/PagePreview/PagePreviews"
 
 type Props = {
   pagePreviews?: PagePreviewFragmentFragment[]
   layout?: LayoutFragmentFragment
 }
+
+// How to implement dark mode with tailwind?
 
 const Home: NextPage = (props: Props) => {
   const { pagePreviews, layout } = props
