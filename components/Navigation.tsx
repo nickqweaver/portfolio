@@ -27,7 +27,7 @@ export const Navigation = (props: { variation?: "transparent" | "filled" }) => {
         </Link>
       </div>
       <div
-        className={`grid justify-items-center items-center font-semibold whitespace-nowrap`}
+        className={`grid justify-items-center items-center justify-content font-semibold whitespace-nowrap`}
         style={{
           gridTemplateColumns: `repeat(auto-fit, 150px)`,
         }}
