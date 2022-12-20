@@ -3,17 +3,20 @@ import { routes } from "../constants/routes"
 import { Button } from "./Button/Button"
 import { Icon } from "../components/Icon"
 import { IconNames } from "../graphql/generated/schema-types"
+import { useScrollPosition } from "../hooks/useScrollPosition"
 
 export const Navigation = (props: { variation?: "transparent" | "filled" }) => {
-  const isFilled = props.variation === "filled"
+  const { y } = useScrollPosition()
+
+  const isFilled = props.variation === "filled" || y > 150
   const textColor = isFilled
     ? "text-primary-light hover:text-blue-light"
     : "text-white hover:text-sheet"
 
   return (
     <nav
-      className={`w-screen h-16 grid grid-cols-2 fixed ${
-        isFilled ? "bg-white" : "transparent"
+      className={`w-screen h-16 grid grid-cols-2 fixed  transition-colors ${
+        isFilled ? "bg-white shadow-sm" : "transparent"
       }`}
       style={{
         zIndex: 2,
