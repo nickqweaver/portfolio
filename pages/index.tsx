@@ -40,7 +40,10 @@ const Home: NextPage = (props: Props) => {
     <Layout>
       <main className="py-20 px-12 space-y-10">
         {pagePreviews && <PagePreviews previews={pagePreviews} />}
-        <CardTileSection>
+        <CardTileSection
+          link={{ href: "projects", title: "See More" }}
+          title="Recent Work"
+        >
           {featuredProjects?.map((project) => {
             return (
               <Link key={project.id} href={`projects/${project.slug}`}>

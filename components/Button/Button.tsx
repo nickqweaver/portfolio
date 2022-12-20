@@ -5,6 +5,7 @@ type ButtonProps = {
   title: string
   onClick?: () => void
   href: string
+  type: "primary" | "secondary"
 }
 
 export const Button = (props: ButtonProps) => {
@@ -14,10 +15,14 @@ export const Button = (props: ButtonProps) => {
     HTMLButtonElement,
     Omit<ButtonProps, "href">
   >(function ButtonElement(props, ref) {
+    const type =
+      rest.type === "primary"
+        ? "bg-blue-light text-white"
+        : "bg-sheet text-primary"
     return (
       <button
         ref={ref}
-        className="bg-sheet p-3 text-primary text-sm rounded-lg font-semibold"
+        className={`p-3 text-sm rounded-lg font-semibold ${type}`}
         onClick={props.onClick}
       >
         {props.title}

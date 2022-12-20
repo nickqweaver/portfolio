@@ -1,3 +1,4 @@
+import { useRouter } from "next/router"
 import { Navigation } from "./Navigation"
 
 type LayoutProps = {
@@ -5,9 +6,11 @@ type LayoutProps = {
 }
 
 export const Layout = (props: LayoutProps) => {
+  const router = useRouter()
+  const navigationVariation = router.route === "/" ? "transparent" : "filled"
   return (
     <main>
-      <Navigation />
+      <Navigation variation={navigationVariation} />
       {props.children}
     </main>
   )
