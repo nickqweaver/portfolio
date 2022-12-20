@@ -8,7 +8,7 @@ export const PagePreviews = ({
 }) => {
   return (
     <div
-      className="grid pt-20 px-12 bg-white"
+      className="grid bg-white"
       style={{ gridTemplateColumns: "repeat(auto-fit, minmax(334px, 1fr))" }}
     >
       {previews.map((preview) => (

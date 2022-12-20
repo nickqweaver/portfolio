@@ -14,8 +14,9 @@ import { NestedLayout } from "../components/NestedLayout"
 import React from "react"
 import { PagePreviews } from "../components/PagePreview/PagePreviews"
 import { GET_FEATURED_PROJECTS } from "../graphql/queries/GetFeaturedProjects"
-import Image from "next/image"
 import Link from "next/link"
+import { ProjectCard } from "../components/ProjectCard"
+import { CardTileSection } from "../components/CardTileSection"
 
 type Props = {
   pagePreviews?: PagePreviewFragmentFragment[]
@@ -37,44 +38,26 @@ const Home: NextPage = (props: Props) => {
 
   return (
     <Layout>
-      {pagePreviews && <PagePreviews previews={pagePreviews} />}
-      <div>
-        {featuredProjects?.map((project) => {
-          return (
-            <Link key={project.id} href={`projects/${project.slug}`}>
-              <div
-                style={{
-                  width: "400px",
-                  backgroundColor: "#FFF",
-                  display: "flex",
-                  flexDirection: "column",
-                  color: "#000",
-                  border: "2px solid blue",
-                }}
-              >
-                <span>{project.title}</span>
-                <span>{project.description?.substring(0, 30)}</span>
-                {project.media.map((asset) => (
-                  <Image
-                    src={asset.media.url}
-                    key={asset.id}
-                    alt={asset.id}
-                    width="300px"
-                    height="200px"
-                    layout="fixed"
-                  />
-                ))}
-              </div>
-            </Link>
-          )
-        })}
-      </div>
+      <main className="py-20 px-12 space-y-10">
+        {pagePreviews && <PagePreviews previews={pagePreviews} />}
+        <CardTileSection>
+          {featuredProjects?.map((project) => {
+            return (
+              <Link key={project.id} href={`projects/${project.slug}`}>
+                {project.media && project.title && (
+                  <ProjectCard media={project.media} title={project.title} />
+                )}
+              </Link>
+            )
+          })}
+        </CardTileSection>
+      </main>
     </Layout>
   )
 }
 
 export async function getStaticProps({ params }: any) {
-  // Combined Queries
+  // TODO Combined Queries
   const pageQuery = await client.query<GetPagePreviewsQuery>({
     query: GET_PAGE_PREVIEWS,
   })

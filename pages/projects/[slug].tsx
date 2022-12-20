@@ -12,14 +12,6 @@ type ProjectProps = {
   description: string
 }
 
-const getThings = async (slug: string) => {
-  const q = await client.query<GetProjectBySlugQuery>({
-    query: GET_PROJECT_BY_SLUG,
-    variables: { slug },
-  })
-  return q.data.project
-}
-
 const Project = (props: ProjectProps) => {
   const router = useRouter()
   const { slug } = router.query

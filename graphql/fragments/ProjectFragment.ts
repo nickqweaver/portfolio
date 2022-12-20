@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client"
+import { MediaFragment } from "./MediaFragment"
 
 export const ProjectFragment = gql`
   fragment ProjectFragment on Project {
@@ -10,11 +11,8 @@ export const ProjectFragment = gql`
     id
     slug
     media {
-      id
-      order
-      media {
-        url
-      }
+      ...MediaFragment
     }
   }
+  ${MediaFragment}
 `

@@ -80,6 +80,7 @@ export type AssetCreatedAtArgs = {
 
 /** Asset system model */
 export type AssetCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -115,6 +116,7 @@ export type AssetPublishedAtArgs = {
 
 /** Asset system model */
 export type AssetPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -124,6 +126,7 @@ export type AssetScheduledInArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   last?: InputMaybe<Scalars['Int']>;
   locales?: InputMaybe<Array<Locale>>;
   skip?: InputMaybe<Scalars['Int']>;
@@ -139,6 +142,7 @@ export type AssetUpdatedAtArgs = {
 
 /** Asset system model */
 export type AssetUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -798,12 +802,14 @@ export type Hero = {
 
 /** Hero component  */
 export type HeroBackgroundImageArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Hero component  */
 export type HeroIconArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -1572,6 +1578,7 @@ export type Layout = Node & {
 
 /** Typical Layouts that may exists on each page */
 export type LayoutCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -1586,6 +1593,7 @@ export type LayoutDocumentInStagesArgs = {
 
 /** Typical Layouts that may exists on each page */
 export type LayoutHeroArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -1600,6 +1608,7 @@ export type LayoutHistoryArgs = {
 
 /** Typical Layouts that may exists on each page */
 export type LayoutPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -1609,6 +1618,7 @@ export type LayoutScheduledInArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   last?: InputMaybe<Scalars['Int']>;
   locales?: InputMaybe<Array<Locale>>;
   skip?: InputMaybe<Scalars['Int']>;
@@ -1618,6 +1628,7 @@ export type LayoutScheduledInArgs = {
 
 /** Typical Layouts that may exists on each page */
 export type LayoutUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -2030,6 +2041,7 @@ export type MediaAsset = {
 
 /** Component to be used for media blocks so additional fields can be included */
 export type MediaAssetMediaArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -3433,6 +3445,7 @@ export type PagePreview = Node & {
 
 
 export type PagePreviewCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -3452,11 +3465,13 @@ export type PagePreviewHistoryArgs = {
 
 
 export type PagePreviewIconArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 export type PagePreviewPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -3465,6 +3480,7 @@ export type PagePreviewScheduledInArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   last?: InputMaybe<Scalars['Int']>;
   locales?: InputMaybe<Array<Locale>>;
   skip?: InputMaybe<Scalars['Int']>;
@@ -3473,6 +3489,7 @@ export type PagePreviewScheduledInArgs = {
 
 
 export type PagePreviewUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -3930,6 +3947,7 @@ export type Project = Node & {
 
 
 export type ProjectCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -3952,6 +3970,7 @@ export type ProjectMediaArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   last?: InputMaybe<Scalars['Int']>;
   locales?: InputMaybe<Array<Locale>>;
   orderBy?: InputMaybe<MediaAssetOrderByInput>;
@@ -3961,6 +3980,7 @@ export type ProjectMediaArgs = {
 
 
 export type ProjectPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -3969,6 +3989,7 @@ export type ProjectScheduledInArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   last?: InputMaybe<Scalars['Int']>;
   locales?: InputMaybe<Array<Locale>>;
   skip?: InputMaybe<Scalars['Int']>;
@@ -3977,6 +3998,7 @@ export type ProjectScheduledInArgs = {
 
 
 export type ProjectUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -5107,6 +5129,7 @@ export type ScheduledOperationAffectedDocumentsArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   last?: InputMaybe<Scalars['Int']>;
   locales?: InputMaybe<Array<Locale>>;
   skip?: InputMaybe<Scalars['Int']>;
@@ -5115,6 +5138,7 @@ export type ScheduledOperationAffectedDocumentsArgs = {
 
 /** Scheduled Operation system model */
 export type ScheduledOperationCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -5129,18 +5153,21 @@ export type ScheduledOperationDocumentInStagesArgs = {
 
 /** Scheduled Operation system model */
 export type ScheduledOperationPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Scheduled Operation system model */
 export type ScheduledOperationReleaseArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Scheduled Operation system model */
 export type ScheduledOperationUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -5521,6 +5548,7 @@ export type ScheduledRelease = Node & {
 
 /** Scheduled Release system model */
 export type ScheduledReleaseCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -5538,6 +5566,7 @@ export type ScheduledReleaseOperationsArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   last?: InputMaybe<Scalars['Int']>;
   locales?: InputMaybe<Array<Locale>>;
   orderBy?: InputMaybe<ScheduledOperationOrderByInput>;
@@ -5548,12 +5577,14 @@ export type ScheduledReleaseOperationsArgs = {
 
 /** Scheduled Release system model */
 export type ScheduledReleasePublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Scheduled Release system model */
 export type ScheduledReleaseUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -6090,6 +6121,7 @@ export type Social = Node & {
 
 
 export type SocialCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -6109,6 +6141,7 @@ export type SocialHistoryArgs = {
 
 
 export type SocialPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -6117,6 +6150,7 @@ export type SocialScheduledInArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   last?: InputMaybe<Scalars['Int']>;
   locales?: InputMaybe<Array<Locale>>;
   skip?: InputMaybe<Scalars['Int']>;
@@ -6125,6 +6159,7 @@ export type SocialScheduledInArgs = {
 
 
 export type SocialUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -6926,6 +6961,7 @@ export type Work = Node & {
 
 
 export type WorkCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -6945,6 +6981,7 @@ export type WorkHistoryArgs = {
 
 
 export type WorkPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -6953,6 +6990,7 @@ export type WorkScheduledInArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   last?: InputMaybe<Scalars['Int']>;
   locales?: InputMaybe<Array<Locale>>;
   skip?: InputMaybe<Scalars['Int']>;
@@ -6961,6 +6999,7 @@ export type WorkScheduledInArgs = {
 
 
 export type WorkUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -7368,6 +7407,8 @@ export type IconFragmentFragment = { __typename?: 'Icon', name: IconNames, size?
 
 export type LayoutFragmentFragment = { __typename?: 'Layout', route: string, hero?: { __typename?: 'Hero', heading: string, subHeading?: string | null, backgroundColor?: { __typename?: 'Color', css: string } | null, backgroundImage?: { __typename?: 'Asset', id: string, url: string } | null, icon?: { __typename?: 'Icon', name: IconNames, size?: Size | null } | null } | null };
 
+export type MediaFragmentFragment = { __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } };
+
 export type PagePreviewFragmentFragment = { __typename?: 'PagePreview', title: string, slug: string, description?: { __typename?: 'RichText', html: string } | null, icon: { __typename?: 'Icon', name: IconNames, size?: Size | null } };
 
 export type ProjectFragmentFragment = { __typename?: 'Project', title?: string | null, completionDate: any, description?: string | null, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> };
@@ -7435,6 +7476,15 @@ export const PagePreviewFragmentFragmentDoc = gql`
   }
 }
     ${IconFragmentFragmentDoc}`;
+export const MediaFragmentFragmentDoc = gql`
+    fragment MediaFragment on MediaAsset {
+  id
+  order
+  media {
+    url
+  }
+}
+    `;
 export const ProjectFragmentFragmentDoc = gql`
     fragment ProjectFragment on Project {
   title
@@ -7445,14 +7495,10 @@ export const ProjectFragmentFragmentDoc = gql`
   id
   slug
   media {
-    id
-    order
-    media {
-      url
-    }
+    ...MediaFragment
   }
 }
-    `;
+    ${MediaFragmentFragmentDoc}`;
 export const ProjectTileFragmentFragmentDoc = gql`
     fragment ProjectTileFragment on Project {
   title
@@ -7463,14 +7509,10 @@ export const ProjectTileFragmentFragmentDoc = gql`
   slug
   id
   media {
-    id
-    order
-    media {
-      url
-    }
+    ...MediaFragment
   }
 }
-    `;
+    ${MediaFragmentFragmentDoc}`;
 export const GetFeaturedProjectsDocument = gql`
     query GetFeaturedProjects {
   projects(where: {isFeatured: true}) {
