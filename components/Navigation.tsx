@@ -4,9 +4,11 @@ import { Button } from "./Button/Button"
 import { Icon } from "../components/Icon"
 import { IconNames } from "../graphql/generated/schema-types"
 import { useScrollPosition } from "../hooks/useScrollPosition"
+import { useRouter } from "next/router"
 
 export const Navigation = (props: { variation?: "transparent" | "filled" }) => {
   const { y } = useScrollPosition()
+  const { route: currentRoute } = useRouter()
 
   const isFilled = props.variation === "filled" || y > 150
   const textColor = isFilled
@@ -54,7 +56,13 @@ export const Navigation = (props: { variation?: "transparent" | "filled" }) => {
             />
           ) : (
             <Link key={route.slug} href={route.slug}>
-              <span className={`${textColor} cursor-pointer`}>
+              <span
+                className={`${
+                  `/${route.slug}` === currentRoute
+                    ? "text-blue-light"
+                    : textColor
+                } cursor-pointer`}
+              >
                 {route.title}
               </span>
             </Link>
