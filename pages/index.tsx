@@ -38,7 +38,7 @@ const Home: NextPage = (props: Props) => {
 
   return (
     <Layout>
-      <main className="py-20 px-12 space-y-10">
+      <main className="py-20 px-6 sm:px-12 space-y-10">
         {pagePreviews && <PagePreviews previews={pagePreviews} />}
         <CardTileSection
           link={{ href: "projects", title: "See More" }}
