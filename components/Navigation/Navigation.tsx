@@ -7,7 +7,11 @@ import { useScrollPosition } from "../../hooks/useScrollPosition"
 import { useRouter } from "next/router"
 import { MobileNavigation } from "./MobileNavigation"
 
-export const Navigation = (props: { variation?: "transparent" | "filled" }) => {
+export type NavigationProps = {
+  variation: "transparent" | "filled"
+}
+
+export const Navigation = (props: NavigationProps) => {
   const { y } = useScrollPosition()
   const { route: currentRoute } = useRouter()
 
@@ -64,7 +68,7 @@ export const Navigation = (props: { variation?: "transparent" | "filled" }) => {
           )}
         </div>
         <div className="sm:flex md:hidden">
-          <MobileNavigation />
+          <MobileNavigation variation={isFilled ? "filled" : props.variation} />
         </div>
       </div>
     </nav>

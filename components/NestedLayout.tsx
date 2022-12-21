@@ -24,7 +24,7 @@ export const NestedLayout = ({
           <div className="relative z-2 flex flex-col items-center space-y-5">
             {layout.hero.icon && (
               <Icon
-                size={84}
+                className="h-[64px] w-[64px] sm:h-[84px] md:w-[84px]"
                 style={{ zIndex: 1 }}
                 name={layout.hero.icon.name}
               />
