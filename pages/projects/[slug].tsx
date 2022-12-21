@@ -23,6 +23,19 @@ const Project = (props: ProjectProps) => {
 
 export default Project
 
+export async function getStaticPaths() {
+  const featuredProjectQuery = await client.query<GetFeaturedProjectsQuery>({
+    query: GET_FEATURED_PROJECTS,
+  })
+
+  return {
+    paths: featuredProjectQuery.data.projects.map((project) => ({
+      params: { slug: project.slug },
+    })),
+    fallback: false,
+  }
+}
+
 export async function getStaticProps({ params }: any) {
   const q = await client.query<GetProjectBySlugQuery>({
     query: GET_PROJECT_BY_SLUG,
@@ -34,17 +47,5 @@ export async function getStaticProps({ params }: any) {
       title: q?.data?.project?.title,
       description: q?.data?.project?.description,
     },
-  }
-}
-export async function getStaticPaths() {
-  const featuredProjectQuery = await client.query<GetFeaturedProjectsQuery>({
-    query: GET_FEATURED_PROJECTS,
-  })
-
-  return {
-    paths: featuredProjectQuery.data.projects.map((project) => ({
-      params: { slug: "tactical-tile" },
-    })),
-    fallback: false,
   }
 }

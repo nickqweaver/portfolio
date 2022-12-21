@@ -52,7 +52,6 @@ const Home: NextPage = (props: Props) => {
                     <ProjectCard
                       {...project}
                       slug={`projects/${project.slug}`}
-                      key={project.id}
                     />
                     <ProjectCard
                       {...project}
