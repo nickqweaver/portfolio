@@ -17,7 +17,7 @@ export const PagePreviewCard = (props: PagePreviewFragmentFragment) => {
         ></div>
       )}
       <div>
-        <Button title={props.title} href={props.slug} />
+        <Button type="secondary" title={props.title} href={props.slug} />
       </div>
     </main>
   )

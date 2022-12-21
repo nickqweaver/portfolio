@@ -26,7 +26,7 @@ const Project = (props: ProjectProps) => {
 
 export default Project
 
-export async function getStaticProps({ params }) {
+export async function getStaticProps({ params }: any) {
   const q = await client.query<GetProjectBySlugQuery>({
     query: GET_PROJECT_BY_SLUG,
     variables: { slug: params.slug },
