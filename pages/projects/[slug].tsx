@@ -13,13 +13,10 @@ type ProjectProps = {
 }
 
 const Project = (props: ProjectProps) => {
-  const router = useRouter()
-  const { slug } = router.query
-
   return (
-    <div style={{ marginTop: "100px" }}>
-      <h1>{props.description}</h1>
-      <p>{props.title}</p>
+    <div className="p-4 space-y-4 mt-16">
+      <h1 className="text-primary-light text-4xl">{props.title}</h1>
+      <p className="text-primary-light">{props.description}</p>
     </div>
   )
 }

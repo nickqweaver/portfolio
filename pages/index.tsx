@@ -14,7 +14,6 @@ import { NestedLayout } from "../components/NestedLayout"
 import React from "react"
 import { PagePreviews } from "../components/PagePreview/PagePreviews"
 import { GET_FEATURED_PROJECTS } from "../graphql/queries/GetFeaturedProjects"
-import Link from "next/link"
 import { ProjectCard } from "../components/ProjectCard"
 import { CardTileSection } from "../components/CardTileSection"
 
@@ -47,27 +46,31 @@ const Home: NextPage = (props: Props) => {
           {featuredProjects?.map((project) => {
             return (
               <>
-                {/** Remove Repeats after additional projects added in hygraph */}
-                <Link key={project.id} href={`projects/${project.slug}`}>
-                  {project.media && project.title && (
-                    <ProjectCard media={project.media} title={project.title} />
-                  )}
-                </Link>
-                <Link key={project.id} href={`projects/${project.slug}`}>
-                  {project.media && project.title && (
-                    <ProjectCard media={project.media} title={project.title} />
-                  )}
-                </Link>
-                <Link key={project.id} href={`projects/${project.slug}`}>
-                  {project.media && project.title && (
-                    <ProjectCard media={project.media} title={project.title} />
-                  )}
-                </Link>
-                <Link key={project.id} href={`projects/${project.slug}`}>
-                  {project.media && project.title && (
-                    <ProjectCard media={project.media} title={project.title} />
-                  )}
-                </Link>
+                {/** TODO Remove Repeats after additional projects added in hygraph */}
+                {project.media && project.title && (
+                  <>
+                    <ProjectCard
+                      {...project}
+                      slug={`projects/${project.slug}`}
+                      key={project.id}
+                    />
+                    <ProjectCard
+                      {...project}
+                      slug={`projects/${project.slug}`}
+                      key={project.id}
+                    />
+                    <ProjectCard
+                      {...project}
+                      slug={`projects/${project.slug}`}
+                      key={project.id}
+                    />
+                    <ProjectCard
+                      {...project}
+                      slug={`projects/${project.slug}`}
+                      key={project.id}
+                    />
+                  </>
+                )}
               </>
             )
           })}

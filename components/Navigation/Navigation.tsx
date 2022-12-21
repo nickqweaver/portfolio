@@ -22,7 +22,7 @@ export const Navigation = (props: NavigationProps) => {
 
   return (
     <nav
-      className={`w-screen h-16 grid grid-cols-2 fixed  transition-colors ${
+      className={`top-0 w-screen h-16 grid grid-cols-2 fixed  transition-colors ${
         isFilled ? "bg-white shadow-sm" : "transparent"
       }`}
       style={{
@@ -53,7 +53,7 @@ export const Navigation = (props: NavigationProps) => {
                 type={isFilled ? "primary" : "secondary"}
               />
             ) : (
-              <Link key={route.slug} href={route.slug}>
+              <Link key={route.slug} href={`/${route.slug}`}>
                 <span
                   className={`${
                     `/${route.slug}` === currentRoute
