@@ -43,7 +43,7 @@ export async function getStaticPaths() {
 
   return {
     paths: featuredProjectQuery.data.projects.map((project) => ({
-      params: { slug: project.slug },
+      params: { slug: "tactical-tile" },
     })),
     fallback: false,
   }
