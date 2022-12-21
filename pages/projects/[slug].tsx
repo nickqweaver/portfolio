@@ -1,4 +1,5 @@
-import { useRouter } from "next/router"
+import { GetStaticProps } from "next"
+import { ParsedUrlQuery } from "querystring"
 import client from "../../apollo/client"
 import {
   GetFeaturedProjectsQuery,
@@ -6,6 +7,10 @@ import {
 } from "../../graphql/generated/schema-types"
 import { GET_FEATURED_PROJECTS } from "../../graphql/queries/GetFeaturedProjects"
 import { GET_PROJECT_BY_SLUG } from "../../graphql/queries/GetProjectBySlug"
+
+interface IParams extends ParsedUrlQuery {
+  slug: string
+}
 
 type ProjectProps = {
   title: string
@@ -24,6 +29,7 @@ const Project = (props: ProjectProps) => {
 export default Project
 
 export async function getStaticPaths() {
+  // Have to fetch all the slugs dynamically create the routes at build time
   const featuredProjectQuery = await client.query<GetFeaturedProjectsQuery>({
     query: GET_FEATURED_PROJECTS,
   })
@@ -36,10 +42,11 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps({ params }: any) {
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { slug } = context.params as IParams
   const q = await client.query<GetProjectBySlugQuery>({
     query: GET_PROJECT_BY_SLUG,
-    variables: { slug: params.slug },
+    variables: { slug },
   })
 
   return {

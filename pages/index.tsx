@@ -1,4 +1,4 @@
-import type { NextPage } from "next"
+import type { GetStaticProps, NextPage } from "next"
 import client from "../apollo/client"
 import { GET_PAGE_PREVIEWS } from "../graphql/queries/GetIndexPagePreviews"
 import {
@@ -79,8 +79,7 @@ const Home: NextPage = (props: Props) => {
   )
 }
 
-export async function getStaticProps({ params }: any) {
-  // TODO Combined Queries
+export const getStaticProps: GetStaticProps = async () => {
   const pageQuery = await client.query<GetPagePreviewsQuery>({
     query: GET_PAGE_PREVIEWS,
   })
