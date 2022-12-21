@@ -13,7 +13,7 @@ export const NestedLayout = ({
   return (
     <main>
       {layout.hero && (
-        <div className="relative w-screen h-[800px] flex justify-center flex-col items-center">
+        <div className="relative w-full h-[800px] flex justify-center flex-col items-center">
           {layout.hero.backgroundImage?.url && (
             <Image
               src={layout.hero.backgroundImage?.url}
