@@ -8,6 +8,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        md: "810px",
+        xl: "1300px",
+      },
       fontFamily: {
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],
       },

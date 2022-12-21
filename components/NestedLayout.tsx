@@ -21,22 +21,27 @@ export const NestedLayout = ({
               layout="fill"
             />
           )}
-          {layout.hero.icon && (
-            <Icon
-              size={84}
+          <div className="relative z-2 flex flex-col items-center space-y-5">
+            {layout.hero.icon && (
+              <Icon
+                size={84}
+                style={{ zIndex: 1 }}
+                name={layout.hero.icon.name}
+              />
+            )}
+            <h1
+              className="text-5xl md:text-7xl xl:text-8xl  font-extrabold mb-[32px]"
               style={{ zIndex: 1 }}
-              name={layout.hero.icon.name}
-            />
-          )}
-          <h1
-            className="text-8xl font-extrabold mb-[32px]"
-            style={{ zIndex: 1 }}
-          >
-            {layout.hero.heading}
-          </h1>
-          <h2 className="font-semibold text-4xl" style={{ zIndex: 1 }}>
-            {layout.hero.subHeading}
-          </h2>
+            >
+              {layout.hero.heading}
+            </h1>
+            <h2
+              className="text-2xl md:text-4xl font-semibold"
+              style={{ zIndex: 1 }}
+            >
+              {layout.hero.subHeading}
+            </h2>
+          </div>
         </div>
       )}
       {children}

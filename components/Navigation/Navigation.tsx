@@ -5,6 +5,7 @@ import { Icon } from "../Icon"
 import { IconNames } from "../../graphql/generated/schema-types"
 import { useScrollPosition } from "../../hooks/useScrollPosition"
 import { useRouter } from "next/router"
+import { MobileNavigation } from "./MobileNavigation"
 
 export const Navigation = (props: { variation?: "transparent" | "filled" }) => {
   const { y } = useScrollPosition()
@@ -35,31 +36,36 @@ export const Navigation = (props: { variation?: "transparent" | "filled" }) => {
           </div>
         </Link>
       </div>
-      <div
-        className={`space-x-7 flex justify-end items-center font-semibold  whitespace-nowrap px-8`}
-      >
-        {routes.map((route) =>
-          route.hasButtonUi ? (
-            <Button
-              key={route.slug}
-              href={route.slug}
-              title={route.title}
-              type={isFilled ? "primary" : "secondary"}
-            />
-          ) : (
-            <Link key={route.slug} href={route.slug}>
-              <span
-                className={`${
-                  `/${route.slug}` === currentRoute
-                    ? "text-blue-light"
-                    : textColor
-                } cursor-pointer`}
-              >
-                {route.title}
-              </span>
-            </Link>
-          )
-        )}
+      <div className="flex justify-end items-center px-8">
+        <div
+          className={`hidden md:flex space-x-7 font-semibold  whitespace-nowrap items-center`}
+        >
+          {routes.map((route) =>
+            route.hasButtonUi ? (
+              <Button
+                key={route.slug}
+                href={route.slug}
+                title={route.title}
+                type={isFilled ? "primary" : "secondary"}
+              />
+            ) : (
+              <Link key={route.slug} href={route.slug}>
+                <span
+                  className={`${
+                    `/${route.slug}` === currentRoute
+                      ? "text-blue-light"
+                      : textColor
+                  } cursor-pointer`}
+                >
+                  {route.title}
+                </span>
+              </Link>
+            )
+          )}
+        </div>
+        <div className="sm:flex md:hidden">
+          <MobileNavigation />
+        </div>
       </div>
     </nav>
   )
