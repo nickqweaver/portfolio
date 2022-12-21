@@ -19,7 +19,12 @@ export const CardTileSection = (props: CardTileSection) => {
           <a className="text-links text-l">{link.title}</a>
         </Link>
       </div>
-      <div className="grid grid-cols-4	gap-x-2">{children}</div>
+      <div
+        className="grid gap-10"
+        style={{ gridTemplateColumns: "repeat(auto-fit, minmax(334px, 1fr))" }}
+      >
+        {children}
+      </div>
     </section>
   )
 }

@@ -46,11 +46,29 @@ const Home: NextPage = (props: Props) => {
         >
           {featuredProjects?.map((project) => {
             return (
-              <Link key={project.id} href={`projects/${project.slug}`}>
-                {project.media && project.title && (
-                  <ProjectCard media={project.media} title={project.title} />
-                )}
-              </Link>
+              <>
+                {/** Remove Repeats after additional projects added in hygraph */}
+                <Link key={project.id} href={`projects/${project.slug}`}>
+                  {project.media && project.title && (
+                    <ProjectCard media={project.media} title={project.title} />
+                  )}
+                </Link>
+                <Link key={project.id} href={`projects/${project.slug}`}>
+                  {project.media && project.title && (
+                    <ProjectCard media={project.media} title={project.title} />
+                  )}
+                </Link>
+                <Link key={project.id} href={`projects/${project.slug}`}>
+                  {project.media && project.title && (
+                    <ProjectCard media={project.media} title={project.title} />
+                  )}
+                </Link>
+                <Link key={project.id} href={`projects/${project.slug}`}>
+                  {project.media && project.title && (
+                    <ProjectCard media={project.media} title={project.title} />
+                  )}
+                </Link>
+              </>
             )
           })}
         </CardTileSection>
