@@ -1,21 +1,18 @@
 import type { GetStaticProps, NextPage } from "next"
 import client from "../apollo/client"
-import { GET_PAGE_PREVIEWS } from "../graphql/queries/GetIndexPagePreviews"
+import { GET_PAGE_PREVIEWS } from "../graphql/queries/GetPagePreviews"
 import {
-  GetFeaturedProjectsQuery,
-  GetLayoutByRouteQuery,
-  GetPagePreviewsQuery,
+  GetIndexPageQuery,
   LayoutFragmentFragment,
   PagePreviewFragmentFragment,
   ProjectTileFragmentFragment,
 } from "../graphql/generated/schema-types"
-import { GET_LAYOUT_BY_ROUTE } from "../graphql/queries/GetLayoutByRoute"
 import { NestedLayout } from "../components/NestedLayout"
 import React from "react"
 import { PagePreviews } from "../components/PagePreview/PagePreviews"
-import { GET_FEATURED_PROJECTS } from "../graphql/queries/GetFeaturedProjects"
 import { ProjectCard } from "../components/ProjectCard"
 import { CardTileSection } from "../components/CardTileSection"
+import { GET_INDEX_PAGE } from "../graphql/queries/GetIndexPage"
 
 type Props = {
   pagePreviews?: PagePreviewFragmentFragment[]
@@ -23,7 +20,16 @@ type Props = {
   featuredProjects?: ProjectTileFragmentFragment[]
 }
 
-// How to implement dark mode with tailwind?
+// TODO's
+/**
+ * 1. Dark Mode
+ * 2. Add Request Logging
+ * 3. Swap out Apollo for React Query
+ * 4. Upgrade to Next 13
+ *
+ * @param props
+ * @returns
+ */
 
 const Home: NextPage = (props: Props) => {
   const { pagePreviews, layout, featuredProjects } = props
@@ -45,7 +51,8 @@ const Home: NextPage = (props: Props) => {
         >
           {featuredProjects?.map((project) => {
             return (
-              <>
+              <div key={project.id}>
+                {/**TODO REMOVE after additional projects added */}
                 {/** TODO Remove Repeats after additional projects added in hygraph */}
                 {project.media && project.title && (
                   <>
@@ -70,7 +77,7 @@ const Home: NextPage = (props: Props) => {
                     />
                   </>
                 )}
-              </>
+              </div>
             )
           })}
         </CardTileSection>
@@ -80,26 +87,19 @@ const Home: NextPage = (props: Props) => {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const pageQuery = await client.query<GetPagePreviewsQuery>({
-    query: GET_PAGE_PREVIEWS,
-  })
-
-  const layoutQuery = await client.query<GetLayoutByRouteQuery>({
-    query: GET_LAYOUT_BY_ROUTE,
+  const indexPageQuery = await client.query<GetIndexPageQuery>({
+    query: GET_INDEX_PAGE,
     variables: {
       route: "root",
     },
   })
-
-  const featuredProjectQuery = await client.query<GetFeaturedProjectsQuery>({
-    query: GET_FEATURED_PROJECTS,
-  })
+  const { data } = indexPageQuery
 
   return {
     props: {
-      pagePreviews: pageQuery.data.pagePreviews,
-      layout: layoutQuery.data.layout,
-      featuredProjects: featuredProjectQuery.data.projects,
+      pagePreviews: data.pagePreviews,
+      layout: data.layout,
+      featuredProjects: data.projects,
     },
   }
 }

@@ -7420,10 +7420,12 @@ export type GetFeaturedProjectsQueryVariables = Exact<{ [key: string]: never; }>
 
 export type GetFeaturedProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title?: string | null, completionDate: any, description?: string | null, stack: Array<StackChoice>, category: Array<ProjectCategory>, slug: string, id: string, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
 
-export type GetPagePreviewsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetIndexPageQueryVariables = Exact<{
+  route: Scalars['String'];
+}>;
 
 
-export type GetPagePreviewsQuery = { __typename?: 'Query', pagePreviews: Array<{ __typename?: 'PagePreview', title: string, slug: string, description?: { __typename?: 'RichText', html: string } | null, icon: { __typename?: 'Icon', name: IconNames, size?: Size | null } }> };
+export type GetIndexPageQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title?: string | null, completionDate: any, description?: string | null, stack: Array<StackChoice>, category: Array<ProjectCategory>, slug: string, id: string, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }>, layout?: { __typename?: 'Layout', route: string, hero?: { __typename?: 'Hero', heading: string, subHeading?: string | null, backgroundColor?: { __typename?: 'Color', css: string } | null, backgroundImage?: { __typename?: 'Asset', id: string, url: string } | null, icon?: { __typename?: 'Icon', name: IconNames, size?: Size | null } | null } | null } | null, pagePreviews: Array<{ __typename?: 'PagePreview', title: string, slug: string, description?: { __typename?: 'RichText', html: string } | null, icon: { __typename?: 'Icon', name: IconNames, size?: Size | null } }> };
 
 export type GetLayoutByRouteQueryVariables = Exact<{
   route: Scalars['String'];
@@ -7431,6 +7433,11 @@ export type GetLayoutByRouteQueryVariables = Exact<{
 
 
 export type GetLayoutByRouteQuery = { __typename?: 'Query', layout?: { __typename?: 'Layout', route: string, hero?: { __typename?: 'Hero', heading: string, subHeading?: string | null, backgroundColor?: { __typename?: 'Color', css: string } | null, backgroundImage?: { __typename?: 'Asset', id: string, url: string } | null, icon?: { __typename?: 'Icon', name: IconNames, size?: Size | null } | null } | null } | null };
+
+export type GetPagePreviewsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPagePreviewsQuery = { __typename?: 'Query', pagePreviews: Array<{ __typename?: 'PagePreview', title: string, slug: string, description?: { __typename?: 'RichText', html: string } | null, icon: { __typename?: 'Icon', name: IconNames, size?: Size | null } }> };
 
 export type GetProjectBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -7521,14 +7528,22 @@ export const GetFeaturedProjectsDocument = gql`
 }
     ${ProjectTileFragmentFragmentDoc}`;
 export type GetFeaturedProjectsQueryResult = Apollo.QueryResult<GetFeaturedProjectsQuery, GetFeaturedProjectsQueryVariables>;
-export const GetPagePreviewsDocument = gql`
-    query GetPagePreviews {
+export const GetIndexPageDocument = gql`
+    query GetIndexPage($route: String!) {
+  projects(where: {isFeatured: true}) {
+    ...ProjectTileFragment
+  }
+  layout(where: {route: $route}) {
+    ...LayoutFragment
+  }
   pagePreviews {
     ...PagePreviewFragment
   }
 }
-    ${PagePreviewFragmentFragmentDoc}`;
-export type GetPagePreviewsQueryResult = Apollo.QueryResult<GetPagePreviewsQuery, GetPagePreviewsQueryVariables>;
+    ${ProjectTileFragmentFragmentDoc}
+${LayoutFragmentFragmentDoc}
+${PagePreviewFragmentFragmentDoc}`;
+export type GetIndexPageQueryResult = Apollo.QueryResult<GetIndexPageQuery, GetIndexPageQueryVariables>;
 export const GetLayoutByRouteDocument = gql`
     query GetLayoutByRoute($route: String!) {
   layout(where: {route: $route}) {
@@ -7537,6 +7552,14 @@ export const GetLayoutByRouteDocument = gql`
 }
     ${LayoutFragmentFragmentDoc}`;
 export type GetLayoutByRouteQueryResult = Apollo.QueryResult<GetLayoutByRouteQuery, GetLayoutByRouteQueryVariables>;
+export const GetPagePreviewsDocument = gql`
+    query GetPagePreviews {
+  pagePreviews {
+    ...PagePreviewFragment
+  }
+}
+    ${PagePreviewFragmentFragmentDoc}`;
+export type GetPagePreviewsQueryResult = Apollo.QueryResult<GetPagePreviewsQuery, GetPagePreviewsQueryVariables>;
 export const GetProjectBySlugDocument = gql`
     query GetProjectBySlug($slug: String!) {
   project(where: {slug: $slug}) {
