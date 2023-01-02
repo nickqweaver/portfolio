@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ProjectTileFragmentFragment } from "../graphql/generated/schema-types"
+import { ProjectTileFragmentFragment } from "graphql/generated/schema-types"
 
 export const ProjectCard = (props: ProjectTileFragmentFragment) => {
   const { media, title } = props

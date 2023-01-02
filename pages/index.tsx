@@ -10,7 +10,7 @@ import {
 import { NestedLayout } from "../components/NestedLayout"
 import React from "react"
 import { PagePreviews } from "../components/PagePreview/PagePreviews"
-import { ProjectCard } from "../components/ProjectCard"
+import { WorkCard } from "../components/WorkCard"
 import { CardTileSection } from "../components/CardTileSection"
 import { GET_INDEX_PAGE } from "../graphql/queries/GetIndexPage"
 
@@ -49,6 +49,7 @@ const Home: NextPage = (props: Props) => {
           link={{ href: "projects", title: "See More" }}
           title="Recent Work"
         >
+          {/** TODO Query Work here not projects */}
           {featuredProjects?.map((project) => {
             return (
               <div key={project.id}>
@@ -56,21 +57,18 @@ const Home: NextPage = (props: Props) => {
                 {/** TODO Remove Repeats after additional projects added in hygraph */}
                 {project.media && project.title && (
                   <>
-                    <ProjectCard
-                      {...project}
-                      slug={`projects/${project.slug}`}
-                    />
-                    <ProjectCard
+                    <WorkCard {...project} slug={`projects/${project.slug}`} />
+                    <WorkCard
                       {...project}
                       slug={`projects/${project.slug}`}
                       key={project.id}
                     />
-                    <ProjectCard
+                    <WorkCard
                       {...project}
                       slug={`projects/${project.slug}`}
                       key={project.id}
                     />
-                    <ProjectCard
+                    <WorkCard
                       {...project}
                       slug={`projects/${project.slug}`}
                       key={project.id}

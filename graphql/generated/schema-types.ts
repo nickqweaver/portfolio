@@ -7439,6 +7439,14 @@ export type GetPagePreviewsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetPagePreviewsQuery = { __typename?: 'Query', pagePreviews: Array<{ __typename?: 'PagePreview', title: string, slug: string, description?: { __typename?: 'RichText', html: string } | null, icon: { __typename?: 'Icon', name: IconNames, size?: Size | null } }> };
 
+export type GetPaginatedProjectsQueryVariables = Exact<{
+  first: Scalars['Int'];
+  after?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetPaginatedProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title?: string | null, completionDate: any, description?: string | null, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
+
 export type GetProjectBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -7560,6 +7568,14 @@ export const GetPagePreviewsDocument = gql`
 }
     ${PagePreviewFragmentFragmentDoc}`;
 export type GetPagePreviewsQueryResult = Apollo.QueryResult<GetPagePreviewsQuery, GetPagePreviewsQueryVariables>;
+export const GetPaginatedProjectsDocument = gql`
+    query GetPaginatedProjects($first: Int!, $after: String) {
+  projects(first: $first, after: $after) {
+    ...ProjectFragment
+  }
+}
+    ${ProjectFragmentFragmentDoc}`;
+export type GetPaginatedProjectsQueryResult = Apollo.QueryResult<GetPaginatedProjectsQuery, GetPaginatedProjectsQueryVariables>;
 export const GetProjectBySlugDocument = gql`
     query GetProjectBySlug($slug: String!) {
   project(where: {slug: $slug}) {
