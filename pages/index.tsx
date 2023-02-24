@@ -49,35 +49,24 @@ const Home: NextPage = (props: Props) => {
           link={{ href: "projects", title: "See More" }}
           title="Recent Work"
         >
-          {/** TODO Query Work here not projects */}
+          {/** TODO Query Work here not projects -> filter 5 lateset or featured?*/}
           {featuredProjects?.map((project) => {
             return (
-              <div key={project.id}>
-                {/**TODO REMOVE after additional projects added */}
-                {/** TODO Remove Repeats after additional projects added in hygraph */}
-                {project.media && project.title && (
-                  <>
-                    <WorkCard {...project} slug={`projects/${project.slug}`} />
-                    <WorkCard
-                      {...project}
-                      slug={`projects/${project.slug}`}
-                      key={project.id}
-                    />
-                    <WorkCard
-                      {...project}
-                      slug={`projects/${project.slug}`}
-                      key={project.id}
-                    />
-                    <WorkCard
-                      {...project}
-                      slug={`projects/${project.slug}`}
-                      key={project.id}
-                    />
-                  </>
-                )}
+              <div
+                key={project.id}
+                className="grid"
+                style={{
+                  gridTemplateColumns: "repeat( auto-fit, minmax(250px, 1fr) )",
+                }}
+              >
+                <WorkCard {...project} slug={`projects/${project.slug}`} />
               </div>
             )
           })}
+          <WorkCard {...({} as any)} slug={`projects/dll`} />
+          <WorkCard {...({} as any)} slug={`projects/dll`} />
+          <WorkCard {...({} as any)} slug={`projects/dll`} />
+          <WorkCard {...({} as any)} slug={`projects/dll`} />
         </CardTileSection>
       </main>
     </Layout>
