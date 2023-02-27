@@ -1,3 +1,8 @@
+/**
+ * Writing this parser isn't ideal, however Hygraph returns the Raw text field as a RichFieldAST type. RichFieldAST gets mapped to any
+ * To keep type safety, and for fun I decided to write my own parser. I know this is not going to be super performant.
+ */
+
 enum MarkdownElement {
   P = "paragraph",
   H1 = "heading-1",
@@ -30,7 +35,7 @@ type MarkdownChild = {
   isUnderlined?: boolean
   text?: string
   href?: string
-  children?: [MarkdownChild]
+  children?: MarkdownChild[]
 }
 
 type MarkdownObject = {
@@ -64,9 +69,7 @@ const createHeading = (line: string): MarkdownObject => {
 
   return {
     type: mapHeadingType(symbol.length),
-    children: rest.map((child) => ({
-      text: child,
-    })),
+    children: textStyles(rest.join(" ")),
   }
 }
 
@@ -83,7 +86,7 @@ const createList = (
     type,
     children: lines.map((line) => ({
       type: MarkdownElement.LI,
-      children: [{ text: trimSymbol(line) }],
+      children: textStyles(trimSymbol(line)),
     })),
   }
 }
@@ -91,17 +94,11 @@ const createList = (
 const createBlockQuote = (line: string) => {
   return {
     type: MarkdownElement.BQ,
-    children: [
-      {
-        text: trimSymbol(line),
-      },
-    ],
+    children: textStyles(trimSymbol(line)),
   }
 }
 
-const buildBoldString = () => {}
-
-const textStyles = (line: string) => {
+const textStyles = (line: string): MarkdownChild[] => {
   const toggle = (condition: boolean) => !condition
   let isBuildingBoldStr = false
   // Need to know if i am between ** and **
@@ -117,7 +114,7 @@ const textStyles = (line: string) => {
     const isDoubleAstrix =
       (char === "*" && line[index + 1] === "*") ||
       (char === "*" && line[index - 1] === "*")
-    // Inside a bold statement
+
     if (isDoubleAstrix) {
       if (isBuildingBoldStr) {
         concatIndex = -1
@@ -145,70 +142,80 @@ const textStyles = (line: string) => {
     }
 
     // Anyother char not outside of bold
-
     if (concatIndex >= 0 && index === concatIndex) {
       // Build
       mutableString += char
       concatIndex = index + 1
     }
+
+    if (index === line.length - 1 && mutableString.length > 0) {
+      console.log("I AM PUSHING", mutableString)
+      text.push({
+        text: mutableString,
+      })
+    }
   })
 
-  console.log(text)
-
   // We don't know if we've ended until we find a **
-  return line
+  return text
 }
 
 const generateAST = (markdown: string): MarkdownAST => {
   const lines = markdown.split("\n")
-  console.log(lines)
 
   let mutableBulletListItems: string[] = []
   let mutableNumberedListItems: string[] = []
 
-  const ast = lines.map((line) => {
-    const [symbol] = line.split(" ")
-    const isSymbolNumber = parseInt(symbol)
+  const ast = lines
+    .filter((line) => line !== "")
+    .map((line) => {
+      const [symbol] = line.split(" ")
+      const isSymbolNumber = parseInt(symbol)
 
-    if (!line.startsWith(Symbols.B_List) && mutableBulletListItems.length > 0) {
-      // Lame we have to take a copy to clear the mutable list
-      const listItems = [...mutableBulletListItems]
-      mutableBulletListItems = []
-      return createList(listItems, MarkdownElement.BL)
-    }
+      if (
+        !line.startsWith(Symbols.B_List) &&
+        mutableBulletListItems.length > 0
+      ) {
+        // Lame we have to take a copy to clear the mutable list
+        const listItems = [...mutableBulletListItems]
+        mutableBulletListItems = []
+        return createList(listItems, MarkdownElement.BL)
+      }
 
-    if (!isSymbolNumber && mutableNumberedListItems.length > 0) {
-      // Lame we have to take a copy to clear the mutable list
-      const listItems = [...mutableNumberedListItems]
-      mutableNumberedListItems = []
-      return createList(listItems, MarkdownElement.NL)
-    }
+      if (!isSymbolNumber && mutableNumberedListItems.length > 0) {
+        // Lame we have to take a copy to clear the mutable list
+        // Pass by reference clear inside fn ?
+        const listItems = [...mutableNumberedListItems]
+        mutableNumberedListItems = []
+        return createList(listItems, MarkdownElement.NL)
+      }
 
-    if (line.startsWith(Symbols.B_List)) {
-      mutableBulletListItems.push(line)
-    }
+      if (line.startsWith(Symbols.B_List)) {
+        mutableBulletListItems.push(line)
+      }
 
-    if (isSymbolNumber) {
-      mutableNumberedListItems.push(line)
-    }
+      if (isSymbolNumber) {
+        mutableNumberedListItems.push(line)
+      }
 
-    if (line.startsWith(Symbols.BLOCK_QUOTE)) {
-      return createBlockQuote(line)
-    }
+      if (line.startsWith(Symbols.BLOCK_QUOTE)) {
+        return createBlockQuote(line)
+      }
 
-    if (line.startsWith(Symbols.HEADING)) {
-      return createHeading(line)
-    }
+      if (line.startsWith(Symbols.HEADING)) {
+        return createHeading(line)
+      }
 
-    return {
-      type: MarkdownElement.P,
-      children: [{ text: textStyles(line) }],
-    }
-  })
+      return {
+        type: MarkdownElement.P,
+        children: textStyles(line),
+      }
+    })
 
   return ast
 }
 
 export const markdownParser = (markdown: string) => {
   const ast = generateAST(markdown)
+  console.log(ast)
 }
