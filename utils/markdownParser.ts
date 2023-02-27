@@ -101,6 +101,7 @@ const createBlockQuote = (line: string) => {
 const textStyles = (line: string): MarkdownChild[] => {
   const toggle = (condition: boolean) => !condition
   let isBuildingBoldStr = false
+  let isBuildingItalicStr = false
   // Need to know if i am between ** and **
   // Look for **
   // build string after **
@@ -114,6 +115,9 @@ const textStyles = (line: string): MarkdownChild[] => {
     const isDoubleAstrix =
       (char === "*" && line[index + 1] === "*") ||
       (char === "*" && line[index - 1] === "*")
+
+    const isUnderscore =
+      char === "_" && (line[index - 1] !== "_" || line[index + 1] !== "_")
 
     if (isDoubleAstrix) {
       if (isBuildingBoldStr) {
@@ -137,11 +141,32 @@ const textStyles = (line: string): MarkdownChild[] => {
       mutableString = ""
       isBuildingBoldStr =
         line[index - 1] === "*" ? toggle(isBuildingBoldStr) : isBuildingBoldStr
+    } else if (isUnderscore) {
+      if (isBuildingItalicStr) {
+        concatIndex = -1
+        // Italic string ends, write the object
+        if (mutableString.length > 0) {
+          text.push({
+            text: mutableString,
+            isItalic: true,
+          })
+        }
+      } else {
+        // Start the Italic string
+        concatIndex = index + 1
+        if (mutableString.length > 0) {
+          text.push({
+            text: mutableString,
+          })
+        }
+      }
+      mutableString = ""
+      isBuildingItalicStr = toggle(isBuildingItalicStr)
     } else {
       concatIndex = index
     }
 
-    // Anyother char not outside of bold
+    // Another char not outside of bold
     if (concatIndex >= 0 && index === concatIndex) {
       // Build
       mutableString += char
@@ -149,7 +174,7 @@ const textStyles = (line: string): MarkdownChild[] => {
     }
 
     if (index === line.length - 1 && mutableString.length > 0) {
-      console.log("I AM PUSHING", mutableString)
+      console.log("WHAT OTHER STRING ARE WE WRITING!", mutableString)
       text.push({
         text: mutableString,
       })
@@ -171,6 +196,7 @@ const generateAST = (markdown: string): MarkdownAST => {
     .map((line) => {
       const [symbol] = line.split(" ")
       const isSymbolNumber = parseInt(symbol)
+      console.log("******", line, "*******")
 
       if (
         !line.startsWith(Symbols.B_List) &&
