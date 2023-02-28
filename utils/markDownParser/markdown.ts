@@ -36,21 +36,23 @@ export class MarkdownAST {
   build(): MarkdownObject[] {
     const lines = this.markdown.trim().split("\n")
 
-    return lines.map((line) => {
-      const trimmedLine = line.trim()
-      const [symbol] = trimmedLine.split(" ")
+    return lines
+      .filter((line) => line != "") // Hygraph Rich Text Adds unecessary line breaks
+      .map((line) => {
+        const trimmedLine = line.trim()
+        const [symbol] = trimmedLine.split(" ")
 
-      const parentSymbol = this.getParentSymbol(symbol)
+        const parentSymbol = this.getParentSymbol(symbol)
 
-      switch (parentSymbol) {
-        case MarkdownParentSymbol.HEADING:
-          return new Heading(line).create()
-        default:
-          return {
-            type: MarkdownElement.P,
-            children: [{ text: "FAKE" }],
-          }
-      }
-    })
+        switch (parentSymbol) {
+          case MarkdownParentSymbol.HEADING:
+            return new Heading(line).create()
+          default:
+            return {
+              type: MarkdownElement.P,
+              children: [{ text: "FAKE" }],
+            }
+        }
+      })
   }
 }
