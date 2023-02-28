@@ -3,7 +3,7 @@
  * To keep type safety, and for fun I decided to write my own parser. I know this is not going to be super performant.
  */
 
-enum MarkdownElement {
+export enum MarkdownElement {
   P = "paragraph",
   H1 = "heading-1",
   H2 = "heading-2",
@@ -18,7 +18,7 @@ enum MarkdownElement {
   LIC = "list-item-child",
 }
 
-enum Symbols {
+export enum Symbols {
   HEADING = "#",
   ITALIC = "_",
   UNDERLINED = "_", // Hygraph markdown uses underlined for both, this will be problematic. I will evaluate all _ as italic
@@ -28,7 +28,7 @@ enum Symbols {
   B_List = "-",
 }
 
-type MarkdownChild = {
+export type MarkdownChild = {
   isCode?: boolean
   isItalic?: boolean
   isBold?: boolean
@@ -38,12 +38,26 @@ type MarkdownChild = {
   children?: MarkdownChild[]
 }
 
-type MarkdownObject = {
+export type MarkdownObject = {
   type: MarkdownElement
   children: MarkdownChild[]
 }
 
-type MarkdownAST = MarkdownObject[]
+export type MarkdownAST = MarkdownObject[]
+
+const isHeadingType = (markdownElement: MarkdownElement): boolean => {
+  switch (markdownElement) {
+    case MarkdownElement.H1:
+    case MarkdownElement.H2:
+    case MarkdownElement.H3:
+    case MarkdownElement.H4:
+    case MarkdownElement.H5:
+    case MarkdownElement.H6:
+      return true
+    default:
+      return false
+  }
+}
 
 const mapHeadingType = (symbolLength: number) => {
   switch (symbolLength) {
@@ -174,7 +188,6 @@ const textStyles = (line: string): MarkdownChild[] => {
     }
 
     if (index === line.length - 1 && mutableString.length > 0) {
-      console.log("WHAT OTHER STRING ARE WE WRITING!", mutableString)
       text.push({
         text: mutableString,
       })
@@ -185,63 +198,84 @@ const textStyles = (line: string): MarkdownChild[] => {
   return text
 }
 
+const mapSymbol = (line: string) => {
+  const [symbol] = line.trim().split(" ")
+  const isSymbolNumber = parseInt(symbol)
+
+  if (line.startsWith(Symbols.HEADING)) {
+    return mapHeadingType(symbol.length)
+  } else if (line.startsWith(Symbols.B_List)) {
+    return MarkdownElement.BL
+  } else if (line.startsWith(Symbols.BLOCK_QUOTE)) {
+    return MarkdownElement.BQ
+  } else if (isSymbolNumber) {
+    return MarkdownElement.NL
+  } else {
+    return MarkdownElement.P
+  }
+}
+
 const generateAST = (markdown: string): MarkdownAST => {
-  const lines = markdown.split("\n")
+  const lines = markdown.trim().split("\n")
+
+  const ast: MarkdownAST = []
 
   let mutableBulletListItems: string[] = []
   let mutableNumberedListItems: string[] = []
 
-  const ast = lines
-    .filter((line) => line !== "")
-    .map((line) => {
-      const [symbol] = line.split(" ")
-      const isSymbolNumber = parseInt(symbol)
-      console.log("******", line, "*******")
+  lines.forEach((line) => {
+    const trimmedLine = line.trim()
 
-      if (
-        !line.startsWith(Symbols.B_List) &&
-        mutableBulletListItems.length > 0
-      ) {
-        // Lame we have to take a copy to clear the mutable list
-        const listItems = [...mutableBulletListItems]
-        mutableBulletListItems = []
-        return createList(listItems, MarkdownElement.BL)
-      }
+    const markdownEl = mapSymbol(line)
 
-      if (!isSymbolNumber && mutableNumberedListItems.length > 0) {
-        // Lame we have to take a copy to clear the mutable list
-        // Pass by reference clear inside fn ?
-        const listItems = [...mutableNumberedListItems]
-        mutableNumberedListItems = []
-        return createList(listItems, MarkdownElement.NL)
-      }
+    if (markdownEl === MarkdownElement.BL) {
+      mutableBulletListItems.push(trimmedLine)
+    }
 
-      if (line.startsWith(Symbols.B_List)) {
-        mutableBulletListItems.push(line)
-      }
+    if (markdownEl === MarkdownElement.NL) {
+      mutableNumberedListItems.push(trimmedLine)
+    }
 
-      if (isSymbolNumber) {
-        mutableNumberedListItems.push(line)
-      }
+    if (
+      !(markdownEl === MarkdownElement.BL) &&
+      mutableBulletListItems.length > 0
+    ) {
+      // Lame we have to take a copy to clear the mutable list
+      const listItems = [...mutableBulletListItems]
+      mutableBulletListItems = []
+      ast.push(createList(listItems, MarkdownElement.BL))
+    }
+    if (
+      markdownEl === MarkdownElement.NL &&
+      mutableNumberedListItems.length > 0
+    ) {
+      // Lame we have to take a copy to clear the mutable list
+      // Pass by reference clear inside fn ?
+      const listItems = [...mutableNumberedListItems]
+      mutableNumberedListItems = []
+      ast.push(createList(listItems, MarkdownElement.NL))
+    }
+    if (markdownEl === MarkdownElement.BQ) {
+      ast.push(createBlockQuote(trimmedLine))
+    }
 
-      if (line.startsWith(Symbols.BLOCK_QUOTE)) {
-        return createBlockQuote(line)
-      }
+    if (isHeadingType(markdownEl)) {
+      ast.push(createHeading(trimmedLine))
+    }
+    // All cases fail default casef
 
-      if (line.startsWith(Symbols.HEADING)) {
-        return createHeading(line)
-      }
-
-      return {
+    if (markdownEl === MarkdownElement.P) {
+      ast.push({
         type: MarkdownElement.P,
-        children: textStyles(line),
-      }
-    })
-
+        children: textStyles(trimmedLine),
+      })
+    }
+  })
+  console.log(ast)
   return ast
 }
 
 export const markdownParser = (markdown: string) => {
   const ast = generateAST(markdown)
-  console.log(ast)
+  return ast
 }
