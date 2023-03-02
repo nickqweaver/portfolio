@@ -5,24 +5,48 @@ import {
 } from "graphql/generated/schema-types"
 import { GET_RESUME } from "graphql/queries/GetResume"
 import { GetStaticProps } from "next"
-import { MarkdownAST } from "utils/markDownParser/markdown"
+import { MarkdownAST, MarkdownObject } from "utils/markDownParser/markdown"
 
+/**
+ * TODO:
+ * 1. Render the Tree recursively
+ * 2. Apply styles if applicable
+ * 3. Ensure line breaks are acting correctly
+ * 4. Render correct elements per MD element (EG -> Bulleted List, Numbered List, List Items, P tags, etc...)
+ */
 const Resume = (props: ResumeFragmentFragment) => {
-  const ast = new MarkdownAST(props.description.markdown).build()
-  console.log(ast, "THIS IS THE AST!")
+  const description = new MarkdownAST(props.description.markdown).build()
+
+  const renderMD = (markdown: MarkdownObject[]) => {
+    return markdown.map((markdown, index) => {
+      return (
+        <div
+          key={`${(markdown.type, index)}`}
+          id={`MD TYPE: ${markdown.type}`}
+          className="text-primary mt-[32px]"
+        >
+          {markdown.children.map((child, index) => {
+            return (
+              <div key={index}>
+                {child.text}
+                {child.children?.map((child, index) => (
+                  <div key={index}>{child.text}</div>
+                ))}
+              </div>
+            )
+          })}
+        </div>
+      )
+    })
+  }
   return (
-    <div className="text-primary mt-[60px]">
-      <h1>{props.name}</h1>
-      <p>{props.description.markdown}</p>
-      <div>{props.title}</div>
-      <div>{props.location}</div>
-      <div>{props.phoneNumber}</div>
-      <div>{props.email}</div>
-      <section>
-        {props.workExperience.map((experience, index) => (
-          <div key={index}>{experience.markdown}</div>
-        ))}
-      </section>
+    <div className="mt-[92px]">
+      <div>{renderMD(description)}</div>
+      <div>
+        {props.workExperience.map((work) => {
+          return renderMD(new MarkdownAST(work.markdown).build())
+        })}
+      </div>
     </div>
   )
 }
