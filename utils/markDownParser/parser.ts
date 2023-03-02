@@ -36,6 +36,7 @@ export type MarkdownChild = {
   text?: string
   href?: string
   children?: MarkdownChild[]
+  type?: MarkdownElement
 }
 
 export type MarkdownObject = {

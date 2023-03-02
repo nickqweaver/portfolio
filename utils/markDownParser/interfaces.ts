@@ -11,8 +11,9 @@ export abstract class MarkdownObj {
    *
    * @returns The line without markdown symbols
    */
-  trimSymbol() {
-    const [_symbol, ...rest] = this.line.split(" ")
+  static trimSymbol(line: string) {
+    const trimmedLine = line.trim()
+    const [_symbol, ...rest] = trimmedLine.split(" ")
     return rest.join(" ")
   }
 }

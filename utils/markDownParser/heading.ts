@@ -10,6 +10,7 @@ export class Heading extends MarkdownObj implements IMarkdownObj {
     const [symbol] = this.line.split(" ")
 
     switch (symbol.length) {
+      case 0:
       case 1:
         return MarkdownElement.H1
       case 2:
@@ -31,7 +32,7 @@ export class Heading extends MarkdownObj implements IMarkdownObj {
       type: this.getType(),
       children: [
         {
-          text: this.trimSymbol(),
+          text: Heading.trimSymbol(this.line),
         },
       ],
     }

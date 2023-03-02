@@ -1,8 +1,9 @@
 import { Heading } from "./heading"
+import { MarkdownList, MarkdownListType } from "./markdownList"
 import { MarkdownElement, MarkdownObject } from "./parser"
 
-enum MarkdownParentSymbol {
-  HEADING,
+export enum MarkdownParentSymbol {
+  HEADING = 1,
   BLOCK_QUOTE,
   BULLETED_LIST,
   NUMBERED_LIST,
@@ -10,10 +11,14 @@ enum MarkdownParentSymbol {
 }
 
 export class MarkdownAST {
+  private ast: MarkdownObject[] = []
   private markdown: string
+  private mutableListTuple: [string[], MarkdownListType | null]
 
   constructor(markdown: string) {
+    this.ast = []
     this.markdown = markdown
+    this.mutableListTuple = [[], null]
   }
 
   private getParentSymbol(symbol: string) {
@@ -33,26 +38,61 @@ export class MarkdownAST {
     }
   }
 
+  private listChecks() {
+    const [list, tupleType] = this.mutableListTuple
+
+    if (list.length > 0 && tupleType) {
+      const listAst = new MarkdownList(list, tupleType).create()
+      this.ast.push(listAst)
+    }
+  }
+
+  buildList(parentSymbol: MarkdownListType, line: string) {
+    const [list, type] = this.mutableListTuple
+    if (type && type !== parentSymbol) {
+      // The list type is different, add existing list to ast
+      const listAst = new MarkdownList(list, type)
+      this.ast.push(listAst.create())
+      // Clear old results and add new ones
+      this.mutableListTuple = [[line], parentSymbol]
+    } else {
+      // Create a new list, or build to existing
+      const newLines = [...this.mutableListTuple[0], line]
+      this.mutableListTuple = [newLines, parentSymbol]
+    }
+  }
+
   build(): MarkdownObject[] {
     const lines = this.markdown.trim().split("\n")
 
-    return lines
+    lines
       .filter((line) => line != "") // Hygraph Rich Text Adds unecessary line breaks
-      .map((line) => {
+      .forEach((line) => {
         const trimmedLine = line.trim()
         const [symbol] = trimmedLine.split(" ")
 
         const parentSymbol = this.getParentSymbol(symbol)
 
         switch (parentSymbol) {
+          case MarkdownParentSymbol.BULLETED_LIST:
+          case MarkdownParentSymbol.NUMBERED_LIST:
+            this.buildList(parentSymbol, line)
+            break
           case MarkdownParentSymbol.HEADING:
-            return new Heading(line).create()
+            this.listChecks()
+            const headingAst = new Heading(line).create()
+            this.ast.push(headingAst)
+            break
           default:
-            return {
+            this.listChecks()
+            this.ast.push({
               type: MarkdownElement.P,
-              children: [{ text: "FAKE" }],
-            }
+              children: [{ text: "FAKE EX" }],
+            })
         }
       })
+    this.listChecks()
+    console.log(this.ast)
+    return this.ast
   }
 }

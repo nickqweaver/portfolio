@@ -69,23 +69,24 @@ describe("Markdownparser", () => {
       },
     ])
   })
-  // it("Creates bolded list correctly", () => {
-  //   const markdownString = `
-  //     - List item 1
-  //     - List item 2
-  //     - List item 3
-  //     - List item 4
-  //   `
-  //   expect(markdownParser(markdownString)).toEqual([
-  //     {
-  //       type: MarkdownElement.BL,
-  //       children: [
-  //         { type: MarkdownElement.LI, children: [{ text: "List item 1" }] },
-  //         { type: MarkdownElement.LI, children: [{ text: "List item 2" }] },
-  //         { type: MarkdownElement.LI, children: [{ text: "List item 3" }] },
-  //         { type: MarkdownElement.LI, children: [{ text: "List item 4" }] },
-  //       ],
-  //     },
-  //   ])
-  // })
+  it("Creates bolded list correctly", () => {
+    const markdownString = `
+      - List item 1
+      - List item 2
+      - List item 3
+      - List item 4
+    `
+    const markdownAST = new MarkdownAST(markdownString)
+    expect(markdownAST.build()).toEqual([
+      {
+        type: MarkdownElement.BL,
+        children: [
+          { type: MarkdownElement.LI, children: [{ text: "List item 1" }] },
+          { type: MarkdownElement.LI, children: [{ text: "List item 2" }] },
+          { type: MarkdownElement.LI, children: [{ text: "List item 3" }] },
+          { type: MarkdownElement.LI, children: [{ text: "List item 4" }] },
+        ],
+      },
+    ])
+  })
 })
