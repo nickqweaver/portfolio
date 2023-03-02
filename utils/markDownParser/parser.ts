@@ -19,13 +19,9 @@ export enum MarkdownElement {
 }
 
 export enum Symbols {
-  HEADING = "#",
   ITALIC = "_",
-  UNDERLINED = "_", // Hygraph markdown uses underlined for both, this will be problematic. I will evaluate all _ as italic
   BOLD = "**",
-  BLOCK_QUOTE = ">",
   CODE = "`",
-  B_List = "-",
 }
 
 export type MarkdownChild = {

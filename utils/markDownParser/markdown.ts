@@ -1,9 +1,19 @@
 import { Heading } from "./heading"
-import { MarkdownObj } from "./interfaces"
-import { MarkdownChild } from "./markdownChild"
+import { MarkdownChild, MarkdownChildren } from "./markdownChild"
 import { MarkdownList, MarkdownListType } from "./markdownList"
 import { MarkdownElement } from "./parser"
 
+/**
+ * REFACTOR POTENTIAL:
+ * class Markdown {
+ *  line: string
+ *
+ *  create(element: "list" | "heading" | "blockQuote"): MarkdownElement {
+ *    element === 'list' ? createList(line) : 'heading' ? createHeading(line) : createBlockQuote(line)
+ *  }
+ *
+ * }
+ */
 export type MarkdownObject = {
   type: MarkdownElement
   children: MarkdownChild[]
@@ -94,14 +104,14 @@ export class MarkdownAST {
             this.listChecks()
             this.ast.push({
               type: MarkdownElement.BQ,
-              children: [new MarkdownChild(line)],
+              children: new MarkdownChildren(line).children,
             })
             break
           default:
             this.listChecks()
             this.ast.push({
               type: MarkdownElement.P,
-              children: [new MarkdownChild(line)],
+              children: new MarkdownChildren(line).children,
             })
         }
       })

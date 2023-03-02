@@ -1,7 +1,7 @@
 import { IMarkdownObj } from "./interfaces"
 import { MarkdownParentSymbol } from "./markdown"
-import { MarkdownChild } from "./markdownChild"
-import { MarkdownElement } from "./parser"
+import { MarkdownChildren } from "./markdownChild"
+import { MarkdownElement, MarkdownObject } from "./parser"
 
 export type MarkdownListType =
   | MarkdownParentSymbol.BULLETED_LIST
@@ -22,12 +22,12 @@ export class MarkdownList implements IMarkdownObj {
       : MarkdownElement.NL
   }
 
-  create() {
+  create(): MarkdownObject {
     return {
       type: this.getElementFromType(),
       children: this.lines.map((line) => ({
         type: MarkdownElement.LI,
-        children: [new MarkdownChild(line)],
+        children: new MarkdownChildren(line).children,
       })),
     }
   }
