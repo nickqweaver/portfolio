@@ -127,47 +127,22 @@ export class MarkdownChildren {
     }
   }
 
-  /**
-   * We need to change the start position of the substring based on the style to account for
-   * the symbols that do not need to be included in the AST data.
-   *
-   * - Bold strings (**) we slide the cursor forward 2
-   * - Italic strings (_) we slide the cursor forward 1
-   * - Non styled strings we keep the default position
-   *
-   * @param style Style of the current text string
-   * @returns A number to add to the current cursor position
-   */
-  private incrementStartCursor(style: StyleType) {
-    return style === "BOLD" ? 2 : style === "ITALIC" ? 1 : 0
+  private getSubstringStart(style: StyleType, startPos: number) {
+    return style === "BOLD"
+      ? startPos + 2
+      : style === "ITALIC"
+      ? startPos + 1
+      : startPos
   }
 
-  /**
-   * We need to change the end position of the substring based on the style to account for
-   * the symbols that do not need to be included in the AST data.
-   *
-   * The JS substring method end position is NOT inclusive
-   * - Italic & Bold strings we keep the cursor at the end position
-   * - Non styled strings we slide the cursor forward 1 position
-   *
-   * @param style Style of the current child
-   * @returns A number to add to the current cursor position
-   */
-  private trimEndCursor(style: StyleType) {
-    // return style === "BOLD" ? -1 : style === "ITALIC" ? 0 : 1
-    return style === "BOLD" || style === "ITALIC" ? 0 : 1
+  private getSubstringEnd(style: StyleType, endPos: number) {
+    return style === "BOLD"
+      ? endPos - 1
+      : style === "ITALIC"
+      ? endPos
+      : endPos + 1
   }
 
-  /**
-   * TEST CASE
-   * **
-   * I am bold! // STYLE CHANGE BOLD -> NONE (PUSH 2, 12)
-   * SLIDE START + 2
-   * **
-   * I am not bold! _I am italic!_I am regular text // STYLE CHANGE NONE -> ITALIC (PUSH 14, 30)
-
-   * 
-   */
   private applyTextStyles(line: string) {
     const chars = line.split("")
 
@@ -186,9 +161,6 @@ export class MarkdownChildren {
       if (isDoubleAstrix) {
         newStyle = this.toggleStyle(currentStyle, "BOLD")
         if (newStyle === "BOLD") {
-          // We slide the start cursor 2 positions to account for the **
-          // Match the end cursor
-          // startCursor = index + 2
           endCursor--
         } else {
           endCursor++
@@ -198,9 +170,6 @@ export class MarkdownChildren {
       if (isUnderscore) {
         newStyle = this.toggleStyle(currentStyle, "ITALIC")
         if (newStyle === "ITALIC") {
-          // We slide the start cursor 1 position to account for _
-          // When a style changes we end up sliding the cursor up to new style before pushing it
-          // We can either figure out a bettter way to increment the start cursor or add child in these blocks too
           endCursor--
         }
       }
@@ -213,7 +182,12 @@ export class MarkdownChildren {
             `START, END (${startCursor}, ${endCursor + 1})`
           )
           this.addChild(
-            line.substring(startCursor, endCursor + 1).trim(),
+            line
+              .substring(
+                this.getSubstringStart(currentStyle, startCursor),
+                this.getSubstringEnd(currentStyle, endCursor)
+              )
+              .trim(),
             currentStyle
           )
           startCursor = endCursor + 1
