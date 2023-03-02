@@ -54,7 +54,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.H5,
-        children: [{ text: "Heading 5" }],
+        children: [{ text: "Heading 5", style: "NONE" }],
       },
     ])
   })
@@ -124,7 +124,7 @@ describe("Markdownparser", () => {
     ])
   })
   it("It creates line with bold and non bold text", () => {
-    const markdownString = "**I am bold!** I am not bold!"
+    const markdownString = "**I am bold!**I am not bold!"
     const markdownAST = new MarkdownAST(markdownString)
 
     expect(markdownAST.build()).toEqual([
@@ -133,6 +133,25 @@ describe("Markdownparser", () => {
         children: [
           { text: "I am bold!", style: "BOLD" },
           { text: "I am not bold!", style: "NONE" },
+        ],
+      },
+    ])
+  })
+
+  it("It creates multi styled markdown line correctly", () => {
+    const markdownString =
+      "**I am bold!**I am not bold! _I am italic_ I am regular text!"
+    const markdownAST = new MarkdownAST(markdownString)
+    console.log(markdownAST.build(), "WHAT IS THIS")
+
+    expect(markdownAST.build()).toEqual([
+      {
+        type: MarkdownElement.P,
+        children: [
+          { text: "I am bold!", style: "BOLD" },
+          { text: "I am not bold!", style: "NONE" },
+          { text: "I am italic", style: "ITALIC" },
+          { text: "I am regular text!", style: "NONE" },
         ],
       },
     ])

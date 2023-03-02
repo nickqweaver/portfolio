@@ -1,3 +1,4 @@
+import { MarkdownParentSymbol } from "./markdown"
 import { MarkdownObject } from "./parser"
 
 export abstract class MarkdownObj {
@@ -9,12 +10,33 @@ export abstract class MarkdownObj {
 
   /**
    *
-   * @returns The line without markdown symbols
+   * @returns The line without parent markdown symbols
    */
   static trimSymbol(line: string) {
     const trimmedLine = line.trim()
-    const [_symbol, ...rest] = trimmedLine.split(" ")
+    const [symbol, ...rest] = trimmedLine.split(" ")
+
+    if (MarkdownObj.getParentSymbol(symbol) === 5) {
+      return [symbol, ...rest].join(" ")
+    }
     return rest.join(" ")
+  }
+
+  static getParentSymbol(symbol: string) {
+    const isSymbolNumber = (symbol: string) => parseInt(symbol)
+
+    switch (symbol) {
+      case ">>":
+        return MarkdownParentSymbol.BLOCK_QUOTE
+      case "-":
+        return MarkdownParentSymbol.BULLETED_LIST
+      default:
+        return symbol.startsWith("#")
+          ? MarkdownParentSymbol.HEADING
+          : isSymbolNumber(symbol)
+          ? MarkdownParentSymbol.NUMBERED_LIST
+          : MarkdownParentSymbol.PARAGRAPH
+    }
   }
 }
 

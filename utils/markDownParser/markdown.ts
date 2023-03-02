@@ -113,23 +113,6 @@ export class MarkdownAST {
     this.mutableListTuple = [[], null]
   }
 
-  private getParentSymbol(symbol: string) {
-    const isSymbolNumber = (symbol: string) => parseInt(symbol)
-
-    switch (symbol) {
-      case ">>":
-        return MarkdownParentSymbol.BLOCK_QUOTE
-      case "-":
-        return MarkdownParentSymbol.BULLETED_LIST
-      default:
-        return symbol.startsWith("#")
-          ? MarkdownParentSymbol.HEADING
-          : isSymbolNumber(symbol)
-          ? MarkdownParentSymbol.NUMBERED_LIST
-          : MarkdownParentSymbol.PARAGRAPH
-    }
-  }
-
   private listChecks() {
     const [list, tupleType] = this.mutableListTuple
 
@@ -163,7 +146,7 @@ export class MarkdownAST {
         const trimmedLine = line.trim()
         const [symbol] = trimmedLine.split(" ")
 
-        const parentSymbol = this.getParentSymbol(symbol)
+        const parentSymbol = MarkdownObj.getParentSymbol(symbol)
 
         switch (parentSymbol) {
           case MarkdownParentSymbol.BULLETED_LIST:

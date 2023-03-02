@@ -22,106 +22,104 @@ export class MarkdownChildren {
   constructor(line: string) {
     this.children = []
     this.applyTextStyles(line)
-    // this.chars = line.split(" ")
   }
 
-  private applyStyles(line: string) {
-    const toggle = (condition: boolean) => !condition
-    let isBuildingBoldStr = false
-    let isBuildingItalicStr = false
+  // private applyStyles(line: string) {
+  //   const toggle = (condition: boolean) => !condition
+  //   let isBuildingBoldStr = false
+  //   let isBuildingItalicStr = false
 
-    let concatIndex = -1
-    let mutableString = ""
-    const text: MarkdownChild[] = []
+  //   let concatIndex = -1
+  //   let mutableString = ""
+  //   const text: MarkdownChild[] = []
 
-    line.split("").forEach((char, index) => {
-      const isDoubleAstrix =
-        (char === "*" && line[index + 1] === "*") ||
-        (char === "*" && line[index - 1] === "*")
+  //   line.split("").forEach((char, index) => {
+  //     const isDoubleAstrix =
+  //       (char === "*" && line[index + 1] === "*") ||
+  //       (char === "*" && line[index - 1] === "*")
 
-      const isUnderscore =
-        char === "_" && (line[index - 1] !== "_" || line[index + 1] !== "_")
+  //     const isUnderscore =
+  //       char === "_" && (line[index - 1] !== "_" || line[index + 1] !== "_")
 
-      if (isDoubleAstrix) {
-        if (isBuildingBoldStr) {
-          concatIndex = -1
-          // Bold string ends, write the object
-          if (mutableString.length > 0) {
-            text.push({
-              text: mutableString,
-              style: "BOLD",
-            })
-          }
-        } else {
-          // Start the bold string
-          concatIndex = index + 2
-          if (mutableString.length > 0) {
-            text.push({
-              text: mutableString,
-              style: "NONE",
-            })
-          }
-        }
-        mutableString = ""
-        isBuildingBoldStr =
-          line[index - 1] === "*"
-            ? toggle(isBuildingBoldStr)
-            : isBuildingBoldStr
-      } else if (isUnderscore) {
-        if (isBuildingItalicStr) {
-          concatIndex = -1
-          // Italic string ends, write the object
-          if (mutableString.length > 0) {
-            text.push({
-              text: MarkdownObj.trimSymbol(mutableString),
-              style: "ITALIC",
-            })
-          }
-        } else {
-          // Start the Italic string
-          concatIndex = index + 1
-          if (mutableString.length > 0) {
-            text.push({
-              text: MarkdownObj.trimSymbol(mutableString),
-              style: "NONE",
-            })
-          }
-        }
-        mutableString = ""
-        isBuildingItalicStr = toggle(isBuildingItalicStr)
-      } else {
-        concatIndex = index
-      }
+  //     if (isDoubleAstrix) {
+  //       if (isBuildingBoldStr) {
+  //         concatIndex = -1
+  //         // Bold string ends, write the object
+  //         if (mutableString.length > 0) {
+  //           text.push({
+  //             text: mutableString,
+  //             style: "BOLD",
+  //           })
+  //         }
+  //       } else {
+  //         // Start the bold string
+  //         concatIndex = index + 2
+  //         if (mutableString.length > 0) {
+  //           text.push({
+  //             text: mutableString,
+  //             style: "NONE",
+  //           })
+  //         }
+  //       }
+  //       mutableString = ""
+  //       isBuildingBoldStr =
+  //         line[index - 1] === "*"
+  //           ? toggle(isBuildingBoldStr)
+  //           : isBuildingBoldStr
+  //     } else if (isUnderscore) {
+  //       if (isBuildingItalicStr) {
+  //         concatIndex = -1
+  //         // Italic string ends, write the object
+  //         if (mutableString.length > 0) {
+  //           text.push({
+  //             text: MarkdownObj.trimSymbol(mutableString),
+  //             style: "ITALIC",
+  //           })
+  //         }
+  //       } else {
+  //         // Start the Italic string
+  //         concatIndex = index + 1
+  //         if (mutableString.length > 0) {
+  //           text.push({
+  //             text: MarkdownObj.trimSymbol(mutableString),
+  //             style: "NONE",
+  //           })
+  //         }
+  //       }
+  //       mutableString = ""
+  //       isBuildingItalicStr = toggle(isBuildingItalicStr)
+  //     } else {
+  //       concatIndex = index
+  //     }
 
-      // Another char not outside of bold
-      if (concatIndex >= 0 && index === concatIndex) {
-        // Build
-        mutableString += char
-        concatIndex = index + 1
-      }
+  //     // Another char not outside of bold
+  //     if (concatIndex >= 0 && index === concatIndex) {
+  //       // Build
+  //       mutableString += char
+  //       concatIndex = index + 1
+  //     }
 
-      if (index === line.length - 1 && mutableString.length > 0) {
-        text.push({
-          text: MarkdownObj.trimSymbol(mutableString),
-          style: "NONE",
-        })
-      }
-    })
+  //     if (index === line.length - 1 && mutableString.length > 0) {
+  //       text.push({
+  //         text: MarkdownObj.trimSymbol(mutableString),
+  //         style: "NONE",
+  //       })
+  //     }
+  //   })
 
-    // We don't know if we've ended until we find a **
-    return text
-  }
+  //   // We don't know if we've ended until we find a **
+  //   return text
+  // }
 
   private addChild(text: string, style: StyleType) {
-    console.log("I AM ADDING THE CHILD!")
     const child = {
-      text,
+      text: MarkdownObj.trimSymbol(text),
       style,
     }
     this.children.push(child)
   }
 
-  toggleStyle(currentStyle: StyleType, newStyle: StyleType) {
+  private toggleStyle(currentStyle: StyleType, newStyle: StyleType) {
     if (currentStyle === newStyle) {
       return "NONE"
     } else {
@@ -129,15 +127,45 @@ export class MarkdownChildren {
     }
   }
 
-  applyTextStyles(line: string) {
+  /**
+   * We need to change the start position of the substring based on the style to account for
+   * the symbols that do not need to be included in the AST data.
+   *
+   * - Bold strings (**) we slide the cursor forward 2
+   * - Italic strings (_) we slide the cursor forward 1
+   * - Non styled strings we keep the default position
+   *
+   * @param style Style of the current text string
+   * @returns A number to add to the current cursor position
+   */
+  private incrementStartCursor(style: StyleType) {
+    return style === "BOLD" ? 2 : style === "ITALIC" ? 1 : 0
+  }
+
+  /**
+   * We need to change the end position of the substring based on the style to account for
+   * the symbols that do not need to be included in the AST data.
+   *
+   * The JS substring method end position is NOT inclusive
+   * - Italic & Bold strings we keep the cursor at the end position
+   * - Non styled strings we slide the cursor forward 1 position
+   *
+   * @param style Style of the current child
+   * @returns A number to add to the current cursor position
+   */
+  private incrementEndCursor(style: StyleType) {
+    // return style === "BOLD" ? -1 : style === "ITALIC" ? 0 : 1
+    return style === "BOLD" || style === "ITALIC" ? 0 : 1
+  }
+
+  private applyTextStyles(line: string) {
+    console.log(line, "WHOLE LINE")
     const chars = line.split("")
 
     let startCursor = 0
     let endCursor = 0
     let newStyle: StyleType = "NONE"
 
-    // TEST CASE
-    // "**I am bold!**I am not bold!"
     chars.forEach((char, index) => {
       const currentStyle = newStyle
 
@@ -146,37 +174,36 @@ export class MarkdownChildren {
         char === "_" && (line[index - 1] !== "_" || line[index + 1] !== "_")
 
       if (isDoubleAstrix) {
-        newStyle = this.toggleStyle(currentStyle, newStyle)
-        if (currentStyle === "BOLD") {
-          // At this point we know we are at the END of the bold string
-          newStyle = "NONE"
-        } else {
-          // We know we are at the BEGINNING of the bold string
-          newStyle = "BOLD"
+        newStyle = this.toggleStyle(currentStyle, "BOLD")
+        if (newStyle === "BOLD") {
+          // We slide the start cursor 2 positions to account for the **
+          startCursor = index + 2
         }
-      } else if (isUnderscore) {
-        if (currentStyle === "ITALIC") {
-          // At this point we know we are at the END of the italic string
-          newStyle = "NONE"
-        } else {
-          // At this point we know we are at the BEGINNING of the italic string
-          newStyle = "ITALIC"
+      }
+
+      if (isUnderscore) {
+        newStyle = this.toggleStyle(currentStyle, "ITALIC")
+        if (newStyle === "ITALIC") {
+          // We slide the start cursor 1 position to account for _
+          startCursor = index + 1
         }
       }
 
       if (endCursor > startCursor) {
         if (currentStyle !== newStyle || endCursor === line.length - 1) {
           this.addChild(
-            line.substring(startCursor, endCursor + 1),
+            line
+              .substring(
+                startCursor,
+                endCursor + this.incrementEndCursor(currentStyle)
+              )
+              .trim(),
             currentStyle
           )
-          startCursor = index
+          startCursor = endCursor + this.incrementStartCursor(currentStyle)
         }
-        endCursor++
-      } else {
-        endCursor++
       }
+      endCursor++
     })
-    console.log("CHILDREN", this.children)
   }
 }
