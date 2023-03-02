@@ -100,4 +100,29 @@ describe("Markdownparser", () => {
       },
     ])
   })
+  it("It creates single bold line correclty", () => {
+    const markdownString = "**I am bold!**"
+    const markdownAST = new MarkdownAST(markdownString)
+
+    expect(markdownAST.build()).toEqual([
+      {
+        type: MarkdownElement.P,
+        children: [{ text: "I am bold!", isBold: true }],
+      },
+    ])
+  })
+  it("It creates line with bold and non bold text", () => {
+    const markdownString = "**I am bold!** I am not bold!"
+    const markdownAST = new MarkdownAST(markdownString)
+
+    expect(markdownAST.build()).toEqual([
+      {
+        type: MarkdownElement.P,
+        children: [
+          { text: "I am bold!", isBold: true },
+          { text: "I am not bold!" },
+        ],
+      },
+    ])
+  })
 })

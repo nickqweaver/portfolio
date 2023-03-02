@@ -48,7 +48,7 @@ export class MarkdownChildren {
           // Bold string ends, write the object
           if (mutableString.length > 0) {
             text.push({
-              text: MarkdownObj.trimSymbol(mutableString),
+              text: mutableString,
               isBold: true,
             })
           }
@@ -57,7 +57,7 @@ export class MarkdownChildren {
           concatIndex = index + 2
           if (mutableString.length > 0) {
             text.push({
-              text: MarkdownObj.trimSymbol(mutableString),
+              text: mutableString,
             })
           }
         }

@@ -1,19 +1,11 @@
-import { Heading } from "./heading"
+import { IMarkdownObj, MarkdownObj } from "./interfaces"
 import { MarkdownChild, MarkdownChildren } from "./markdownChild"
-import { MarkdownList, MarkdownListType } from "./markdownList"
 import { MarkdownElement } from "./parser"
 
-/**
- * REFACTOR POTENTIAL:
- * class Markdown {
- *  line: string
- *
- *  create(element: "list" | "heading" | "blockQuote"): MarkdownElement {
- *    element === 'list' ? createList(line) : 'heading' ? createHeading(line) : createBlockQuote(line)
- *  }
- *
- * }
- */
+export type MarkdownListType =
+  | MarkdownParentSymbol.BULLETED_LIST
+  | MarkdownParentSymbol.NUMBERED_LIST
+
 export type MarkdownObject = {
   type: MarkdownElement
   children: MarkdownChild[]
@@ -25,6 +17,89 @@ export enum MarkdownParentSymbol {
   BULLETED_LIST,
   NUMBERED_LIST,
   PARAGRAPH,
+}
+class MarkdownList implements IMarkdownObj {
+  private type: MarkdownListType
+  private lines: string[]
+
+  constructor(lines: string[], type: MarkdownListType) {
+    this.type = type
+    this.lines = lines
+  }
+
+  private getElementFromType() {
+    return this.type == MarkdownParentSymbol.BULLETED_LIST
+      ? MarkdownElement.BL
+      : MarkdownElement.NL
+  }
+
+  create(): MarkdownObject {
+    return {
+      type: this.getElementFromType(),
+      children: this.lines.map((line) => ({
+        type: MarkdownElement.LI,
+        children: new MarkdownChildren(line).children,
+      })),
+    }
+  }
+}
+
+export class MarkdownHeading extends MarkdownObj implements IMarkdownObj {
+  constructor(line: string) {
+    super(line)
+  }
+
+  private getType() {
+    const [symbol] = this.line.split(" ")
+
+    switch (symbol.length) {
+      case 0:
+      case 1:
+        return MarkdownElement.H1
+      case 2:
+        return MarkdownElement.H2
+      case 3:
+        return MarkdownElement.H3
+      case 4:
+        return MarkdownElement.H4
+      case 5:
+        return MarkdownElement.H5
+      // If for some reason in the future +6 is supported we will just render an H6
+      default:
+        return MarkdownElement.H6
+    }
+  }
+
+  create() {
+    return {
+      type: this.getType(),
+      children: new MarkdownChildren(this.line).children,
+    }
+  }
+}
+
+class Markdown {
+  createList(type: MarkdownListType, lines: string[]) {
+    const list = new MarkdownList(lines, type).create()
+    return list
+  }
+
+  create(element: MarkdownParentSymbol, line: string) {
+    switch (element) {
+      case MarkdownParentSymbol.BLOCK_QUOTE:
+        return {
+          type: MarkdownElement.BQ,
+          children: new MarkdownChildren(line).children,
+        }
+      case MarkdownParentSymbol.HEADING:
+        return new MarkdownHeading(line).create()
+      default:
+        return {
+          type: MarkdownElement.P,
+          children: new MarkdownChildren(line).children,
+        }
+    }
+  }
 }
 
 export class MarkdownAST {
@@ -59,7 +134,7 @@ export class MarkdownAST {
     const [list, tupleType] = this.mutableListTuple
 
     if (list.length > 0 && tupleType) {
-      const listAst = new MarkdownList(list, tupleType).create()
+      const listAst = new Markdown().createList(tupleType, list)
       this.ast.push(listAst)
     }
   }
@@ -68,8 +143,8 @@ export class MarkdownAST {
     const [list, type] = this.mutableListTuple
     if (type && type !== parentSymbol) {
       // The list type is different, add existing list to ast
-      const listAst = new MarkdownList(list, type)
-      this.ast.push(listAst.create())
+      const listAst = new Markdown().createList(type, list)
+      this.ast.push(listAst)
       // Clear old results and add new ones
       this.mutableListTuple = [[line], parentSymbol]
     } else {
@@ -95,24 +170,10 @@ export class MarkdownAST {
           case MarkdownParentSymbol.NUMBERED_LIST:
             this.buildList(parentSymbol, line)
             break
-          case MarkdownParentSymbol.HEADING:
-            this.listChecks()
-            const headingAst = new Heading(line).create()
-            this.ast.push(headingAst)
-            break
-          case MarkdownParentSymbol.BLOCK_QUOTE:
-            this.listChecks()
-            this.ast.push({
-              type: MarkdownElement.BQ,
-              children: new MarkdownChildren(line).children,
-            })
-            break
           default:
             this.listChecks()
-            this.ast.push({
-              type: MarkdownElement.P,
-              children: new MarkdownChildren(line).children,
-            })
+            const element = new Markdown().create(parentSymbol, line)
+            this.ast.push(element)
         }
       })
     this.listChecks()
