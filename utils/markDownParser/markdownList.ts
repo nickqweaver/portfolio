@@ -1,5 +1,6 @@
-import { IMarkdownObj, MarkdownObj } from "./interfaces"
+import { IMarkdownObj } from "./interfaces"
 import { MarkdownParentSymbol } from "./markdown"
+import { MarkdownChild } from "./markdownChild"
 import { MarkdownElement } from "./parser"
 
 export type MarkdownListType =
@@ -26,11 +27,7 @@ export class MarkdownList implements IMarkdownObj {
       type: this.getElementFromType(),
       children: this.lines.map((line) => ({
         type: MarkdownElement.LI,
-        children: [
-          {
-            text: MarkdownObj.trimSymbol(line),
-          },
-        ],
+        children: [new MarkdownChild(line)],
       })),
     }
   }

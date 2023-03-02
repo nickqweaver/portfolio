@@ -1,6 +1,13 @@
 import { Heading } from "./heading"
+import { MarkdownObj } from "./interfaces"
+import { MarkdownChild } from "./markdownChild"
 import { MarkdownList, MarkdownListType } from "./markdownList"
-import { MarkdownElement, MarkdownObject } from "./parser"
+import { MarkdownElement } from "./parser"
+
+export type MarkdownObject = {
+  type: MarkdownElement
+  children: MarkdownChild[]
+}
 
 export enum MarkdownParentSymbol {
   HEADING = 1,
@@ -83,16 +90,22 @@ export class MarkdownAST {
             const headingAst = new Heading(line).create()
             this.ast.push(headingAst)
             break
+          case MarkdownParentSymbol.BLOCK_QUOTE:
+            this.listChecks()
+            this.ast.push({
+              type: MarkdownElement.BQ,
+              children: [new MarkdownChild(line)],
+            })
+            break
           default:
             this.listChecks()
             this.ast.push({
               type: MarkdownElement.P,
-              children: [{ text: "FAKE EX" }],
+              children: [new MarkdownChild(line)],
             })
         }
       })
     this.listChecks()
-    console.log(this.ast)
     return this.ast
   }
 }

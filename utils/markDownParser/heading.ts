@@ -1,4 +1,5 @@
 import { IMarkdownObj, MarkdownObj } from "./interfaces"
+import { MarkdownChild } from "./markdownChild"
 import { MarkdownElement } from "./parser"
 
 export class Heading extends MarkdownObj implements IMarkdownObj {
@@ -30,11 +31,7 @@ export class Heading extends MarkdownObj implements IMarkdownObj {
   create() {
     return {
       type: this.getType(),
-      children: [
-        {
-          text: Heading.trimSymbol(this.line),
-        },
-      ],
+      children: [new MarkdownChild(this.line)],
     }
   }
 }

@@ -89,4 +89,15 @@ describe("Markdownparser", () => {
       },
     ])
   })
+  it("Creates Block Quote Correctly", () => {
+    const markdownString = ">> Block Quote Here"
+    const markdownAST = new MarkdownAST(markdownString)
+
+    expect(markdownAST.build()).toEqual([
+      {
+        type: MarkdownElement.BQ,
+        children: [{ text: "Block Quote Here" }],
+      },
+    ])
+  })
 })
