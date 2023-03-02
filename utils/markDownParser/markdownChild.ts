@@ -153,13 +153,22 @@ export class MarkdownChildren {
    * @param style Style of the current child
    * @returns A number to add to the current cursor position
    */
-  private incrementEndCursor(style: StyleType) {
+  private trimEndCursor(style: StyleType) {
     // return style === "BOLD" ? -1 : style === "ITALIC" ? 0 : 1
     return style === "BOLD" || style === "ITALIC" ? 0 : 1
   }
 
+  /**
+   * TEST CASE
+   * **
+   * I am bold! // STYLE CHANGE BOLD -> NONE (PUSH 2, 12)
+   * SLIDE START + 2
+   * **
+   * I am not bold! _I am italic!_I am regular text // STYLE CHANGE NONE -> ITALIC (PUSH 14, 30)
+
+   * 
+   */
   private applyTextStyles(line: string) {
-    console.log(line, "WHOLE LINE")
     const chars = line.split("")
 
     let startCursor = 0
@@ -167,6 +176,7 @@ export class MarkdownChildren {
     let newStyle: StyleType = "NONE"
 
     chars.forEach((char, index) => {
+      console.log(`START: ${startCursor}`, `END: ${endCursor}`)
       const currentStyle = newStyle
 
       const isDoubleAstrix = char === "*" && line[index + 1] === "*"
@@ -177,7 +187,8 @@ export class MarkdownChildren {
         newStyle = this.toggleStyle(currentStyle, "BOLD")
         if (newStyle === "BOLD") {
           // We slide the start cursor 2 positions to account for the **
-          startCursor = index + 2
+          // Match the end cursor
+          // startCursor = index + 2
         }
       }
 
@@ -185,17 +196,26 @@ export class MarkdownChildren {
         newStyle = this.toggleStyle(currentStyle, "ITALIC")
         if (newStyle === "ITALIC") {
           // We slide the start cursor 1 position to account for _
-          startCursor = index + 1
+          // When a style changes we end up sliding the cursor up to new style before pushing it
+          // We can either figure out a bettter way to increment the start cursor or add child in these blocks too
+          // startCursor++
         }
       }
 
       if (endCursor > startCursor) {
+        console.log(currentStyle, newStyle)
         if (currentStyle !== newStyle || endCursor === line.length - 1) {
+          console.log(
+            "PUSHING CHILD!",
+            `START, END (${
+              startCursor + this.incrementStartCursor(currentStyle)
+            }, ${endCursor + this.trimEndCursor(currentStyle)})`
+          )
           this.addChild(
             line
               .substring(
-                startCursor,
-                endCursor + this.incrementEndCursor(currentStyle)
+                startCursor + this.incrementStartCursor(currentStyle),
+                endCursor + this.trimEndCursor(currentStyle)
               )
               .trim(),
             currentStyle
@@ -203,7 +223,7 @@ export class MarkdownChildren {
           startCursor = endCursor + this.incrementStartCursor(currentStyle)
         }
       }
-      endCursor++
+      endCursor = index + 1
     })
   }
 }

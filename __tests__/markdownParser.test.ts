@@ -137,10 +137,8 @@ describe("Markdownparser", () => {
       },
     ])
   })
-
-  it("It creates multi styled markdown line correctly", () => {
-    const markdownString =
-      "**I am bold!**I am not bold! _I am italic_ I am regular text!"
+  it("Swaps no bold to bold", () => {
+    const markdownString = "I am not bold!**I am bold!**"
     const markdownAST = new MarkdownAST(markdownString)
     console.log(markdownAST.build(), "WHAT IS THIS")
 
@@ -148,10 +146,24 @@ describe("Markdownparser", () => {
       {
         type: MarkdownElement.P,
         children: [
-          { text: "I am bold!", style: "BOLD" },
           { text: "I am not bold!", style: "NONE" },
-          { text: "I am italic", style: "ITALIC" },
-          { text: "I am regular text!", style: "NONE" },
+          { text: "I am bold!", style: "BOLD" },
+        ],
+      },
+    ])
+  })
+
+  it("Swaps no italic to italic", () => {
+    const markdownString = "I am not italic! _I am italic!"
+    const markdownAST = new MarkdownAST(markdownString)
+    console.log(markdownAST.build(), "WHAT IS THIS")
+
+    expect(markdownAST.build()).toEqual([
+      {
+        type: MarkdownElement.P,
+        children: [
+          { text: "I am not italic!", style: "NONE" },
+          { text: "I am italic!", style: "ITALIC" },
         ],
       },
     ])
