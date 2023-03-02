@@ -7,11 +7,10 @@ export enum TextSymbols {
   CODE = "`",
 }
 
+export type StyleType = "BOLD" | "ITALIC" | "CODE" | "NONE"
+
 export type MarkdownChild = {
-  isCode?: boolean
-  isItalic?: boolean
-  isBold?: boolean
-  isUnderlined?: boolean
+  style?: StyleType
   text?: string
   href?: string
   children?: MarkdownChild[]
@@ -21,11 +20,12 @@ export class MarkdownChildren {
   public children: MarkdownChild[]
 
   constructor(line: string) {
-    this.children = this.applyTextStyles(line)
+    this.children = []
+    this.applyTextStyles(line)
     // this.chars = line.split(" ")
   }
 
-  private applyTextStyles(line: string) {
+  private applyStyles(line: string) {
     const toggle = (condition: boolean) => !condition
     let isBuildingBoldStr = false
     let isBuildingItalicStr = false
@@ -49,7 +49,7 @@ export class MarkdownChildren {
           if (mutableString.length > 0) {
             text.push({
               text: mutableString,
-              isBold: true,
+              style: "BOLD",
             })
           }
         } else {
@@ -58,6 +58,7 @@ export class MarkdownChildren {
           if (mutableString.length > 0) {
             text.push({
               text: mutableString,
+              style: "NONE",
             })
           }
         }
@@ -73,7 +74,7 @@ export class MarkdownChildren {
           if (mutableString.length > 0) {
             text.push({
               text: MarkdownObj.trimSymbol(mutableString),
-              isItalic: true,
+              style: "ITALIC",
             })
           }
         } else {
@@ -82,6 +83,7 @@ export class MarkdownChildren {
           if (mutableString.length > 0) {
             text.push({
               text: MarkdownObj.trimSymbol(mutableString),
+              style: "NONE",
             })
           }
         }
@@ -101,11 +103,80 @@ export class MarkdownChildren {
       if (index === line.length - 1 && mutableString.length > 0) {
         text.push({
           text: MarkdownObj.trimSymbol(mutableString),
+          style: "NONE",
         })
       }
     })
 
     // We don't know if we've ended until we find a **
     return text
+  }
+
+  private addChild(text: string, style: StyleType) {
+    console.log("I AM ADDING THE CHILD!")
+    const child = {
+      text,
+      style,
+    }
+    this.children.push(child)
+  }
+
+  toggleStyle(currentStyle: StyleType, newStyle: StyleType) {
+    if (currentStyle === newStyle) {
+      return "NONE"
+    } else {
+      return newStyle
+    }
+  }
+
+  applyTextStyles(line: string) {
+    const chars = line.split("")
+
+    let startCursor = 0
+    let endCursor = 0
+    let newStyle: StyleType = "NONE"
+
+    // TEST CASE
+    // "**I am bold!**I am not bold!"
+    chars.forEach((char, index) => {
+      const currentStyle = newStyle
+
+      const isDoubleAstrix = char === "*" && line[index + 1] === "*"
+      const isUnderscore =
+        char === "_" && (line[index - 1] !== "_" || line[index + 1] !== "_")
+
+      if (isDoubleAstrix) {
+        newStyle = this.toggleStyle(currentStyle, newStyle)
+        if (currentStyle === "BOLD") {
+          // At this point we know we are at the END of the bold string
+          newStyle = "NONE"
+        } else {
+          // We know we are at the BEGINNING of the bold string
+          newStyle = "BOLD"
+        }
+      } else if (isUnderscore) {
+        if (currentStyle === "ITALIC") {
+          // At this point we know we are at the END of the italic string
+          newStyle = "NONE"
+        } else {
+          // At this point we know we are at the BEGINNING of the italic string
+          newStyle = "ITALIC"
+        }
+      }
+
+      if (endCursor > startCursor) {
+        if (currentStyle !== newStyle || endCursor === line.length - 1) {
+          this.addChild(
+            line.substring(startCursor, endCursor + 1),
+            currentStyle
+          )
+          startCursor = index
+        }
+        endCursor++
+      } else {
+        endCursor++
+      }
+    })
+    console.log("CHILDREN", this.children)
   }
 }

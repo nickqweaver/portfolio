@@ -268,7 +268,6 @@ const generateAST = (markdown: string): MarkdownAST => {
       })
     }
   })
-  console.log(ast)
   return ast
 }
 

@@ -9,7 +9,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.H1,
-        children: [{ text: "Heading 1" }],
+        children: [{ text: "Heading 1", style: "NONE" }],
       },
     ])
   })
@@ -20,7 +20,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.H2,
-        children: [{ text: "Heading 2" }],
+        children: [{ text: "Heading 2", style: "NONE" }],
       },
     ])
   })
@@ -31,7 +31,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.H3,
-        children: [{ text: "Heading 3" }],
+        children: [{ text: "Heading 3", style: "NONE" }],
       },
     ])
   })
@@ -43,7 +43,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.H4,
-        children: [{ text: "Heading 4" }],
+        children: [{ text: "Heading 4", style: "NONE" }],
       },
     ])
   })
@@ -65,7 +65,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.H6,
-        children: [{ text: "Heading 6" }],
+        children: [{ text: "Heading 6", style: "NONE" }],
       },
     ])
   })
@@ -81,10 +81,22 @@ describe("Markdownparser", () => {
       {
         type: MarkdownElement.BL,
         children: [
-          { type: MarkdownElement.LI, children: [{ text: "List item 1" }] },
-          { type: MarkdownElement.LI, children: [{ text: "List item 2" }] },
-          { type: MarkdownElement.LI, children: [{ text: "List item 3" }] },
-          { type: MarkdownElement.LI, children: [{ text: "List item 4" }] },
+          {
+            type: MarkdownElement.LI,
+            children: [{ text: "List item 1", style: "NONE" }],
+          },
+          {
+            type: MarkdownElement.LI,
+            children: [{ text: "List item 2", style: "NONE" }],
+          },
+          {
+            type: MarkdownElement.LI,
+            children: [{ text: "List item 3", style: "NONE" }],
+          },
+          {
+            type: MarkdownElement.LI,
+            children: [{ text: "List item 4", style: "NONE" }],
+          },
         ],
       },
     ])
@@ -96,7 +108,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.BQ,
-        children: [{ text: "Block Quote Here" }],
+        children: [{ text: "Block Quote Here", style: "NONE" }],
       },
     ])
   })
@@ -107,7 +119,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.P,
-        children: [{ text: "I am bold!", isBold: true }],
+        children: [{ text: "I am bold!", style: "BOLD" }],
       },
     ])
   })
@@ -119,8 +131,8 @@ describe("Markdownparser", () => {
       {
         type: MarkdownElement.P,
         children: [
-          { text: "I am bold!", isBold: true },
-          { text: "I am not bold!" },
+          { text: "I am bold!", style: "BOLD" },
+          { text: "I am not bold!", style: "NONE" },
         ],
       },
     ])

@@ -11,7 +11,7 @@ import { MarkdownAST } from "utils/markDownParser/markdown"
 const Resume = (props: ResumeFragmentFragment) => {
   markdownParser(props.description.markdown)
   const ast = new MarkdownAST(props.description.markdown).build()
-  console.log(ast)
+  console.log(ast, "THIS IS THE AST!")
   return (
     <div className="text-primary mt-[60px]">
       <h1>{props.name}</h1>
