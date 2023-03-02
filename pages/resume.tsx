@@ -5,11 +5,9 @@ import {
 } from "graphql/generated/schema-types"
 import { GET_RESUME } from "graphql/queries/GetResume"
 import { GetStaticProps } from "next"
-import { markdownParser } from "utils/markDownParser/parser"
 import { MarkdownAST } from "utils/markDownParser/markdown"
 
 const Resume = (props: ResumeFragmentFragment) => {
-  markdownParser(props.description.markdown)
   const ast = new MarkdownAST(props.description.markdown).build()
   console.log(ast, "THIS IS THE AST!")
   return (
@@ -39,8 +37,6 @@ export const getStaticProps: GetStaticProps = async () => {
   const {
     data: { resume },
   } = indexPageQuery
-
-  if (resume?.description.markdown) markdownParser(resume?.description.markdown)
 
   return {
     props: {

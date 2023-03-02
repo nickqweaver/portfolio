@@ -1,10 +1,24 @@
 import { IMarkdownObj, MarkdownObj } from "./interfaces"
 import { MarkdownChild, MarkdownChildren } from "./markdownChild"
-import { MarkdownElement } from "./parser"
 
 export type MarkdownListType =
   | MarkdownParentSymbol.BULLETED_LIST
   | MarkdownParentSymbol.NUMBERED_LIST
+
+export enum MarkdownElement {
+  P = "paragraph",
+  H1 = "heading-1",
+  H2 = "heading-2",
+  H3 = "heading-3",
+  H4 = "heading-4",
+  H5 = "heading-5",
+  H6 = "heading-6",
+  BQ = "block-quote",
+  BL = "bulleted-list",
+  NL = "numbered-list",
+  LI = "list-item",
+  LIC = "list-item-child",
+}
 
 export type MarkdownObject = {
   type: MarkdownElement

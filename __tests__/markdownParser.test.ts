@@ -1,5 +1,4 @@
-import { MarkdownAST } from "utils/markDownParser/markdown"
-import { MarkdownElement, markdownParser } from "utils/markDownParser/parser"
+import { MarkdownAST, MarkdownElement } from "utils/markDownParser/markdown"
 
 describe("Markdownparser", () => {
   it("Creates heading 1 correctly", () => {
@@ -138,9 +137,8 @@ describe("Markdownparser", () => {
     ])
   })
   it("Swaps no bold to bold", () => {
-    const markdownString = "I am not bold!**I am bold!**"
+    const markdownString = "I am not bold! **I am bold!**"
     const markdownAST = new MarkdownAST(markdownString)
-    console.log(markdownAST.build(), "WHAT IS THIS")
 
     expect(markdownAST.build()).toEqual([
       {
@@ -154,9 +152,8 @@ describe("Markdownparser", () => {
   })
 
   it("Swaps no italic to italic", () => {
-    const markdownString = "I am not italic! _I am italic!"
+    const markdownString = "I am not italic! _I am italic!_"
     const markdownAST = new MarkdownAST(markdownString)
-    console.log(markdownAST.build(), "WHAT IS THIS")
 
     expect(markdownAST.build()).toEqual([
       {

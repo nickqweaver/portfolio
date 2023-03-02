@@ -1,5 +1,4 @@
-import { MarkdownParentSymbol } from "./markdown"
-import { MarkdownObject } from "./parser"
+import { MarkdownObject, MarkdownParentSymbol } from "./markdown"
 
 export abstract class MarkdownObj {
   line: string
