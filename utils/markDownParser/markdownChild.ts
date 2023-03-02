@@ -189,6 +189,9 @@ export class MarkdownChildren {
           // We slide the start cursor 2 positions to account for the **
           // Match the end cursor
           // startCursor = index + 2
+          endCursor--
+        } else {
+          endCursor++
         }
       }
 
@@ -198,7 +201,7 @@ export class MarkdownChildren {
           // We slide the start cursor 1 position to account for _
           // When a style changes we end up sliding the cursor up to new style before pushing it
           // We can either figure out a bettter way to increment the start cursor or add child in these blocks too
-          // startCursor++
+          endCursor--
         }
       }
 
@@ -207,20 +210,13 @@ export class MarkdownChildren {
         if (currentStyle !== newStyle || endCursor === line.length - 1) {
           console.log(
             "PUSHING CHILD!",
-            `START, END (${
-              startCursor + this.incrementStartCursor(currentStyle)
-            }, ${endCursor + this.trimEndCursor(currentStyle)})`
+            `START, END (${startCursor}, ${endCursor + 1})`
           )
           this.addChild(
-            line
-              .substring(
-                startCursor + this.incrementStartCursor(currentStyle),
-                endCursor + this.trimEndCursor(currentStyle)
-              )
-              .trim(),
+            line.substring(startCursor, endCursor + 1).trim(),
             currentStyle
           )
-          startCursor = endCursor + this.incrementStartCursor(currentStyle)
+          startCursor = endCursor + 1
         }
       }
       endCursor = index + 1
