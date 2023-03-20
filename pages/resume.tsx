@@ -5,67 +5,107 @@ import {
 } from "graphql/generated/schema-types"
 import { GET_RESUME } from "graphql/queries/GetResume"
 import { GetStaticProps } from "next"
+import { createElement } from "react"
 import { MarkdownAST, MarkdownObject } from "utils/markDownParser/markdown"
+import { MarkdownChild } from "utils/markDownParser/markdownChild"
 
 /**
  * TODO:
- * 1. Render the Tree recursively
  * 2. Apply styles if applicable
  * 3. Ensure line breaks are acting correctly
  * 4. Render correct elements per MD element (EG -> Bulleted List, Numbered List, List Items, P tags, etc...)
  */
-const Resume = (props: ResumeFragmentFragment) => {
-  const description = new MarkdownAST(props.description.markdown).build()
+type ResumeProps = Omit<
+  ResumeFragmentFragment,
+  "description" | "workExperience"
+> & {
+  description: MarkdownObject[]
+  workExperience: MarkdownObject[][]
+}
 
-  const renderMD = (markdown: MarkdownObject[]) => {
-    return markdown.map((markdown, index) => {
-      return (
-        <div
-          key={`${(markdown.type, index)}`}
-          id={`MD TYPE: ${markdown.type}`}
-          className="text-primary mt-[32px]"
-        >
-          {markdown.children.map((child, index) => {
-            return (
-              <div key={index}>
-                {child.text}
-                {child.children?.map((child, index) => (
-                  <div key={index}>{child.text}</div>
-                ))}
-              </div>
-            )
-          })}
-        </div>
-      )
-    })
+const renderMarkdownTree = (tree: MarkdownObject[]) => {
+  // TODO - Only single styles are supported currently in the AST
+  // Once this is changed we need to ensure all/multiple tailwind classNames get applied
+  // based on the style type
+  // Also need to apply the appropriate styles per element to match the Resume design
+  const getClassNames = (node: MarkdownChild) => {
+    if (node.style === "NONE" || !node.style) {
+      return
+    }
+
+    return node.style === "BOLD" ? "font-bold" : "italic"
   }
+
+  const traverseNodes = (child: MarkdownChild): React.ReactNode | string => {
+    if (child.jsxEl) {
+      return createElement(
+        child.jsxEl,
+        getClassNames(child),
+        child.children?.map((child) => traverseNodes(child))
+      )
+    }
+    return child.text
+  }
+
+  return tree.map((node) => {
+    return createElement(
+      node.jsxEl,
+      { className: `${getClassNames(node)}, text-primary` },
+      node.children.map(traverseNodes)
+    )
+  })
+}
+
+const Resume = (props: ResumeProps) => {
   return (
-    <div className="mt-[92px]">
-      <div>{renderMD(description)}</div>
-      <div>
-        {props.workExperience.map((work) => {
-          return renderMD(new MarkdownAST(work.markdown).build())
-        })}
-      </div>
-    </div>
+    <main className="mt-[92px]">
+      {renderMarkdownTree(props.description)}
+      {props.workExperience.map(renderMarkdownTree)}
+    </main>
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<ResumeProps> = async () => {
   const indexPageQuery = await client.query<GetResumeQuery>({
     query: GET_RESUME,
     variables: {
       route: "root",
     },
   })
-  const {
-    data: { resume },
-  } = indexPageQuery
 
-  return {
-    props: {
-      ...resume,
-    },
+  try {
+    const {
+      data: { resume },
+    } = indexPageQuery
+
+    if (resume) {
+      const {
+        description: resumeDescription,
+        workExperience: resumeWorkExperience,
+        ...rest
+      } = resume
+      const description = new MarkdownAST(resumeDescription.markdown).build()
+      const workExperience = resumeWorkExperience.map((experience) =>
+        new MarkdownAST(experience.markdown).build()
+      )
+      return {
+        props: {
+          description,
+          workExperience,
+          ...rest,
+        },
+      }
+    } else {
+      console.log("Successful request returned no resume data!")
+      return {
+        notFound: true,
+      }
+    }
+  } catch (err) {
+    console.log("There was an error fetching resume data...", err)
+    return {
+      notFound: true,
+    }
   }
 }
 export default Resume

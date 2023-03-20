@@ -1,5 +1,5 @@
 import { MarkdownObj } from "./interfaces"
-import { MarkdownElement } from "./markdown"
+import { JSXEL, MarkdownElement, MarkdownObject } from "./markdown"
 
 export enum TextSymbols {
   ITALIC = "_",
@@ -13,9 +13,7 @@ export type MarkdownChild = {
   style?: StyleType
   text?: string
   href?: string
-  children?: MarkdownChild[]
-  type?: MarkdownElement
-}
+} & Partial<MarkdownObject>
 
 /**
  * TODO:

@@ -20,9 +20,23 @@ export enum MarkdownElement {
   LIC = "list-item-child",
 }
 
+export type JSXEL =
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "h5"
+  | "h6"
+  | "p"
+  | "li"
+  | "ul"
+  | "ol"
+  | "blockquote"
+
 export type MarkdownObject = {
   type: MarkdownElement
   children: MarkdownChild[]
+  jsxEl: JSXEL
 }
 
 export enum MarkdownParentSymbol {
@@ -41,17 +55,20 @@ class MarkdownList implements IMarkdownObj {
     this.lines = lines
   }
 
-  private getElementFromType() {
+  private getElementFromType(): [MarkdownElement, JSXEL] {
     return this.type == MarkdownParentSymbol.BULLETED_LIST
-      ? MarkdownElement.BL
-      : MarkdownElement.NL
+      ? [MarkdownElement.BL, "ul"]
+      : [MarkdownElement.NL, "ol"]
   }
 
   create(): MarkdownObject {
+    const [type, jsxEl] = this.getElementFromType()
     return {
-      type: this.getElementFromType(),
+      type,
+      jsxEl,
       children: this.lines.map((line) => ({
         type: MarkdownElement.LI,
+        jsxEl: "li",
         children: new MarkdownChildren(line).children,
       })),
     }
@@ -63,30 +80,32 @@ export class MarkdownHeading extends MarkdownObj implements IMarkdownObj {
     super(line)
   }
 
-  private getType() {
+  private getType(): [MarkdownElement, JSXEL] {
     const [symbol] = this.line.split(" ")
 
     switch (symbol.length) {
       case 0:
       case 1:
-        return MarkdownElement.H1
+        return [MarkdownElement.H1, "h1"]
       case 2:
-        return MarkdownElement.H2
+        return [MarkdownElement.H2, "h2"]
       case 3:
-        return MarkdownElement.H3
+        return [MarkdownElement.H3, "h3"]
       case 4:
-        return MarkdownElement.H4
+        return [MarkdownElement.H4, "h4"]
       case 5:
-        return MarkdownElement.H5
+        return [MarkdownElement.H5, "h5"]
       // If for some reason in the future +6 is supported we will just render an H6
       default:
-        return MarkdownElement.H6
+        return [MarkdownElement.H6, "h6"]
     }
   }
 
   create() {
+    const [type, jsxEl] = this.getType()
     return {
-      type: this.getType(),
+      type,
+      jsxEl,
       children: new MarkdownChildren(this.line).children,
     }
   }
@@ -98,11 +117,12 @@ class Markdown {
     return list
   }
 
-  create(element: MarkdownParentSymbol, line: string) {
+  create(element: MarkdownParentSymbol, line: string): MarkdownObject {
     switch (element) {
       case MarkdownParentSymbol.BLOCK_QUOTE:
         return {
           type: MarkdownElement.BQ,
+          jsxEl: "blockquote",
           children: new MarkdownChildren(line).children,
         }
       case MarkdownParentSymbol.HEADING:
@@ -110,6 +130,7 @@ class Markdown {
       default:
         return {
           type: MarkdownElement.P,
+          jsxEl: "p",
           children: new MarkdownChildren(line).children,
         }
     }
