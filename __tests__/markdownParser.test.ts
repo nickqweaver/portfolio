@@ -8,6 +8,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.H1,
+        jsxEl: "h1",
         children: [{ text: "Heading 1", style: "NONE" }],
       },
     ])
@@ -19,6 +20,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.H2,
+        jsxEl: "h2",
         children: [{ text: "Heading 2", style: "NONE" }],
       },
     ])
@@ -30,6 +32,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.H3,
+        jsxEl: "h3",
         children: [{ text: "Heading 3", style: "NONE" }],
       },
     ])
@@ -42,6 +45,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.H4,
+        jsxEl: "h4",
         children: [{ text: "Heading 4", style: "NONE" }],
       },
     ])
@@ -53,6 +57,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.H5,
+        jsxEl: "h5",
         children: [{ text: "Heading 5", style: "NONE" }],
       },
     ])
@@ -64,6 +69,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.H6,
+        jsxEl: "h6",
         children: [{ text: "Heading 6", style: "NONE" }],
       },
     ])
@@ -79,21 +85,26 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.BL,
+        jsxEl: "ul",
         children: [
           {
             type: MarkdownElement.LI,
+            jsxEl: "li",
             children: [{ text: "List item 1", style: "NONE" }],
           },
           {
             type: MarkdownElement.LI,
+            jsxEl: "li",
             children: [{ text: "List item 2", style: "NONE" }],
           },
           {
             type: MarkdownElement.LI,
+            jsxEl: "li",
             children: [{ text: "List item 3", style: "NONE" }],
           },
           {
             type: MarkdownElement.LI,
+            jsxEl: "li",
             children: [{ text: "List item 4", style: "NONE" }],
           },
         ],
@@ -107,6 +118,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.BQ,
+        jsxEl: "blockquote",
         children: [{ text: "Block Quote Here", style: "NONE" }],
       },
     ])
@@ -118,6 +130,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.P,
+        jsxEl: "p",
         children: [{ text: "I am bold!", style: "BOLD" }],
       },
     ])
@@ -129,6 +142,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.P,
+        jsxEl: "p",
         children: [
           { text: "I am bold!", style: "BOLD" },
           { text: "I am not bold!", style: "NONE" },
@@ -143,6 +157,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.P,
+        jsxEl: "p",
         children: [
           { text: "I am not bold!", style: "NONE" },
           { text: "I am bold!", style: "BOLD" },
@@ -158,6 +173,7 @@ describe("Markdownparser", () => {
     expect(markdownAST.build()).toEqual([
       {
         type: MarkdownElement.P,
+        jsxEl: "p",
         children: [
           { text: "I am not italic!", style: "NONE" },
           { text: "I am italic!", style: "ITALIC" },
@@ -165,4 +181,53 @@ describe("Markdownparser", () => {
       },
     ])
   })
+})
+
+it("Can handle dates appropriately", () => {
+  const markdownString = "11/20/2021"
+  const markdownAST = new MarkdownAST(markdownString)
+
+  expect(markdownAST.build()).toEqual([
+    {
+      type: MarkdownElement.P,
+      jsxEl: "p",
+      children: [{ text: "11/20/2021", style: "NONE" }],
+    },
+  ])
+})
+it("Can handle italic dates appropriately", () => {
+  const markdownString = "_11/20/2021 - Current_"
+  const markdownAST = new MarkdownAST(markdownString)
+
+  expect(markdownAST.build()).toEqual([
+    {
+      type: MarkdownElement.P,
+      jsxEl: "p",
+      children: [{ text: "11/20/2021 - Current", style: "ITALIC" }],
+    },
+  ])
+})
+it("Can handle heading dates appropriately", () => {
+  const markdownString = "### 11/20/2021 - Current"
+  const markdownAST = new MarkdownAST(markdownString)
+
+  expect(markdownAST.build()).toEqual([
+    {
+      type: MarkdownElement.H3,
+      jsxEl: "h3",
+      children: [{ text: "11/20/2021 - Current", style: "NONE" }],
+    },
+  ])
+})
+it("Can handle single P tags appropriately", () => {
+  const markdownString = "Hello World!"
+  const markdownAST = new MarkdownAST(markdownString)
+
+  expect(markdownAST.build()).toEqual([
+    {
+      type: MarkdownElement.P,
+      jsxEl: "p",
+      children: [{ text: "Hello World!", style: "NONE" }],
+    },
+  ])
 })

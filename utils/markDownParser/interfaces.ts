@@ -21,6 +21,12 @@ export abstract class MarkdownObj {
     return rest.join(" ")
   }
 
+  static isDateStr(str: string) {
+    const regexExp = /^\d{2}\/\d{2}\/\d{4}$/
+
+    return regexExp.test(str)
+  }
+
   static getParentSymbol(symbol: string) {
     const isSymbolNumber = (symbol: string) => parseInt(symbol)
 
@@ -33,7 +39,9 @@ export abstract class MarkdownObj {
         return symbol.startsWith("#")
           ? MarkdownParentSymbol.HEADING
           : isSymbolNumber(symbol)
-          ? MarkdownParentSymbol.NUMBERED_LIST
+          ? MarkdownObj.isDateStr(symbol)
+            ? MarkdownParentSymbol.PARAGRAPH
+            : MarkdownParentSymbol.NUMBERED_LIST
           : MarkdownParentSymbol.PARAGRAPH
     }
   }

@@ -58,9 +58,13 @@ const renderMarkdownTree = (tree: MarkdownObject[]) => {
 
 const Resume = (props: ResumeProps) => {
   return (
-    <main className="mt-[92px]">
-      {renderMarkdownTree(props.description)}
-      {props.workExperience.map(renderMarkdownTree)}
+    <main className="mt-[92px] ">
+      <article className="prose md:prose-sm lg:prose-xl m-auto">
+        <h1>{props.name}</h1>
+        {renderMarkdownTree(props.description)}
+        <h2>Work Experience</h2>
+        {props.workExperience.map(renderMarkdownTree)}
+      </article>
     </main>
   )
 }

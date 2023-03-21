@@ -18,6 +18,7 @@ export type MarkdownChild = {
 /**
  * TODO:
  * 1. Add nested abilities (Italic & Bold Text)
+ * 2. Dates aren't fully supported -> Heading/Italic/Date fails
  * 2. Add Code Snippet abilitiy
  * 3. Create benchmarks
  */
