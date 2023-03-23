@@ -13,5 +13,9 @@ export const ResumeFragment = gql`
     workExperience {
       markdown
     }
+    education {
+      markdown
+    }
+    skills
   }
 `

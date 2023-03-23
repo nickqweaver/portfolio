@@ -24,6 +24,7 @@ module.exports = {
       colors: {
         blue: "#4400FF",
         "blue-light": "#2244FF",
+        "light-blue": "#0099FF",
         white: "#ffffff",
         sheet: "#F2F2F7",
       },

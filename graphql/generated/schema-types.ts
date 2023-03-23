@@ -5334,6 +5334,8 @@ export type Resume = Node & {
   description: RichText;
   /** Get the document in other stages */
   documentInStages: Array<Resume>;
+  /** Education Section */
+  education?: Maybe<RichText>;
   email: Scalars['String'];
   /** List of Resume versions */
   history: Array<Version>;
@@ -5349,6 +5351,8 @@ export type Resume = Node & {
   /** User that last published this document */
   publishedBy?: Maybe<User>;
   scheduledIn: Array<ScheduledOperation>;
+  /** List of Skills to Display on Resume */
+  skills: Array<StackChoice>;
   /** System stage field */
   stage: Stage;
   title: Scalars['String'];
@@ -5429,11 +5433,13 @@ export type ResumeConnection = {
 export type ResumeCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   description: Scalars['RichTextAST'];
+  education?: InputMaybe<Scalars['RichTextAST']>;
   email: Scalars['String'];
   image?: InputMaybe<AssetCreateOneInlineInput>;
   location: Scalars['String'];
   name: Scalars['String'];
   phoneNumber: Scalars['String'];
+  skills?: InputMaybe<Array<StackChoice>>;
   title: Scalars['String'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   workExperience?: InputMaybe<Array<Scalars['RichTextAST']>>;
@@ -5606,6 +5612,16 @@ export type ResumeManyWhereInput = {
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  /** Matches if the field array contains *all* items provided to the filter and order does match */
+  skills?: InputMaybe<Array<StackChoice>>;
+  /** Matches if the field array contains *all* items provided to the filter */
+  skills_contains_all?: InputMaybe<Array<StackChoice>>;
+  /** Matches if the field array does not contain any of the items provided to the filter */
+  skills_contains_none?: InputMaybe<Array<StackChoice>>;
+  /** Matches if the field array contains at least one item provided to the filter */
+  skills_contains_some?: InputMaybe<Array<StackChoice>>;
+  /** Matches if the field array does not contains *all* items provided to the filter or order does not match */
+  skills_not?: InputMaybe<Array<StackChoice>>;
   title?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   title_contains?: InputMaybe<Scalars['String']>;
@@ -5658,6 +5674,8 @@ export enum ResumeOrderByInput {
   PhoneNumberDesc = 'phoneNumber_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
+  SkillsAsc = 'skills_ASC',
+  SkillsDesc = 'skills_DESC',
   TitleAsc = 'title_ASC',
   TitleDesc = 'title_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
@@ -5666,11 +5684,13 @@ export enum ResumeOrderByInput {
 
 export type ResumeUpdateInput = {
   description?: InputMaybe<Scalars['RichTextAST']>;
+  education?: InputMaybe<Scalars['RichTextAST']>;
   email?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<AssetUpdateOneInlineInput>;
   location?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
+  skills?: InputMaybe<Array<StackChoice>>;
   title?: InputMaybe<Scalars['String']>;
   workExperience?: InputMaybe<Array<Scalars['RichTextAST']>>;
 };
@@ -5694,10 +5714,12 @@ export type ResumeUpdateManyInlineInput = {
 
 export type ResumeUpdateManyInput = {
   description?: InputMaybe<Scalars['RichTextAST']>;
+  education?: InputMaybe<Scalars['RichTextAST']>;
   email?: InputMaybe<Scalars['String']>;
   location?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
+  skills?: InputMaybe<Array<StackChoice>>;
   title?: InputMaybe<Scalars['String']>;
   workExperience?: InputMaybe<Array<Scalars['RichTextAST']>>;
 };
@@ -5895,6 +5917,16 @@ export type ResumeWhereInput = {
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  /** Matches if the field array contains *all* items provided to the filter and order does match */
+  skills?: InputMaybe<Array<StackChoice>>;
+  /** Matches if the field array contains *all* items provided to the filter */
+  skills_contains_all?: InputMaybe<Array<StackChoice>>;
+  /** Matches if the field array does not contain any of the items provided to the filter */
+  skills_contains_none?: InputMaybe<Array<StackChoice>>;
+  /** Matches if the field array contains at least one item provided to the filter */
+  skills_contains_some?: InputMaybe<Array<StackChoice>>;
+  /** Matches if the field array does not contains *all* items provided to the filter or order does not match */
+  skills_not?: InputMaybe<Array<StackChoice>>;
   title?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   title_contains?: InputMaybe<Scalars['String']>;
@@ -7554,6 +7586,7 @@ export type SocialWhereUniqueInput = {
 };
 
 export enum StackChoice {
+  Agile = 'Agile',
   Apollo = 'Apollo',
   Css = 'CSS',
   Cypress = 'Cypress',
@@ -8491,7 +8524,7 @@ export type ProjectFragment = { __typename?: 'Project', title: string, completio
 
 export type ProjectTileFragment = { __typename?: 'Project', title: string, completionDate: any, description: string, stack: Array<StackChoice>, category: Array<ProjectCategory>, slug: string, id: string, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> };
 
-export type ResumeFragment = { __typename?: 'Resume', name: string, title: string, phoneNumber: string, email: string, location: string, description: { __typename?: 'RichText', markdown: string }, workExperience: Array<{ __typename?: 'RichText', markdown: string }> };
+export type ResumeFragment = { __typename?: 'Resume', name: string, title: string, phoneNumber: string, email: string, location: string, skills: Array<StackChoice>, description: { __typename?: 'RichText', markdown: string }, workExperience: Array<{ __typename?: 'RichText', markdown: string }>, education?: { __typename?: 'RichText', markdown: string } | null };
 
 export type SocialFragment = { __typename?: 'Social', id: string, github: string, twitter?: string | null, personal?: string | null, linkedIn: string };
 
@@ -8537,7 +8570,7 @@ export type GetProjectBySlugQuery = { __typename?: 'Query', project?: { __typena
 export type GetResumeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetResumeQuery = { __typename?: 'Query', resume?: { __typename?: 'Resume', name: string, title: string, phoneNumber: string, email: string, location: string, description: { __typename?: 'RichText', markdown: string }, workExperience: Array<{ __typename?: 'RichText', markdown: string }> } | null, social?: { __typename?: 'Social', id: string, github: string, twitter?: string | null, personal?: string | null, linkedIn: string } | null };
+export type GetResumeQuery = { __typename?: 'Query', resume?: { __typename?: 'Resume', name: string, title: string, phoneNumber: string, email: string, location: string, skills: Array<StackChoice>, description: { __typename?: 'RichText', markdown: string }, workExperience: Array<{ __typename?: 'RichText', markdown: string }>, education?: { __typename?: 'RichText', markdown: string } | null } | null, social?: { __typename?: 'Social', id: string, github: string, twitter?: string | null, personal?: string | null, linkedIn: string } | null };
 
 export const IconFragmentDoc = gql`
     fragment Icon on Icon {
@@ -8626,6 +8659,10 @@ export const ResumeFragmentDoc = gql`
   workExperience {
     markdown
   }
+  education {
+    markdown
+  }
+  skills
 }
     `;
 export const SocialFragmentDoc = gql`
