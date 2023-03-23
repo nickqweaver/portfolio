@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client"
 
 export const IconFragment = gql`
-  fragment IconFragment on Icon {
+  fragment Icon on Icon {
     name
     size
   }

@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client"
 
 export const ResumeFragment = gql`
-  fragment ResumeFragment on Resume {
+  fragment Resume on Resume {
     name
     title
     description {

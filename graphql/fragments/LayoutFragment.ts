@@ -1,8 +1,7 @@
 import { gql } from "@apollo/client"
-import { IconFragment } from "./IconFragment"
 
-export const LayoutFragment = gql`
-  fragment LayoutFragment on Layout {
+export const Layout = gql`
+  fragment Layout on Layout {
     route
     hero {
       backgroundColor {
@@ -15,9 +14,8 @@ export const LayoutFragment = gql`
       heading
       subHeading
       icon {
-        ...IconFragment
+        ...Icon
       }
     }
   }
-  ${IconFragment}
 `

@@ -1,7 +1,8 @@
 import client from "apollo/client"
 import {
   GetResumeQuery,
-  ResumeFragmentFragment,
+  ResumeFragment,
+  SocialFragment,
 } from "graphql/generated/schema-types"
 import { GET_RESUME } from "graphql/queries/GetResume"
 import { GetStaticProps } from "next"
@@ -15,13 +16,10 @@ import { MarkdownChild } from "utils/markDownParser/markdownChild"
  * 3. Ensure line breaks are acting correctly
  * 4. Render correct elements per MD element (EG -> Bulleted List, Numbered List, List Items, P tags, etc...)
  */
-type ResumeProps = Omit<
-  ResumeFragmentFragment,
-  "description" | "workExperience"
-> & {
+type ResumeProps = Omit<ResumeFragment, "description" | "workExperience"> & {
   description: MarkdownObject[]
   workExperience: MarkdownObject[][]
-}
+} & SocialFragment
 
 const renderMarkdownTree = (tree: MarkdownObject[]) => {
   // TODO - Only single styles are supported currently in the AST
@@ -47,20 +45,29 @@ const renderMarkdownTree = (tree: MarkdownObject[]) => {
     return child.text
   }
 
-  return tree.map((node) => {
+  return tree.map((node, index) => {
     return createElement(
       node.jsxEl,
-      { className: `${getClassNames(node)}, text-primary` },
+      { className: `${getClassNames(node)}, text-primary`, key: index },
       node.children.map(traverseNodes)
     )
   })
 }
 
 const Resume = (props: ResumeProps) => {
+  console.log(props.email, props.location, props.phoneNumber, props.title)
   return (
     <main className="mt-[92px] ">
-      <article className="prose md:prose-sm lg:prose-xl m-auto">
+      <article className="prose m-auto">
         <h1>{props.name}</h1>
+        <h2>{props.title}</h2>
+        <section className="grid">
+          <span>{props.email}</span>
+          <span>{props.location}</span>
+          <span>{props.phoneNumber}</span>
+          <span></span>
+          <span></span>
+        </section>
         {renderMarkdownTree(props.description)}
         <h2>Work Experience</h2>
         {props.workExperience.map(renderMarkdownTree)}
