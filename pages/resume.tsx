@@ -6,6 +6,8 @@ import {
   SocialFragment,
 } from "graphql/generated/schema-types"
 import { GET_RESUME } from "graphql/queries/GetResume"
+import { useBreakPoint } from "hooks/useBreakpoint"
+import { useWindow } from "hooks/useWindow"
 import { GetStaticProps } from "next"
 import { createElement } from "react"
 import { MarkdownAST, MarkdownObject } from "utils/markDownParser/markdown"
@@ -59,43 +61,49 @@ const renderMarkdownTree = (tree: MarkdownObject[]) => {
 }
 
 const Resume = (props: ResumeProps) => {
+  const { width } = useWindow()
+
   const ResumeContactInfo = () => {
     const gridColStyles = "grid grid-rows-3 gap-3 sm:gap-2 justify-start"
-    const anchorStyles = "grid no-underline font-normal text-sm ml-[4px]"
     const contactLineStyle = "flex justify-start items-center"
-    const textStyles = "grid ml-[4px] text-sm"
+    const textStyles = "grid ml-[4px] text-sm sm:text-base lg:text-lg"
+    const anchorStyles = `no-underline font-normal ${textStyles}`
+
+    const smallBreakPoint = useBreakPoint("sm")
+
+    const iconSize = smallBreakPoint ? (width < smallBreakPoint ? 16 : 18) : 16
 
     return (
       <section className="grid whitespace-nowrap gap-y-2 grid-cols-1 sm:grid-cols-2 items-center">
         <div className={gridColStyles}>
           <div className={contactLineStyle}>
-            <Icon name={IconNames.Email} size={16} />
+            <Icon name={IconNames.Email} size={iconSize} />
             <span className={textStyles}>{props.email}</span>
           </div>
           <div className={contactLineStyle}>
-            <Icon name={IconNames.Location} size={16} />
+            <Icon name={IconNames.Location} size={iconSize} />
             <span className={textStyles}>{props.location}</span>
           </div>
           <div className={contactLineStyle}>
-            <Icon name={IconNames.Phone} size={16} />
+            <Icon name={IconNames.Phone} size={iconSize} />
             <span className={textStyles}>{props.phoneNumber}</span>
           </div>
         </div>
         <div className={gridColStyles}>
           <div className={contactLineStyle}>
-            <Icon name={IconNames.Github} size={16} />
+            <Icon name={IconNames.Github} size={iconSize} />
             <a href={props.github} className={anchorStyles}>
               Github
             </a>
           </div>
           <div className={contactLineStyle}>
-            <Icon name={IconNames.LinkedIn} size={16} />
+            <Icon name={IconNames.LinkedIn} size={iconSize} />
             <a href={props.linkedIn} className={anchorStyles}>
               LinkedIn
             </a>
           </div>
           <div className={contactLineStyle}>
-            <Icon name={IconNames.Web} size={16} />
+            <Icon name={IconNames.Web} size={iconSize} />
             <a href={props.personal ?? ""} className={anchorStyles}>
               {props.personal}
             </a>
@@ -107,7 +115,7 @@ const Resume = (props: ResumeProps) => {
 
   return (
     <main className="mt-[92px] ">
-      <article className="prose m-auto">
+      <article className="prose prose-sm sm:prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl m-auto">
         <h1>{props.name}</h1>
         <h2>{props.title}</h2>
         {renderMarkdownTree(props.description)}
