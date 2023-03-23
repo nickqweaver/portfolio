@@ -8537,7 +8537,7 @@ export type GetProjectBySlugQuery = { __typename?: 'Query', project?: { __typena
 export type GetResumeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetResumeQuery = { __typename?: 'Query', resume?: { __typename?: 'Resume', name: string, title: string, phoneNumber: string, email: string, location: string, description: { __typename?: 'RichText', markdown: string }, workExperience: Array<{ __typename?: 'RichText', markdown: string }> } | null };
+export type GetResumeQuery = { __typename?: 'Query', resume?: { __typename?: 'Resume', name: string, title: string, phoneNumber: string, email: string, location: string, description: { __typename?: 'RichText', markdown: string }, workExperience: Array<{ __typename?: 'RichText', markdown: string }> } | null, social?: { __typename?: 'Social', id: string, github: string, twitter?: string | null, personal?: string | null, linkedIn: string } | null };
 
 export const IconFragmentDoc = gql`
     fragment Icon on Icon {
@@ -8698,6 +8698,10 @@ export const GetResumeDocument = gql`
   resume(where: {id: "cleiz8guqj48j0aiwrrmvcm1z"}) {
     ...Resume
   }
+  social(where: {id: "clfkjiin40ji90bise14awe6j"}) {
+    ...Social
+  }
 }
-    ${ResumeFragmentDoc}`;
+    ${ResumeFragmentDoc}
+${SocialFragmentDoc}`;
 export type GetResumeQueryResult = Apollo.QueryResult<GetResumeQuery, GetResumeQueryVariables>;

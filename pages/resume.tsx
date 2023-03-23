@@ -16,10 +16,13 @@ import { MarkdownChild } from "utils/markDownParser/markdownChild"
  * 3. Ensure line breaks are acting correctly
  * 4. Render correct elements per MD element (EG -> Bulleted List, Numbered List, List Items, P tags, etc...)
  */
-type ResumeProps = Omit<ResumeFragment, "description" | "workExperience"> & {
+type ResumeProps = Omit<
+  ResumeFragment,
+  "description" | "workExperience" | "__typename"
+> & {
   description: MarkdownObject[]
   workExperience: MarkdownObject[][]
-} & SocialFragment
+} & Omit<SocialFragment, "__typename">
 
 const renderMarkdownTree = (tree: MarkdownObject[]) => {
   // TODO - Only single styles are supported currently in the AST
@@ -65,8 +68,9 @@ const Resume = (props: ResumeProps) => {
           <span>{props.email}</span>
           <span>{props.location}</span>
           <span>{props.phoneNumber}</span>
-          <span></span>
-          <span></span>
+          <span>{props.github}</span>
+          <span>{props.linkedIn}</span>
+          <span>{props.personal}</span>
         </section>
         {renderMarkdownTree(props.description)}
         <h2>Work Experience</h2>
@@ -86,10 +90,10 @@ export const getStaticProps: GetStaticProps<ResumeProps> = async () => {
 
   try {
     const {
-      data: { resume },
+      data: { resume, social },
     } = indexPageQuery
 
-    if (resume) {
+    if (resume && social) {
       const {
         description: resumeDescription,
         workExperience: resumeWorkExperience,
@@ -101,6 +105,7 @@ export const getStaticProps: GetStaticProps<ResumeProps> = async () => {
       )
       return {
         props: {
+          ...social,
           description,
           workExperience,
           ...rest,
