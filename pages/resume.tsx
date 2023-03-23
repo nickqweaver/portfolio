@@ -1,4 +1,5 @@
 import client from "apollo/client"
+import { Icon, IconNames } from "components/Icon"
 import {
   GetResumeQuery,
   ResumeFragment,
@@ -58,21 +59,59 @@ const renderMarkdownTree = (tree: MarkdownObject[]) => {
 }
 
 const Resume = (props: ResumeProps) => {
-  console.log(props.email, props.location, props.phoneNumber, props.title)
+  const ResumeContactInfo = () => {
+    const gridColStyles = "grid grid-rows-3 gap-3 sm:gap-2 justify-start"
+    const anchorStyles = "grid no-underline font-normal text-sm ml-[4px]"
+    const contactLineStyle = "flex justify-start items-center"
+    const textStyles = "grid ml-[4px] text-sm"
+
+    return (
+      <section className="grid whitespace-nowrap gap-y-2 grid-cols-1 sm:grid-cols-2 items-center">
+        <div className={gridColStyles}>
+          <div className={contactLineStyle}>
+            <Icon name={IconNames.Email} size={16} />
+            <span className={textStyles}>{props.email}</span>
+          </div>
+          <div className={contactLineStyle}>
+            <Icon name={IconNames.Location} size={16} />
+            <span className={textStyles}>{props.location}</span>
+          </div>
+          <div className={contactLineStyle}>
+            <Icon name={IconNames.Phone} size={16} />
+            <span className={textStyles}>{props.phoneNumber}</span>
+          </div>
+        </div>
+        <div className={gridColStyles}>
+          <div className={contactLineStyle}>
+            <Icon name={IconNames.Github} size={16} />
+            <a href={props.github} className={anchorStyles}>
+              Github
+            </a>
+          </div>
+          <div className={contactLineStyle}>
+            <Icon name={IconNames.LinkedIn} size={16} />
+            <a href={props.linkedIn} className={anchorStyles}>
+              LinkedIn
+            </a>
+          </div>
+          <div className={contactLineStyle}>
+            <Icon name={IconNames.Web} size={16} />
+            <a href={props.personal ?? ""} className={anchorStyles}>
+              {props.personal}
+            </a>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <main className="mt-[92px] ">
       <article className="prose m-auto">
         <h1>{props.name}</h1>
         <h2>{props.title}</h2>
-        <section className="grid">
-          <span>{props.email}</span>
-          <span>{props.location}</span>
-          <span>{props.phoneNumber}</span>
-          <span>{props.github}</span>
-          <span>{props.linkedIn}</span>
-          <span>{props.personal}</span>
-        </section>
         {renderMarkdownTree(props.description)}
+        <ResumeContactInfo />
         <h2>Work Experience</h2>
         {props.workExperience.map(renderMarkdownTree)}
       </article>
