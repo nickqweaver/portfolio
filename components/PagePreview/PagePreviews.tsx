@@ -1,10 +1,10 @@
-import { PagePreviewFragmentFragment } from "../../graphql/generated/schema-types"
+import { PagePreviewFragment } from "../../graphql/generated/schema-types"
 import { PagePreviewCard } from "./PagePreviewCard"
 
 export const PagePreviews = ({
   previews,
 }: {
-  previews: PagePreviewFragmentFragment[]
+  previews: PagePreviewFragment[]
 }) => {
   return (
     <div

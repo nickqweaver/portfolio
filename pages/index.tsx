@@ -1,11 +1,10 @@
 import type { GetStaticProps, NextPage } from "next"
 import client from "../apollo/client"
-import { GET_PAGE_PREVIEWS } from "../graphql/queries/GetPagePreviews"
 import {
   GetIndexPageQuery,
-  LayoutFragmentFragment,
-  PagePreviewFragmentFragment,
-  ProjectTileFragmentFragment,
+  LayoutFragment,
+  PagePreviewFragment,
+  ProjectTileFragment,
 } from "../graphql/generated/schema-types"
 import { NestedLayout } from "../components/NestedLayout"
 import React from "react"
@@ -15,9 +14,9 @@ import { CardTileSection } from "../components/CardTileSection"
 import { GET_INDEX_PAGE } from "../graphql/queries/GetIndexPage"
 
 type Props = {
-  pagePreviews?: PagePreviewFragmentFragment[]
-  layout?: LayoutFragmentFragment
-  featuredProjects?: ProjectTileFragmentFragment[]
+  pagePreviews?: PagePreviewFragment[]
+  layout?: LayoutFragment
+  featuredProjects?: ProjectTileFragment[]
 }
 
 // TODO's

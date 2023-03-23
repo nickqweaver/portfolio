@@ -1,8 +1,8 @@
-import { PagePreviewFragmentFragment } from "../../graphql/generated/schema-types"
+import { PagePreviewFragment } from "../../graphql/generated/schema-types"
 import { Button } from "../Button/Button"
 import { Icon } from "../Icon"
 
-export const PagePreviewCard = (props: PagePreviewFragmentFragment) => {
+export const PagePreviewCard = (props: PagePreviewFragment) => {
   const { icon, description, title } = props
   return (
     <main className="bg-white grid gap-5 p-5 sm:p-10">

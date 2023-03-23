@@ -2,17 +2,12 @@ import client from "apollo/client"
 import { ProjectCard } from "components/Projects/ProjectCard"
 import {
   GetPaginatedProjectsQuery,
-  ProjectFragmentFragment,
+  ProjectFragment,
 } from "graphql/generated/schema-types"
 import { GET_PAGINATED_PROJECTS } from "graphql/queries/GetPaginatedProjects"
 import { GetServerSideProps } from "next"
-import { ParsedUrlQuery } from "querystring"
 
-interface IParams extends ParsedUrlQuery {
-  page: string
-}
-
-const Projects = (props: { projects: ProjectFragmentFragment[] }) => {
+const Projects = (props: { projects: ProjectFragment[] }) => {
   return (
     <div className="mt-[60px]">
       <h1 className="text-primary text-xl">Projects</h1>

@@ -1,9 +1,9 @@
 import Image from "next/image"
 import Link from "next/link"
 /** TODO Swap this out with work fragments */
-import { ProjectTileFragmentFragment } from "graphql/generated/schema-types"
+import { ProjectTileFragment } from "graphql/generated/schema-types"
 
-export const WorkCard = (props: ProjectTileFragmentFragment) => {
+export const WorkCard = (props: ProjectTileFragment) => {
   const { media, title } = props
   return (
     <Link href={`/${props.slug}`}>
