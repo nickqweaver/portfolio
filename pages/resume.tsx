@@ -32,29 +32,32 @@ const renderMarkdownTree = (tree: MarkdownObject[]) => {
   // Once this is changed we need to ensure all/multiple tailwind classNames get applied
   // based on the style type
   // Also need to apply the appropriate styles per element to match the Resume design
-  const getClassNames = (node: MarkdownChild) => {
-    if (node.style === "NONE" || !node.style) {
-      return
-    }
 
-    return node.style === "BOLD" ? "font-bold" : "italic"
+  const wrapTagsIfApplicable = (child: MarkdownChild) => {
+    if (child.style === "BOLD") {
+      return createElement("strong", undefined, child.text)
+    }
+    if (child.style === "ITALIC") {
+      return createElement("em", undefined, child.text)
+    }
+    return child.text
   }
 
   const traverseNodes = (child: MarkdownChild): React.ReactNode | string => {
     if (child.jsxEl) {
       return createElement(
         child.jsxEl,
-        getClassNames(child),
+        undefined,
         child.children?.map((child) => traverseNodes(child))
       )
     }
-    return child.text
+    return wrapTagsIfApplicable(child)
   }
 
   return tree.map((node, index) => {
     return createElement(
       node.jsxEl,
-      { className: `${getClassNames(node)}, text-primary`, key: index },
+      undefined,
       node.children.map(traverseNodes)
     )
   })
@@ -66,15 +69,30 @@ const Resume = (props: ResumeProps) => {
   const ResumeContactInfo = () => {
     const gridColStyles = "grid grid-rows-3 gap-3 sm:gap-2 justify-start"
     const contactLineStyle = "flex justify-start items-center"
-    const textStyles = "grid ml-[4px] text-sm sm:text-base lg:text-lg"
+    const textStyles =
+      "grid ml-[4px] sm:ml-[6px] lg:ml-[8px] text-sm sm:text-lg lg:text-xl"
     const anchorStyles = `no-underline font-normal ${textStyles}`
 
     const smallBreakPoint = useBreakPoint("sm")
+    const largeBreakPoint = useBreakPoint("lg")
 
-    const iconSize = smallBreakPoint ? (width < smallBreakPoint ? 16 : 18) : 16
+    const iconSize =
+      smallBreakPoint && largeBreakPoint
+        ? width <= smallBreakPoint
+          ? 16
+          : width <= largeBreakPoint
+          ? 18
+          : 20
+        : 16
+
+    const isMobile = smallBreakPoint
+      ? width <= smallBreakPoint
+        ? true
+        : false
+      : false
 
     return (
-      <section className="grid whitespace-nowrap gap-y-2 grid-cols-1 sm:grid-cols-2 items-center">
+      <section className="grid whitespace-nowrap gap-y-2 grid-cols-1 xs:grid-cols-2 items-center">
         <div className={gridColStyles}>
           <div className={contactLineStyle}>
             <Icon name={IconNames.Email} size={iconSize} />
@@ -115,11 +133,11 @@ const Resume = (props: ResumeProps) => {
 
   return (
     <main className="mt-[92px] ">
-      <article className="prose prose-sm sm:prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl m-auto">
+      <article className="prose prose-em:text-sm sm:prose-em:text-base lg:prose-em:text-xl prose-h4:text-links prose-h1:text-primary prose-p:text-primary-light prose-sm sm:prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl m-auto">
         <h1>{props.name}</h1>
-        <h2>{props.title}</h2>
-        {renderMarkdownTree(props.description)}
+        <h3 className="text-links">{props.title}</h3>
         <ResumeContactInfo />
+        {renderMarkdownTree(props.description)}
         <h2>Work Experience</h2>
         {props.workExperience.map(renderMarkdownTree)}
       </article>
