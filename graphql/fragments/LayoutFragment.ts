@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client"
+import { IconFragment } from "./IconFragment"
 
-export const Layout = gql`
+export const LayoutFragment = gql`
   fragment Layout on Layout {
     route
     hero {
@@ -18,4 +19,5 @@ export const Layout = gql`
       }
     }
   }
+  ${IconFragment}
 `

@@ -1,4 +1,7 @@
 import { gql } from "@apollo/client"
+import { LayoutFragment } from "graphql/fragments/LayoutFragment"
+import { PagePreviewFragment } from "graphql/fragments/PagePreviewFragment"
+import { ProjectTileFragment } from "graphql/fragments/ProjectTileFragment"
 
 export const GET_INDEX_PAGE = gql`
   query GetIndexPage($route: String!) {
@@ -12,4 +15,7 @@ export const GET_INDEX_PAGE = gql`
       ...PagePreview
     }
   }
+  ${ProjectTileFragment}
+  ${LayoutFragment}
+  ${PagePreviewFragment}
 `

@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client"
+import { ProjectFragment } from "graphql/fragments/ProjectFragment"
 
 export const GET_PAGINATED_PROJECTS = gql`
   query GetPaginatedProjects($first: Int!, $after: String) {
@@ -6,4 +7,5 @@ export const GET_PAGINATED_PROJECTS = gql`
       ...Project
     }
   }
+  ${ProjectFragment}
 `

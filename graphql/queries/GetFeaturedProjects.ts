@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client"
+import { ProjectTileFragment } from "graphql/fragments/ProjectTileFragment"
 
 export const GET_FEATURED_PROJECTS = gql`
   query GetFeaturedProjects {
@@ -6,4 +7,5 @@ export const GET_FEATURED_PROJECTS = gql`
       ...ProjectTile
     }
   }
+  ${ProjectTileFragment}
 `
