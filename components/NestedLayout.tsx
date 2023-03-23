@@ -1,6 +1,6 @@
 import React from "react"
 import Image from "next/image"
-import { LayoutFragmentFragment } from "../graphql/generated/schema-types"
+import { LayoutFragment } from "../graphql/generated/schema-types"
 import { Icon } from "./Icon"
 
 export const NestedLayout = ({
@@ -8,7 +8,7 @@ export const NestedLayout = ({
   layout,
 }: {
   children: React.ReactNode
-  layout: LayoutFragmentFragment
+  layout: LayoutFragment
 }) => {
   return (
     <main>
