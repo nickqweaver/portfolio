@@ -87,7 +87,7 @@ const Resume = (props: ResumeProps) => {
     const contactLineStyle = "flex justify-start items-center"
     const textStyles =
       "grid ml-[4px] sm:ml-[6px] lg:ml-[8px] text-sm sm:text-lg lg:text-xl"
-    const anchorStyles = `no-underline font-normal ${textStyles}`
+    const anchorStyles = `font-normal ${textStyles}`
 
     const iconSize =
       smallBreakPoint && largeBreakPoint
@@ -146,6 +146,7 @@ const Resume = (props: ResumeProps) => {
         <h1>{props.name}</h1>
         <h3 className="text-links">{props.title}</h3>
         <ResumeContactInfo />
+        <h2>Skills</h2>
         <div
           className="grid gap-2 my-10 "
           style={{
