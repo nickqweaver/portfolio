@@ -42,10 +42,10 @@ const Home: NextPage = (props: Props) => {
 
   return (
     <Layout>
-      <main className="py-20 px-6 sm:px-12 space-y-10">
+      <main className="py-20 px-0 sm:px-12 space-y-10">
         {pagePreviews && <PagePreviews previews={pagePreviews} />}
         <CardTileSection
-          link={{ href: "projects", title: "See More" }}
+          link={{ href: "work", title: "See More" }}
           title="Recent Work"
         >
           {/** TODO Query Work here not projects -> filter 5 lateset or featured?*/}
@@ -53,19 +53,15 @@ const Home: NextPage = (props: Props) => {
             return (
               <div
                 key={project.id}
-                className="grid"
+                className="grid gap-8"
                 style={{
-                  gridTemplateColumns: "repeat( auto-fit, minmax(250px, 1fr) )",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
                 }}
               >
                 <WorkCard {...project} slug={`projects/${project.slug}`} />
               </div>
             )
           })}
-          <WorkCard {...({} as any)} slug={`projects/dll`} />
-          <WorkCard {...({} as any)} slug={`projects/dll`} />
-          <WorkCard {...({} as any)} slug={`projects/dll`} />
-          <WorkCard {...({} as any)} slug={`projects/dll`} />
         </CardTileSection>
       </main>
     </Layout>

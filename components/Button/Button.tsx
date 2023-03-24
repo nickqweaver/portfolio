@@ -4,7 +4,7 @@ import React from "react"
 type ButtonProps = {
   title: string
   onClick?: () => void
-  href: string
+  href?: string
   type: "primary" | "secondary"
 }
 
@@ -32,7 +32,7 @@ export const Button = (props: ButtonProps) => {
 
   if (href) {
     return (
-      <Link href={props.href} passHref>
+      <Link href={props.href as string} passHref>
         <ButtonElement {...rest} />
       </Link>
     )
