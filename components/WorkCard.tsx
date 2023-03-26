@@ -14,7 +14,7 @@ export const WorkCard = (props: ProjectTileFragment) => {
   return (
     <Link href={`/${props.slug}`}>
       <div className="rounded-xl grid overflow-hidden shadow-md bg-white">
-        <div className="relative w-full sm:h-[232px] grid grid-rows-2 sm:grid-cols-2 ">
+        <div className="relative w-full grid grid-rows-2  sm:grid-rows-1 sm:grid-cols-2 ">
           <div className="py-8 flex flex-col justify-center items-center">
             <span className="text-blue font-semibold text-sm text-start">
               Company
@@ -24,16 +24,16 @@ export const WorkCard = (props: ProjectTileFragment) => {
               <strong className="text-blue">Completed: </strong>
               {completionDate}
             </span>
-            <p className="prose mt-[32px] mx-[16px] mb-[16px] text-gray-500">
+            <p className="prose mt-[32px] mx-[16px] sm:mx-[24px] mb-[16px] text-gray-500">
               {truncateStr(description)}
             </p>
             <Button title="View More" type="primary" />
           </div>
-          <div className="flex justify-center items-center py-4 px-2 bg-gray-100">
+          <div className="flex justify-center items-center py-4 px-2">
             <div className="relative aspect-video h-[190px] rounded-md overflow-hidden">
               {media?.map((asset) => (
                 <Image
-                  key={"1"}
+                  key={asset.id}
                   src={asset.media.url}
                   alt={title ?? "No description found"}
                   layout="fill"
