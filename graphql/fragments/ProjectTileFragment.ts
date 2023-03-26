@@ -7,7 +7,10 @@ export const ProjectTileFragment = gql`
     completionDate
     slug
     id
-    description
+    description {
+      markdown
+      text
+    }
     media {
       ...Media
     }

@@ -1,12 +1,11 @@
 import Image from "next/image"
 import Link from "next/link"
 /** TODO Swap this out with work fragments */
-import { ProjectTileFragment } from "graphql/generated/schema-types"
 import { Button } from "./Button/Button"
+import { ProjectTileMarkdownFragment } from "pages"
 
-export const WorkCard = (props: ProjectTileFragment) => {
+export const WorkCard = (props: ProjectTileMarkdownFragment) => {
   const { media, title, completionDate, description } = props
-  console.log(props)
 
   const truncateStr = (str: string) => {
     return `${str.slice(0, 125)}...`
@@ -25,7 +24,7 @@ export const WorkCard = (props: ProjectTileFragment) => {
               {completionDate}
             </span>
             <p className="prose mt-[32px] mx-[16px] sm:mx-[24px] mb-[16px] text-gray-500">
-              {truncateStr(description)}
+              {truncateStr(description.text)}
             </p>
             <Button title="View More" type="primary" />
           </div>

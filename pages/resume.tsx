@@ -1,5 +1,7 @@
 import client from "apollo/client"
 import { Icon, IconNames } from "components/Icon"
+import { Label } from "components/Label/Label"
+import { Labels } from "components/Label/Labels"
 import {
   GetResumeQuery,
   ResumeFragment,
@@ -9,9 +11,8 @@ import { GET_RESUME } from "graphql/queries/GetResume"
 import { useBreakPoint } from "hooks/useBreakpoint"
 import { useWindow } from "hooks/useWindow"
 import { GetStaticProps } from "next"
-import { createElement } from "react"
 import { MarkdownAST, MarkdownObject } from "utils/markDownParser/markdown"
-import { MarkdownChild } from "utils/markDownParser/markdownChild"
+import { renderMarkdownTree } from "utils/markDownParser/renderMarkdownTree"
 
 type ResumeProps = Omit<
   ResumeFragment,
@@ -21,41 +22,6 @@ type ResumeProps = Omit<
   workExperience: MarkdownObject[][]
   education?: MarkdownObject[]
 } & Omit<SocialFragment, "__typename">
-
-const renderMarkdownTree = (tree: MarkdownObject[]) => {
-  // TODO - Only single styles are supported currently in the AST
-  // Once this is changed we need to ensure all/multiple tailwind classNames get applied
-  // based on the style type
-
-  const wrapTagsIfApplicable = (child: MarkdownChild) => {
-    if (child.style === "BOLD") {
-      return createElement("strong", undefined, child.text)
-    }
-    if (child.style === "ITALIC") {
-      return createElement("em", undefined, child.text)
-    }
-    return child.text
-  }
-
-  const traverseNodes = (child: MarkdownChild): React.ReactNode | string => {
-    if (child.jsxEl) {
-      return createElement(
-        child.jsxEl,
-        undefined,
-        child.children?.map((child) => traverseNodes(child))
-      )
-    }
-    return wrapTagsIfApplicable(child)
-  }
-
-  return tree.map((node, index) => {
-    return createElement(
-      node.jsxEl,
-      undefined,
-      node.children.map(traverseNodes)
-    )
-  })
-}
 
 const Resume = (props: ResumeProps) => {
   const { width } = useWindow()
@@ -147,26 +113,11 @@ const Resume = (props: ResumeProps) => {
         <h3 className="text-links">{props.title}</h3>
         <ResumeContactInfo />
         <h2>Skills</h2>
-        <div
-          className="grid gap-2 my-10 "
-          style={{
-            gridTemplateColumns: `repeat(auto-fill, minmax(${mapBreakPointStyle(
-              "64px",
-              "84px",
-              "96px",
-              "120px"
-            )}, 1fr))`,
-          }}
-        >
+        <Labels>
           {props.skills.map((skill) => (
-            <div
-              key={skill}
-              className="flex justify-center items-center text-links text-[10px] sm:text-xs md:text-sm py-1 px-2 font-semibold border-2 border-light-blue rounded-2xl"
-            >
-              {skill}
-            </div>
+            <Label key={skill} name={skill} />
           ))}
-        </div>
+        </Labels>
         {renderMarkdownTree(props.description)}
         <h2>Work Experience</h2>
         {props.workExperience.map(renderMarkdownTree)}

@@ -3955,8 +3955,7 @@ export type Project = Node & {
   createdBy?: Maybe<User>;
   /** URL of the deployed project */
   deployedUrl?: Maybe<Scalars['String']>;
-  /** Description of the project */
-  description: Scalars['String'];
+  description: RichText;
   /** Get the document in other stages */
   documentInStages: Array<Project>;
   /** URL of the github repository */
@@ -4075,7 +4074,7 @@ export type ProjectCreateInput = {
   completionDate: Scalars['Date'];
   createdAt?: InputMaybe<Scalars['DateTime']>;
   deployedUrl?: InputMaybe<Scalars['String']>;
-  description: Scalars['String'];
+  description: Scalars['RichTextAST'];
   githubUrl?: InputMaybe<Scalars['String']>;
   isFeatured: Scalars['Boolean'];
   media?: InputMaybe<MediaAssetCreateManyInlineInput>;
@@ -4179,25 +4178,6 @@ export type ProjectManyWhereInput = {
   deployedUrl_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   deployedUrl_starts_with?: InputMaybe<Scalars['String']>;
-  description?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  description_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  description_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Any other value that exists and is not equal to the given value. */
-  description_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  description_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  description_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  description_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  description_starts_with?: InputMaybe<Scalars['String']>;
   documentInStages_every?: InputMaybe<ProjectWhereStageInput>;
   documentInStages_none?: InputMaybe<ProjectWhereStageInput>;
   documentInStages_some?: InputMaybe<ProjectWhereStageInput>;
@@ -4346,8 +4326,6 @@ export enum ProjectOrderByInput {
   CreatedAtDesc = 'createdAt_DESC',
   DeployedUrlAsc = 'deployedUrl_ASC',
   DeployedUrlDesc = 'deployedUrl_DESC',
-  DescriptionAsc = 'description_ASC',
-  DescriptionDesc = 'description_DESC',
   GithubUrlAsc = 'githubUrl_ASC',
   GithubUrlDesc = 'githubUrl_DESC',
   IdAsc = 'id_ASC',
@@ -4378,7 +4356,7 @@ export type ProjectUpdateInput = {
   category?: InputMaybe<Array<ProjectCategory>>;
   completionDate?: InputMaybe<Scalars['Date']>;
   deployedUrl?: InputMaybe<Scalars['String']>;
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['RichTextAST']>;
   githubUrl?: InputMaybe<Scalars['String']>;
   isFeatured?: InputMaybe<Scalars['Boolean']>;
   media?: InputMaybe<MediaAssetUpdateManyInlineInput>;
@@ -4409,7 +4387,7 @@ export type ProjectUpdateManyInput = {
   category?: InputMaybe<Array<ProjectCategory>>;
   completionDate?: InputMaybe<Scalars['Date']>;
   deployedUrl?: InputMaybe<Scalars['String']>;
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['RichTextAST']>;
   githubUrl?: InputMaybe<Scalars['String']>;
   isFeatured?: InputMaybe<Scalars['Boolean']>;
   stack?: InputMaybe<Array<StackChoice>>;
@@ -4536,25 +4514,6 @@ export type ProjectWhereInput = {
   deployedUrl_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   deployedUrl_starts_with?: InputMaybe<Scalars['String']>;
-  description?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  description_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  description_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Any other value that exists and is not equal to the given value. */
-  description_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  description_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  description_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  description_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  description_starts_with?: InputMaybe<Scalars['String']>;
   documentInStages_every?: InputMaybe<ProjectWhereStageInput>;
   documentInStages_none?: InputMaybe<ProjectWhereStageInput>;
   documentInStages_some?: InputMaybe<ProjectWhereStageInput>;
@@ -7949,9 +7908,9 @@ export type MediaFragment = { __typename?: 'MediaAsset', id: string, order: numb
 
 export type PagePreviewFragment = { __typename?: 'PagePreview', title: string, slug: string, description?: { __typename?: 'RichText', html: string } | null, icon: { __typename?: 'Icon', name: IconNames, size?: Size | null } };
 
-export type ProjectFragment = { __typename?: 'Project', title: string, completionDate: any, description: string, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> };
+export type ProjectFragment = { __typename?: 'Project', title: string, completionDate: any, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> };
 
-export type ProjectTileFragment = { __typename?: 'Project', title: string, completionDate: any, description: string, stack: Array<StackChoice>, category: Array<ProjectCategory>, slug: string, id: string, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> };
+export type ProjectTileFragment = { __typename?: 'Project', title: string, completionDate: any, slug: string, id: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> };
 
 export type ResumeFragment = { __typename?: 'Resume', name: string, title: string, phoneNumber: string, email: string, location: string, skills: Array<StackChoice>, description: { __typename?: 'RichText', markdown: string }, workExperience: Array<{ __typename?: 'RichText', markdown: string }>, education?: { __typename?: 'RichText', markdown: string } | null };
 
@@ -7960,14 +7919,14 @@ export type SocialFragment = { __typename?: 'Social', id: string, github: string
 export type GetFeaturedProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetFeaturedProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, description: string, stack: Array<StackChoice>, category: Array<ProjectCategory>, slug: string, id: string, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
+export type GetFeaturedProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, slug: string, id: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
 
 export type GetIndexPageQueryVariables = Exact<{
   route: Scalars['String'];
 }>;
 
 
-export type GetIndexPageQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, description: string, stack: Array<StackChoice>, category: Array<ProjectCategory>, slug: string, id: string, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }>, layout?: { __typename?: 'Layout', route: string, hero?: { __typename?: 'Hero', heading: string, subHeading?: string | null, backgroundColor?: { __typename?: 'Color', css: string } | null, backgroundImage?: { __typename?: 'Asset', id: string, url: string } | null, icon?: { __typename?: 'Icon', name: IconNames, size?: Size | null } | null } | null } | null, pagePreviews: Array<{ __typename?: 'PagePreview', title: string, slug: string, description?: { __typename?: 'RichText', html: string } | null, icon: { __typename?: 'Icon', name: IconNames, size?: Size | null } }> };
+export type GetIndexPageQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, slug: string, id: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }>, layout?: { __typename?: 'Layout', route: string, hero?: { __typename?: 'Hero', heading: string, subHeading?: string | null, backgroundColor?: { __typename?: 'Color', css: string } | null, backgroundImage?: { __typename?: 'Asset', id: string, url: string } | null, icon?: { __typename?: 'Icon', name: IconNames, size?: Size | null } | null } | null } | null, pagePreviews: Array<{ __typename?: 'PagePreview', title: string, slug: string, description?: { __typename?: 'RichText', html: string } | null, icon: { __typename?: 'Icon', name: IconNames, size?: Size | null } }> };
 
 export type GetLayoutByRouteQueryVariables = Exact<{
   route: Scalars['String'];
@@ -7987,7 +7946,7 @@ export type GetPaginatedProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetPaginatedProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, description: string, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
+export type GetPaginatedProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
 
 export type GetPaginatedWorkQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -7995,14 +7954,14 @@ export type GetPaginatedWorkQueryVariables = Exact<{
 }>;
 
 
-export type GetPaginatedWorkQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, description: string, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
+export type GetPaginatedWorkQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
 
 export type GetProjectBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetProjectBySlugQuery = { __typename?: 'Query', project?: { __typename?: 'Project', title: string, completionDate: any, description: string, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> } | null };
+export type GetProjectBySlugQuery = { __typename?: 'Query', project?: { __typename?: 'Project', title: string, completionDate: any, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> } | null };
 
 export type GetResumeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -8059,7 +8018,10 @@ export const ProjectFragmentDoc = gql`
     fragment Project on Project {
   title
   completionDate
-  description
+  description {
+    markdown
+    text
+  }
   stack
   category
   id
@@ -8073,11 +8035,12 @@ export const ProjectTileFragmentDoc = gql`
     fragment ProjectTile on Project {
   title
   completionDate
-  description
-  stack
-  category
   slug
   id
+  description {
+    markdown
+    text
+  }
   media {
     ...Media
   }

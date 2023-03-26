@@ -5,7 +5,10 @@ export const ProjectFragment = gql`
   fragment Project on Project {
     title
     completionDate
-    description
+    description {
+      markdown
+      text
+    }
     stack
     category
     id

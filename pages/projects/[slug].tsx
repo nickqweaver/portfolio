@@ -1,9 +1,16 @@
+import { Label } from "components/Label/Label"
+import { Labels } from "components/Label/Labels"
 import { GetStaticProps } from "next"
+import Image from "next/image"
+import { ProjectDescription, ProjectTileMarkdownFragment } from "pages"
 import { ParsedUrlQuery } from "querystring"
+import { MarkdownAST } from "utils/markDownParser/markdown"
+import { renderMarkdownTree } from "utils/markDownParser/renderMarkdownTree"
 import client from "../../apollo/client"
 import {
   GetFeaturedProjectsQuery,
   GetProjectBySlugQuery,
+  ProjectFragment,
 } from "../../graphql/generated/schema-types"
 import { GET_FEATURED_PROJECTS } from "../../graphql/queries/GetFeaturedProjects"
 import { GET_PROJECT_BY_SLUG } from "../../graphql/queries/GetProjectBySlug"
@@ -12,16 +19,30 @@ interface IParams extends ParsedUrlQuery {
   slug: string
 }
 
-type ProjectProps = {
-  title: string
-  description: string
-}
+type ProjectMarkdownFragment = Omit<ProjectFragment, "description"> &
+  ProjectDescription
 
-const Project = (props: ProjectProps) => {
+const Project = (props: ProjectMarkdownFragment) => {
   return (
-    <div className="p-4 space-y-4 mt-16">
+    <div className="p-4 space-y-4 mt-16 prose m-auto">
       <h1 className="text-primary-light text-4xl">{props.title}</h1>
-      <p className="text-primary-light">{props.description}</p>
+      <Labels>
+        {props.stack.map((stackOption) => (
+          <Label key={stackOption} name={stackOption} />
+        ))}
+      </Labels>
+      <div className="grid gap-6">
+        {props.media.map((asset) => (
+          <div
+            key={asset.id}
+            className="aspect-video h-[240px] relative w-[358px]"
+          >
+            <Image src={asset.media.url} alt={"Project Image"} layout="fill" />
+          </div>
+        ))}
+      </div>
+
+      {renderMarkdownTree(props.description.markdown)}
     </div>
   )
 }
@@ -44,15 +65,27 @@ export async function getStaticPaths() {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const { slug } = context.params as IParams
-  const q = await client.query<GetProjectBySlugQuery>({
+  const { data } = await client.query<GetProjectBySlugQuery>({
     query: GET_PROJECT_BY_SLUG,
     variables: { slug },
   })
 
-  return {
-    props: {
-      title: q?.data?.project?.title,
-      description: q?.data?.project?.description,
-    },
+  const { project } = data
+
+  if (project) {
+    const { description, ...rest } = project
+    return {
+      props: {
+        ...rest,
+        description: {
+          markdown: new MarkdownAST(project?.description.markdown).build(),
+          text: project?.description.text,
+        },
+      },
+    }
+  } else {
+    return {
+      notFound: true,
+    }
   }
 }

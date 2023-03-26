@@ -12,11 +12,22 @@ import { PagePreviews } from "../components/PagePreview/PagePreviews"
 import { WorkCard } from "../components/WorkCard"
 import { CardTileSection } from "../components/CardTileSection"
 import { GET_INDEX_PAGE } from "../graphql/queries/GetIndexPage"
+import { MarkdownAST, MarkdownObject } from "utils/markDownParser/markdown"
+
+export type ProjectDescription = {
+  description: { markdown: MarkdownObject[]; text: string }
+}
+
+export type ProjectTileMarkdownFragment = Omit<
+  ProjectTileFragment,
+  "description"
+> &
+  ProjectDescription
 
 type Props = {
   pagePreviews?: PagePreviewFragment[]
   layout?: LayoutFragment
-  featuredProjects?: ProjectTileFragment[]
+  featuredProjects?: ProjectTileMarkdownFragment[]
 }
 
 // TODO's
@@ -81,7 +92,13 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       pagePreviews: data.pagePreviews,
       layout: data.layout,
-      featuredProjects: data.projects,
+      featuredProjects: data.projects.map((project) => ({
+        ...project,
+        description: {
+          markdown: new MarkdownAST(project.description.markdown).build(),
+          text: project.description.text,
+        },
+      })),
     },
   }
 }
