@@ -1,5 +1,3 @@
-import { Label } from "components/Label/Label"
-import { Labels } from "components/Label/Labels"
 import { GetStaticProps } from "next"
 import Image from "next/image"
 import { ProjectDescription } from "pages"
@@ -23,25 +21,49 @@ type ProjectMarkdownFragment = Omit<ProjectFragment, "description"> &
   ProjectDescription
 
 const Project = (props: ProjectMarkdownFragment) => {
+  const [containerImage, ...otherImages] = props.media
+
   return (
-    <div className="p-4 space-y-4 mt-16 prose m-auto">
-      <h1 className="text-primary-light text-4xl">{props.title}</h1>
-      <Labels>
+    <div className="prose lg:prose-lg mt-20 mx-auto px-3">
+      <h1>{props.title}</h1>
+      <div className="flex flex-wrap gap-2">
         {props.stack.map((stackOption) => (
-          <Label key={stackOption} name={stackOption} />
-        ))}
-      </Labels>
-      <div className="grid gap-6">
-        {props.media.map((asset) => (
-          <div
-            key={asset.id}
-            className="aspect-video h-[240px] relative w-[358px]"
+          <span
+            key={stackOption}
+            className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-lg"
           >
-            <Image src={asset.media.url} alt={"Project Image"} layout="fill" />
-          </div>
+            {stackOption}
+          </span>
         ))}
       </div>
+      {/** Images */}
+      <div className="flex flex-col items-center sm:items-start">
+        <div className="relative aspect-video h-[204px] sm:h-[350px] lg:h-[400px]">
+          <Image
+            src={containerImage.media.url}
+            alt="Project main image"
+            layout="fill"
+            objectFit="contain"
+          />
+        </div>
+        {/** Height 100px */}
+        <div className="flex flex-wrap gap-8 mt-8">
+          {otherImages.map((asset) => (
+            <div
+              key={asset.id}
+              className="relative aspect-video h-[92px] sm:h-[124px] lg:h-[136px]"
+            >
+              <Image
+                src={asset.media.url}
+                alt={"Project Image"}
+                layout="fill"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
 
+      <h2>Overview</h2>
       {renderMarkdownTree(props.description.markdown)}
     </div>
   )
