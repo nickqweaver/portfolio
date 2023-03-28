@@ -1,3 +1,4 @@
+import { Icon, IconNames } from "components/Icon"
 import Modal from "components/Modal/Modal"
 import { useWindow } from "hooks/useWindow"
 import { GetStaticProps } from "next"

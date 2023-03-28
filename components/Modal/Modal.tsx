@@ -1,5 +1,3 @@
-import { useState } from "react"
-
 const Modal = (props: { children: React.ReactNode; onClose: () => void }) => {
   return (
     <div className="fixed z-50 inset-0 overflow-y-auto">
