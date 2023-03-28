@@ -112,13 +112,13 @@ const Resume = (props: ResumeProps) => {
         <h1>{props.name}</h1>
         <h3 className="text-links">{props.title}</h3>
         <ResumeContactInfo />
+        {renderMarkdownTree(props.description)}
         <h2>Skills</h2>
         <Labels>
           {props.skills.map((skill) => (
             <Label key={skill} name={skill} />
           ))}
         </Labels>
-        {renderMarkdownTree(props.description)}
         <h2>Work Experience</h2>
         {props.workExperience.map(renderMarkdownTree)}
         {props.education && (
