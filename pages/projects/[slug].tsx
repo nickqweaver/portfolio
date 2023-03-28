@@ -1,7 +1,10 @@
+import Modal from "components/Modal/Modal"
+import { useWindow } from "hooks/useWindow"
 import { GetStaticProps } from "next"
 import Image from "next/image"
 import { ProjectDescription } from "pages"
 import { ParsedUrlQuery } from "querystring"
+import { useState } from "react"
 import { MarkdownAST } from "utils/markDownParser/markdown"
 import { renderMarkdownTree } from "utils/markDownParser/renderMarkdownTree"
 import client from "../../apollo/client"
@@ -22,9 +25,26 @@ type ProjectMarkdownFragment = Omit<ProjectFragment, "description"> &
 
 const Project = (props: ProjectMarkdownFragment) => {
   const [containerImage, ...otherImages] = props.media
+  const [activeImageIndex, setActiveImageIndex] = useState(-1)
+  const { width } = useWindow()
 
   return (
     <div className="prose lg:prose-lg mt-20 mx-auto px-3">
+      {activeImageIndex >= 0 && (
+        <Modal onClose={() => setActiveImageIndex(-1)}>
+          <div
+            className={`aspect-video relative`}
+            style={{ height: `${width / 2}px` }}
+          >
+            <Image
+              src={props.media[activeImageIndex].media.url}
+              alt="Project image in Viewer"
+              layout="fill"
+              objectFit="contain"
+            />
+          </div>
+        </Modal>
+      )}
       <h1>{props.title}</h1>
       <div className="flex flex-wrap gap-2">
         {props.stack.map((stackOption) => (
@@ -38,7 +58,10 @@ const Project = (props: ProjectMarkdownFragment) => {
       </div>
       {/** Images */}
       <div className="flex flex-col items-center sm:items-start">
-        <div className="relative aspect-video h-[204px] sm:h-[350px] lg:h-[400px]">
+        <div
+          className="relative aspect-video h-[204px] sm:h-[350px] lg:h-[400px] cursor-pointer"
+          onClick={() => setActiveImageIndex(0)}
+        >
           <Image
             src={containerImage.media.url}
             alt="Project main image"
@@ -48,10 +71,11 @@ const Project = (props: ProjectMarkdownFragment) => {
         </div>
         {/** Height 100px */}
         <div className="flex flex-wrap gap-8 mt-8">
-          {otherImages.map((asset) => (
+          {otherImages.map((asset, index) => (
             <div
               key={asset.id}
-              className="relative aspect-video h-[92px] sm:h-[124px] lg:h-[136px]"
+              className="relative aspect-video h-[92px] sm:h-[124px] lg:h-[136px] cursor-pointer"
+              onClick={() => setActiveImageIndex(index + 1)}
             >
               <Image
                 src={asset.media.url}
@@ -62,7 +86,6 @@ const Project = (props: ProjectMarkdownFragment) => {
           ))}
         </div>
       </div>
-
       <h2>Overview</h2>
       {renderMarkdownTree(props.description.markdown)}
     </div>
