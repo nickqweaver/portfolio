@@ -11,7 +11,7 @@ export const WorkCard = (props: ProjectTileMarkdownFragment) => {
     return `${str.slice(0, 125)}...`
   }
 
-  const [mainAsset] = props.media
+  const [mainAsset] = media
   return (
     <Link href={`/${props.slug}`}>
       <div className="rounded-xl grid overflow-hidden shadow-md bg-white">

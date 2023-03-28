@@ -57,7 +57,6 @@ const Project = (props: ProjectMarkdownFragment) => {
           </span>
         ))}
       </div>
-      {/** Images */}
       <div className="flex flex-col items-center sm:items-start">
         <div
           className="relative aspect-video h-[204px] sm:h-[350px] lg:h-[400px] cursor-pointer"
@@ -70,7 +69,6 @@ const Project = (props: ProjectMarkdownFragment) => {
             objectFit="contain"
           />
         </div>
-        {/** Height 100px */}
         <div className="flex flex-wrap gap-8 mt-8">
           {otherImages.map((asset, index) => (
             <div
