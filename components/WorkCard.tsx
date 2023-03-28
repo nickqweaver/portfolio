@@ -10,6 +10,8 @@ export const WorkCard = (props: ProjectTileMarkdownFragment) => {
   const truncateStr = (str: string) => {
     return `${str.slice(0, 125)}...`
   }
+
+  const [mainAsset] = props.media
   return (
     <Link href={`/${props.slug}`}>
       <div className="rounded-xl grid overflow-hidden shadow-md bg-white">
@@ -30,14 +32,12 @@ export const WorkCard = (props: ProjectTileMarkdownFragment) => {
           </div>
           <div className="flex justify-center items-center py-4 px-2">
             <div className="relative aspect-video h-[190px] rounded-md overflow-hidden">
-              {media?.map((asset) => (
-                <Image
-                  key={asset.id}
-                  src={asset.media.url}
-                  alt={title ?? "No description found"}
-                  layout="fill"
-                />
-              ))}
+              <Image
+                key={mainAsset.id}
+                src={mainAsset.media.url}
+                alt={title ?? "No description found"}
+                layout="fill"
+              />
             </div>
           </div>
         </div>
