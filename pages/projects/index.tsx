@@ -8,12 +8,22 @@ import { GET_PAGINATED_PROJECTS } from "graphql/queries/GetPaginatedProjects"
 import { GetServerSideProps } from "next"
 
 const Projects = (props: { projects: ProjectFragment[] }) => {
+  const multiProj = [
+    ...props.projects,
+    ...props.projects,
+    ...props.projects,
+    ...props.projects,
+  ]
   return (
-    <div className="mt-[60px]">
-      <h1 className="text-primary text-xl">Projects</h1>
-      {props.projects.map((project) => {
-        return <ProjectCard key={project.id} {...project} />
-      })}
+    <div className="my-20 mx-4">
+      <h1 className="text-primary-light text-5xl font-semibold my-8">
+        Projects
+      </h1>
+      <div className="flex flex-wrap gap-8 justify-center">
+        {multiProj.map((project) => {
+          return <ProjectCard key={project.id} {...project} />
+        })}
+      </div>
     </div>
   )
 }

@@ -7908,9 +7908,9 @@ export type MediaFragment = { __typename?: 'MediaAsset', id: string, order: numb
 
 export type PagePreviewFragment = { __typename?: 'PagePreview', title: string, slug: string, description?: { __typename?: 'RichText', html: string } | null, icon: { __typename?: 'Icon', name: IconNames, size?: Size | null } };
 
-export type ProjectFragment = { __typename?: 'Project', title: string, completionDate: any, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> };
+export type ProjectFragment = { __typename?: 'Project', title: string, completionDate: any, githubUrl?: string | null, deployedUrl?: string | null, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> };
 
-export type ProjectTileFragment = { __typename?: 'Project', title: string, completionDate: any, slug: string, id: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> };
+export type ProjectTileFragment = { __typename?: 'Project', title: string, completionDate: any, slug: string, id: string, stack: Array<StackChoice>, deployedUrl?: string | null, githubUrl?: string | null, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> };
 
 export type ResumeFragment = { __typename?: 'Resume', name: string, title: string, phoneNumber: string, email: string, location: string, skills: Array<StackChoice>, description: { __typename?: 'RichText', markdown: string }, workExperience: Array<{ __typename?: 'RichText', markdown: string }>, education?: { __typename?: 'RichText', markdown: string } | null };
 
@@ -7919,14 +7919,14 @@ export type SocialFragment = { __typename?: 'Social', id: string, github: string
 export type GetFeaturedProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetFeaturedProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, slug: string, id: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
+export type GetFeaturedProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, slug: string, id: string, stack: Array<StackChoice>, deployedUrl?: string | null, githubUrl?: string | null, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
 
 export type GetIndexPageQueryVariables = Exact<{
   route: Scalars['String'];
 }>;
 
 
-export type GetIndexPageQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, slug: string, id: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }>, layout?: { __typename?: 'Layout', route: string, hero?: { __typename?: 'Hero', heading: string, subHeading?: string | null, backgroundColor?: { __typename?: 'Color', css: string } | null, backgroundImage?: { __typename?: 'Asset', id: string, url: string } | null, icon?: { __typename?: 'Icon', name: IconNames, size?: Size | null } | null } | null } | null, pagePreviews: Array<{ __typename?: 'PagePreview', title: string, slug: string, description?: { __typename?: 'RichText', html: string } | null, icon: { __typename?: 'Icon', name: IconNames, size?: Size | null } }> };
+export type GetIndexPageQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, slug: string, id: string, stack: Array<StackChoice>, deployedUrl?: string | null, githubUrl?: string | null, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }>, layout?: { __typename?: 'Layout', route: string, hero?: { __typename?: 'Hero', heading: string, subHeading?: string | null, backgroundColor?: { __typename?: 'Color', css: string } | null, backgroundImage?: { __typename?: 'Asset', id: string, url: string } | null, icon?: { __typename?: 'Icon', name: IconNames, size?: Size | null } | null } | null } | null, pagePreviews: Array<{ __typename?: 'PagePreview', title: string, slug: string, description?: { __typename?: 'RichText', html: string } | null, icon: { __typename?: 'Icon', name: IconNames, size?: Size | null } }> };
 
 export type GetLayoutByRouteQueryVariables = Exact<{
   route: Scalars['String'];
@@ -7946,7 +7946,7 @@ export type GetPaginatedProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetPaginatedProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
+export type GetPaginatedProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, githubUrl?: string | null, deployedUrl?: string | null, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
 
 export type GetPaginatedWorkQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -7954,14 +7954,14 @@ export type GetPaginatedWorkQueryVariables = Exact<{
 }>;
 
 
-export type GetPaginatedWorkQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
+export type GetPaginatedWorkQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, githubUrl?: string | null, deployedUrl?: string | null, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
 
 export type GetProjectBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetProjectBySlugQuery = { __typename?: 'Query', project?: { __typename?: 'Project', title: string, completionDate: any, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> } | null };
+export type GetProjectBySlugQuery = { __typename?: 'Query', project?: { __typename?: 'Project', title: string, completionDate: any, githubUrl?: string | null, deployedUrl?: string | null, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> } | null };
 
 export type GetResumeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -8022,6 +8022,8 @@ export const ProjectFragmentDoc = gql`
     markdown
     text
   }
+  githubUrl
+  deployedUrl
   stack
   category
   id
@@ -8037,6 +8039,9 @@ export const ProjectTileFragmentDoc = gql`
   completionDate
   slug
   id
+  stack
+  deployedUrl
+  githubUrl
   description {
     markdown
     text
@@ -8116,7 +8121,7 @@ export const GetPagePreviewsDocument = gql`
 export type GetPagePreviewsQueryResult = Apollo.QueryResult<GetPagePreviewsQuery, GetPagePreviewsQueryVariables>;
 export const GetPaginatedProjectsDocument = gql`
     query GetPaginatedProjects($first: Int!, $after: String) {
-  projects(first: $first, after: $after, where: {type: PERSONAL}) {
+  projects(first: $first, after: $after, where: {type: WORK}) {
     ...Project
   }
 }

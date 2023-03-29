@@ -12,6 +12,7 @@ export enum IconNames {
   Web = "web",
   Left = "left",
   Right = "right",
+  Link = "link",
 }
 export const Icons = { ...GeneratedIconNames, ...IconNames }
 export type Icons = typeof Icons
@@ -49,6 +50,8 @@ export const Icon = (
       return <FeatherIcon.ArrowLeftCircle {...rest} />
     case Icons.Right:
       return <FeatherIcon.ArrowRightCircle {...rest} />
+    case Icons.Link:
+      return <FeatherIcon.Link {...rest} />
     default:
       return <></>
   }

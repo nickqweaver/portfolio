@@ -9,6 +9,8 @@ export const ProjectFragment = gql`
       markdown
       text
     }
+    githubUrl
+    deployedUrl
     stack
     category
     id

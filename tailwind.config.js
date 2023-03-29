@@ -27,6 +27,7 @@ module.exports = {
         "light-blue": "#0099FF",
         white: "#ffffff",
         sheet: "#F2F2F7",
+        grey: "#9C9AAC",
       },
     },
   },

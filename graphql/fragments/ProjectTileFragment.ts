@@ -7,6 +7,9 @@ export const ProjectTileFragment = gql`
     completionDate
     slug
     id
+    stack
+    deployedUrl
+    githubUrl
     description {
       markdown
       text

@@ -22,7 +22,7 @@ export const Button = (props: ButtonProps) => {
     return (
       <button
         ref={ref}
-        className={`p-3 text-sm rounded-lg font-semibold ${type}`}
+        className={`py-2 px-3 text-sm rounded-lg font-semibold ${type}`}
         onClick={props.onClick}
       >
         {props.title}
