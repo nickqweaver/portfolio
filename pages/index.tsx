@@ -65,7 +65,7 @@ const Home: NextPage = (props: Props) => {
                 key={project.id}
                 className="flex flex-wrap gap-8 justify-center"
               >
-                <ProjectCard {...project} slug={`/${project.slug}`} />
+                <ProjectCard {...project} slug={`${project.slug}`} />
               </div>
             )
           })}
