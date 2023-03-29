@@ -5,7 +5,7 @@ import { ProjectTileFragment } from "graphql/fragments/ProjectTileFragment"
 
 export const GET_INDEX_PAGE = gql`
   query GetIndexPage($route: String!) {
-    projects(where: { isFeatured: true, type: WORK }) {
+    projects(orderBy: completionDate_DESC, first: 5) {
       ...ProjectTile
     }
     layout(where: { route: $route }) {

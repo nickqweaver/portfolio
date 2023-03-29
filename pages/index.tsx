@@ -9,10 +9,10 @@ import {
 import { NestedLayout } from "../components/NestedLayout"
 import React from "react"
 import { PagePreviews } from "../components/PagePreview/PagePreviews"
-import { WorkCard } from "../components/WorkCard"
 import { CardTileSection } from "../components/CardTileSection"
 import { GET_INDEX_PAGE } from "../graphql/queries/GetIndexPage"
-import { MarkdownAST, MarkdownObject } from "utils/markDownParser/markdown"
+import { MarkdownObject } from "utils/markDownParser/markdown"
+import { ProjectCard } from "components/Projects/ProjectCard"
 
 export type ProjectDescription = {
   description: { markdown: MarkdownObject[]; text: string }
@@ -27,7 +27,7 @@ export type ProjectTileMarkdownFragment = Omit<
 type Props = {
   pagePreviews?: PagePreviewFragment[]
   layout?: LayoutFragment
-  featuredProjects?: ProjectTileMarkdownFragment[]
+  featuredProjects?: ProjectTileFragment[]
 }
 
 // TODO's
@@ -56,20 +56,16 @@ const Home: NextPage = (props: Props) => {
       <main className="py-20 px-0 space-y-10">
         {pagePreviews && <PagePreviews previews={pagePreviews} />}
         <CardTileSection
-          link={{ href: "work", title: "See More" }}
+          link={{ href: "projects", title: "See More" }}
           title="Recent Work"
         >
-          {/** TODO Query Work here not projects -> filter 5 lateset or featured?*/}
           {featuredProjects?.map((project) => {
             return (
               <div
                 key={project.id}
-                className="grid gap-8"
-                style={{
-                  gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-                }}
+                className="flex flex-wrap gap-8 justify-center"
               >
-                <WorkCard {...project} slug={`projects/${project.slug}`} />
+                <ProjectCard {...project} slug={`/${project.slug}`} />
               </div>
             )
           })}
@@ -92,13 +88,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       pagePreviews: data.pagePreviews,
       layout: data.layout,
-      featuredProjects: data.projects.map((project) => ({
-        ...project,
-        description: {
-          markdown: new MarkdownAST(project.description.markdown).build(),
-          text: project.description.text,
-        },
-      })),
+      featuredProjects: data.projects,
     },
   }
 }

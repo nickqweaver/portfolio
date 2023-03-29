@@ -1,5 +1,6 @@
 import { Icon, IconNames } from "components/Icon"
 import Modal from "components/Modal/Modal"
+import { GET_PAGINATED_PROJECTS } from "graphql/queries/GetPaginatedProjects"
 import { useWindow } from "hooks/useWindow"
 import { GetStaticProps } from "next"
 import Image from "next/image"
@@ -10,11 +11,10 @@ import { MarkdownAST } from "utils/markDownParser/markdown"
 import { renderMarkdownTree } from "utils/markDownParser/renderMarkdownTree"
 import client from "../../apollo/client"
 import {
-  GetFeaturedProjectsQuery,
+  GetPaginatedProjectsQuery,
   GetProjectBySlugQuery,
   ProjectFragment,
 } from "../../graphql/generated/schema-types"
-import { GET_FEATURED_PROJECTS } from "../../graphql/queries/GetFeaturedProjects"
 import { GET_PROJECT_BY_SLUG } from "../../graphql/queries/GetProjectBySlug"
 
 interface IParams extends ParsedUrlQuery {
@@ -95,12 +95,17 @@ export default Project
 
 export async function getStaticPaths() {
   // Have to fetch all the slugs dynamically create the routes at build time
-  const featuredProjectQuery = await client.query<GetFeaturedProjectsQuery>({
-    query: GET_FEATURED_PROJECTS,
+  // This seems problematic considering we can't fetch all of them at once...
+  // TODO -> Look into this
+  const projectsQuery = await client.query<GetPaginatedProjectsQuery>({
+    query: GET_PAGINATED_PROJECTS,
+    variables: {
+      first: 20,
+    },
   })
 
   return {
-    paths: featuredProjectQuery.data.projects.map((project) => ({
+    paths: projectsQuery.data.projects.map((project) => ({
       params: { slug: project.slug },
     })),
     fallback: false,

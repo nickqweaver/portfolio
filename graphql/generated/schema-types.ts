@@ -7916,11 +7916,6 @@ export type ResumeFragment = { __typename?: 'Resume', name: string, title: strin
 
 export type SocialFragment = { __typename?: 'Social', id: string, github: string, twitter?: string | null, personal?: string | null, linkedIn: string };
 
-export type GetFeaturedProjectsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetFeaturedProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, slug: string, id: string, stack: Array<StackChoice>, deployedUrl?: string | null, githubUrl?: string | null, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
-
 export type GetIndexPageQueryVariables = Exact<{
   route: Scalars['String'];
 }>;
@@ -7947,14 +7942,6 @@ export type GetPaginatedProjectsQueryVariables = Exact<{
 
 
 export type GetPaginatedProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, githubUrl?: string | null, deployedUrl?: string | null, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
-
-export type GetPaginatedWorkQueryVariables = Exact<{
-  first: Scalars['Int'];
-  after?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type GetPaginatedWorkQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', title: string, completionDate: any, githubUrl?: string | null, deployedUrl?: string | null, stack: Array<StackChoice>, category: Array<ProjectCategory>, id: string, slug: string, description: { __typename?: 'RichText', markdown: string, text: string }, media: Array<{ __typename?: 'MediaAsset', id: string, order: number, media: { __typename?: 'Asset', url: string } }> }> };
 
 export type GetProjectBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -8079,17 +8066,9 @@ export const SocialFragmentDoc = gql`
   linkedIn
 }
     `;
-export const GetFeaturedProjectsDocument = gql`
-    query GetFeaturedProjects {
-  projects(where: {isFeatured: true}) {
-    ...ProjectTile
-  }
-}
-    ${ProjectTileFragmentDoc}`;
-export type GetFeaturedProjectsQueryResult = Apollo.QueryResult<GetFeaturedProjectsQuery, GetFeaturedProjectsQueryVariables>;
 export const GetIndexPageDocument = gql`
     query GetIndexPage($route: String!) {
-  projects(where: {isFeatured: true, type: WORK}) {
+  projects(orderBy: completionDate_DESC, first: 5) {
     ...ProjectTile
   }
   layout(where: {route: $route}) {
@@ -8121,20 +8100,12 @@ export const GetPagePreviewsDocument = gql`
 export type GetPagePreviewsQueryResult = Apollo.QueryResult<GetPagePreviewsQuery, GetPagePreviewsQueryVariables>;
 export const GetPaginatedProjectsDocument = gql`
     query GetPaginatedProjects($first: Int!, $after: String) {
-  projects(first: $first, after: $after, where: {type: WORK}) {
+  projects(first: $first, after: $after, orderBy: completionDate_DESC) {
     ...Project
   }
 }
     ${ProjectFragmentDoc}`;
 export type GetPaginatedProjectsQueryResult = Apollo.QueryResult<GetPaginatedProjectsQuery, GetPaginatedProjectsQueryVariables>;
-export const GetPaginatedWorkDocument = gql`
-    query GetPaginatedWork($first: Int!, $after: String) {
-  projects(first: $first, after: $after, where: {type: WORK}) {
-    ...Project
-  }
-}
-    ${ProjectFragmentDoc}`;
-export type GetPaginatedWorkQueryResult = Apollo.QueryResult<GetPaginatedWorkQuery, GetPaginatedWorkQueryVariables>;
 export const GetProjectBySlugDocument = gql`
     query GetProjectBySlug($slug: String!) {
   project(where: {slug: $slug}) {

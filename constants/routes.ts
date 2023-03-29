@@ -1,11 +1,5 @@
 export const routes = [
   {
-    title: "Professional Work",
-    slug: "work",
-    hasButtonUi: false,
-  },
-
-  {
     title: "Projects",
     slug: "projects",
     hasButtonUi: false,
