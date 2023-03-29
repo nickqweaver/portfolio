@@ -95,12 +95,12 @@ export default Project
 
 export async function getStaticPaths() {
   // Have to fetch all the slugs dynamically create the routes at build time
-  // This seems problematic considering we can't fetch all of them at once...
-  // TODO -> Look into this
+  // From what I read this is just to pre generate the pages during build time
+  // Going to test this when I push. in Theory 1 of these pages won't be pre build statically
   const projectsQuery = await client.query<GetPaginatedProjectsQuery>({
     query: GET_PAGINATED_PROJECTS,
     variables: {
-      first: 20,
+      first: 1,
     },
   })
 
